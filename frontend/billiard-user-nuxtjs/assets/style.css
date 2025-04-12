@@ -1,0 +1,25 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: .9rem;
+}
+  
+:root{
+    --color-primary:#1e1b17;
+    --color-primary-two:#c1a37e;
+    --color-second-text:#737373;
+    --color-price-old:#adadad;
+}
+
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 8px;
+    background-color: #f5f5f5;
+    border-radius: 0 15px 15px 0;
+}
+  
+*::-webkit-scrollbar-thumb {
+  background-color: #4444;
+  border-radius: 5px;
+}

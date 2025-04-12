@@ -1,0 +1,3854 @@
+{
+	"info": {
+		"_postman_id": "18767c35-eed5-416c-b4a8-19e41a51d849",
+		"name": "DoAn4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28184714"
+	},
+	"item": [
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "addRole",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role_name\": \"TEST\",\r\n    \"role_description\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/roles/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"roles",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRole",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/roles/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"roles",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editRole",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66e8d948dce9cd35e12b63aa\",\r\n    \"role_name\": \"ADMIN\",\r\n    \"role_description\": \"aasaa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/roles/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"roles",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteRole",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/roles/delete/66e8eb9acff658344050918c",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"roles",
+								"delete",
+								"66e8eb9acff658344050918c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "addUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"quang2\",\r\n    \"password\": \"1\",\r\n    \"email\": \"str2\",\r\n    \"role_name\": \"ADMIN\",\r\n    \"fullname\": \"luuducquang\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUser",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":  \"66eec81c1999583a731922ad\",\r\n    \"username\": \"quang\",\r\n    \"password\": \"123\",\r\n    \"email\": \"quang@123\",\r\n    \"phone\": \"0912312313\",\r\n    \"address\": \"HY\",\r\n    \"loyalty_points\": 10,\r\n    \"role_name\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/delete/66eeb44f68c01ae367eb7aa0",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"delete",
+								"66eeb44f68c01ae367eb7aa0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByIdUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/get/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"get",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "News",
+			"item": [
+				{
+					"name": "getNew",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/news/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addNew",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"67091c27cc4dce5436908fa0\",\r\n    \"title\": \"Hot bi-a\",\r\n    \"content\": \"Giảm giá 50% giờ chơi\",\r\n    \"image\": \"/image\",\r\n    \"view\": 100,\r\n    \"status\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/news/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editNew",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66fc18ac6e10c49320877414\",\r\n    \"user_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"title\": \"Hot bi-a\",\r\n    \"content\": \"Giảm giá 50% giờ chơi\",\r\n    \"image\": \"/image\",\r\n    \"view\": 1001,\r\n    \"status\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/news/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteNew",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/news/delete/66fc18c26e10c49320877415",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news",
+								"delete",
+								"66fc18c26e10c49320877415"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidNew",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/news/get/66fc18c26e10c49320877415",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news",
+								"get",
+								"66fc18c26e10c49320877415"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchNew",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/news/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"news",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EmployeeTypes",
+			"item": [
+				{
+					"name": "getEmployeeType",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/employeetypes/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employeetypes",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addEmployeeType",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee_type_name\": \"nhan vien\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/employeetypes/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employeetypes",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateEmployeeType",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66eed21f0477cd1ad9a7df14\",\r\n    \"employee_type_name\": \"nhan vien\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/employeetypes/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employeetypes",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteEmployeeType",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/employeetypes/delete/66eed21f0477cd1ad9a7df14",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employeetypes",
+								"delete",
+								"66eed21f0477cd1ad9a7df14"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "getEmployee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/employees/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employees",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addEmployee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee_type_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"user_id\": \"67028fe139aaf288793baf7a\",\r\n    \"hourly_rate\": 20000,\r\n    \"monthly_salary\": 3000000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/employees/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employees",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editEmployee",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66efb4bb18bc67560c5b7906\",\r\n    \"employee_type_id\": \"2fgfjfgjxsw5w534dg\",\r\n    \"user_id\": \"67028fe139aaf288793baf7a\",\r\n    \"hourly_rate\": 30000,\r\n    \"monthly_salary\": 4000000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/employees/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employees",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteEmployee",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/employees/delete/66efb4bb18bc67560c5b7906",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employees",
+								"delete",
+								"66efb4bb18bc67560c5b7906"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidEmployee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/employees/get/670b4af587cf18d5d1fb7e0e",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employees",
+								"get",
+								"670b4af587cf18d5d1fb7e0e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchEmployee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10,\r\n    \"search_term\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/employees/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employees",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EmployeePayMents",
+			"item": [
+				{
+					"name": "getEmployeePayment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/employeepayments/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employeepayments",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addEmployeePayment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"pay_period_start\": \"2019-01-31T10:00:00.000Z\",\r\n    \"pay_period_end\": \"2019-01-31T10:00:00.000Z\",\r\n    \"total_hours\": 100,\r\n    \"total_payment\": 3000000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/employeepayments/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employeepayments",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editEmployeePayment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66f429ea42a99110e5093371\",\r\n    \"employee_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"pay_period_start\": \"2019-01-31T10:00:00.000Z\",\r\n    \"pay_period_end\": \"2019-01-31T10:00:00.000Z\",\r\n    \"total_hours\": 101,\r\n    \"total_payment\": 4000000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/employeepayments/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employeepayments",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteEmployeePayment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/employeepayments/delete/66f429ea42a99110e5093371",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"employeepayments",
+								"delete",
+								"66f429ea42a99110e5093371"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shifts",
+			"item": [
+				{
+					"name": "getShift",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/shifts/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"shifts",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addShift",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"shift_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"start_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"end_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"hours_worked\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/shifts/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"shifts",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editShift",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66f433306660667aa4137eb3\",\r\n    \"employee_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"shift_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"start_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"end_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"hours_worked\": 1001\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/shifts/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"shifts",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteShift",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/shifts/delete/66f433306660667aa4137eb3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"shifts",
+								"delete",
+								"66f433306660667aa4137eb3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "getBooking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/bookings/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addBooking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"table_id\": \"6732cee552e9e56c542a2490\",\r\n    \"name\": \"123\",\r\n    \"phone\": \"123\",\r\n    \"start_time\": \"2024-09-12T10:00:00.000Z\",\r\n    \"end_time\": \"2024-09-12T10:00:00.000Z\",\r\n    \"status\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/bookings/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editBooking",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\": \"66f7ebc98721b50fa6891900\",\r\n    \"table_id\": \"fgfjfgjxsw5w534dg7\",\r\n    \"name\": \"123\",\r\n    \"phone\": \"123\",\r\n    \"start_time\": \"2019-01-31T10:00:00\",\r\n    \"end_time\": \"2019-01-31T10:00:00\",\r\n    \"status\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/bookings/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteBooking",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/bookings/delete/66f7ebc98721b50fa6891900",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"delete",
+								"66f7ebc98721b50fa6891900"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchBooking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\": 1,\r\n    \"pageSize\": 10,\r\n    \"status\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/bookings/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkBooking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"table_id\": \"fgfjfgjxsw5w534dg7\",\r\n    \"start_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"end_time\": \"2020-01-31T10:00:00.000Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/bookings/check-availability-booking",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"check-availability-booking"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TableTypes",
+			"item": [
+				{
+					"name": "addTableType",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"table_type_name\": \"ban2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tabletypes/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tabletypes",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTableType",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tabletypes/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tabletypes",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editTableType",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":  \"66f7f0843bba28672d537138\",\r\n    \"table_type_name\": \"ban11\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tabletypes/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tabletypes",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTableType",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tabletypes/delete/66f7f0843bba28672d537138",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tabletypes",
+								"delete",
+								"66f7f0843bba28672d537138"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidTableType",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tabletypes/get/670f1e20d5439b57ae40f480",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tabletypes",
+								"get",
+								"670f1e20d5439b57ae40f480"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchTableType",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tabletypes/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tabletypes",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tables",
+			"item": [
+				{
+					"name": "addTable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"table_number\": 17,\r\n    \"table_type_id\": \"66f7f0c63bba28672d537139\",\r\n    \"status\": true,\r\n    \"start_date\":\"2024-11-12 10:55:52\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tables/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tables",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTable",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tables/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tables",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editTable",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6732cedd52e9e56c542a248d\",\r\n    \"table_number\": 1,\r\n    \"table_type_id\": \"66f7f0c63bba28672d537139\",\r\n    \"status\": false,\r\n    \"start_date\":\"2024-11-12 10:55:52\",\r\n    \"end_date\":\"2024-11-12 10:55:56\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tables/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tables",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTable",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tables/delete/6732d28052e9e56c542a2499",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tables",
+								"delete",
+								"6732d28052e9e56c542a2499"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidTable",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tables/get/6732cedd52e9e56c542a248d",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tables",
+								"get",
+								"6732cedd52e9e56c542a248d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchTable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tables/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tables",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set!Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tables/updatestatus/6732cee752e9e56c542a2491",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tables",
+								"updatestatus",
+								"6732cee752e9e56c542a2491"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Suppliers",
+			"item": [
+				{
+					"name": "getSupplier",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/suppliers/get/6707f03468bdb4f6bb0aec86",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"suppliers",
+								"get",
+								"6707f03468bdb4f6bb0aec86"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addSupplier",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"fgfjfgjxsw5w534dg\",\r\n    \"phone\": \"01923891203\",\r\n    \"address\": \"Giảm giá 50% giờ chơi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/suppliers/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"suppliers",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editSupplier",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6703a843a7be5d99babaa360\",\r\n    \"name\": \"fgfjfgjxsw5w123534dg\",\r\n    \"phone\": \"Hot bi-a\",\r\n    \"address\": \"Giảm giá 50% giờ chơi\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/suppliers/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"suppliers",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSupllier",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/suppliers/delete/6703a843a7be5d99babaa360",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"suppliers",
+								"delete",
+								"6703a843a7be5d99babaa360"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidSupplier",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/suppliers/get/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"suppliers",
+								"get",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchSupplier",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/suppliers/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"suppliers",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Manufactors",
+			"item": [
+				{
+					"name": "getmManufactor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/manufactors/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manufactors",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addManufactor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"fgfjfgjxsw5w534dg\",\r\n    \"phone\": \"0982731731\",\r\n    \"address\": \"Giảm giá 50% giờ chơi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/manufactors/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manufactors",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editManufactor",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6703a2ee3eb0d4224697201a\",\r\n    \"name\": \"fgfjfgjxsw5w123534dg\",\r\n    \"phone\": \"Hot bi-a\",\r\n    \"address\": \"Giảm giá 50% giờ chơi\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/manufactors/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manufactors",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteManufactor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/manufactors/delete/6703a2ee3eb0d4224697201a",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manufactors",
+								"delete",
+								"6703a2ee3eb0d4224697201a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidManufactor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/manufactors/get/6703a2d73e0d42246972019",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manufactors",
+								"get",
+								"6703a2d73e0d42246972019"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchManufactor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/manufactors/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manufactors",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CategoryRentalItems",
+			"item": [
+				{
+					"name": "addCategoryRentalItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category_name\": \"sua chua\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categoryrentalitems/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categoryrentalitems",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCategoryRentalItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categoryrentalitems/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categoryrentalitems",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editCategoryRentalItem",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6703a50bb3ec6cd088b24840\",\r\n    \"category_name\": \"sua chuaa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categoryrentalitems/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categoryrentalitems",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCategoryRentalItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categoryrentalitems/delete/6703a50bb3ec6cd088b24840",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categoryrentalitems",
+								"delete",
+								"6703a50bb3ec6cd088b24840"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchCategoryRentalItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\": 1,\r\n    \"pageSize\": 3\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categoryrentalitems/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categoryrentalitems",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidCategoryRentalItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categoryrentalitems/get/6703a523b3ec6cd088b24841",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categoryrentalitems",
+								"get",
+								"6703a523b3ec6cd088b24841"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rentals",
+			"item": [
+				{
+					"name": "addRental",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"6728dbaaca79a63e267e675e\",\r\n    \"item_id\": \"6728dbaaca79a63e267e675e\",\r\n    \"rental_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"return_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"price\": 100000,\r\n    \"status\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/rentals/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentals",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRental",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/rentals/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentals",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editRental",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66f7f3c461dc529cb839eef5\",\r\n    \"user_id\": \"12312gfdgdgdfg31\",\r\n    \"item_id\": \"12312gfdgdgdfg31\",\r\n    \"rental_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"return_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"quantity\": 111,\r\n    \"price\": 100000,\r\n    \"status\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/rentals/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentals",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteRental",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/rentals/delete/6728db524bc4b114b1592245",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentals",
+								"delete",
+								"6728db524bc4b114b1592245"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RentalItems",
+			"item": [
+				{
+					"name": "addRentalItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"manufactor_id\": \"6707ecfa32b517795bc51a17\",\r\n    \"category_id\": \"6703a523b3ec6cd088b24841\",\r\n    \"item_name\": \"gay\",\r\n    \"image\": \"\",\r\n    \"price\": 10000,\r\n    \"price_reduction\": 10000,\r\n    \"rental_price_day\": 10000,\r\n    \"rental_price_hours\": 10000,\r\n    \"quantity_available\": 100,\r\n    \"view\": 100,\r\n    \"origin\": \"Korea\",\r\n    \"description\": \"123123123sdsdf\",\r\n    \"description_detail\": \"123123123sdsdf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/rentalitems/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentalitems",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRentalItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/rentalitems/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentalitems",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editRentalItem",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66f7f6bedb74a5ef99e88b38\",\r\n    \"manufactor_id\": \"1312dfwet23sdf235\",\r\n    \"category_id\": \"1312dfwet23sdf235\",\r\n    \"item_name\": \"gay\",\r\n    \"image\": \"\",\r\n    \"price\": 10000,\r\n    \"price_reduction\": 10000,\r\n    \"rental_price_day\": 10000,\r\n    \"rental_price_hours\": 10000,\r\n    \"quantity_available\": 100,\r\n    \"view\": 100,\r\n    \"origin\": \"Korea\",\r\n    \"description\": \"123123123sdsdf\",\r\n    \"description_detail\": \"123123123sdsdf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/rentalitems/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentalitems",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteRentalItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/rentalitems/delete/66f7f6bedb74a5ef99e88b38",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentalitems",
+								"delete",
+								"66f7f6bedb74a5ef99e88b38"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchRentalItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10,\r\n    \"category_name\":\"bim bim\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/rentalitems/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentalitems",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidRentalItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/rentalitems/get/6728dc19ca79a63e267e6761",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentalitems",
+								"get",
+								"6728dc19ca79a63e267e6761"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkQuantityItems",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ids\": [\"67348ac300b08b54fe07fa86\", \"67348b606ad45a91cc960feb\"],\r\n    \"quantities\": [12, 0]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/rentalitems/check-quantities",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"rentalitems",
+								"check-quantities"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FoodOrders",
+			"item": [
+				{
+					"name": "addFoodOrder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"12312gfdgdgdfg31\",\r\n    \"order_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"status\": \"da dat hang\",\r\n    \"total_price\": 10000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/foodorders/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"foodorders",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getFoodOrder",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/foodorders/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"foodorders",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editFoodOrder",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66f831a1e3fd66143ef40c24\",\r\n    \"user_id\": \"12312gfdgdgdfg31\",\r\n    \"order_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"status\": \"da dat hang\",\r\n    \"total_price\": 100001\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/foodorders/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"foodorders",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteFoodOrder",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/foodorders/delete/66f831a1e3fd66143ef40c24",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"foodorders",
+								"delete",
+								"66f831a1e3fd66143ef40c24"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CategoryMenuItems",
+			"item": [
+				{
+					"name": "addCategoryMenuItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category_name\": \"bim bim\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categorymenuitems/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categorymenuitems",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCategoryMenuItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categorymenuitems/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categorymenuitems",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editCategoryMenuItem",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66f834156de5e68c7b907236\",\r\n    \"category_name\": \"sua chuaa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categorymenuitems/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categorymenuitems",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCategoryMenuItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categorymenuitems/delete/66f834156de5e68c7b907236",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categorymenuitems",
+								"delete",
+								"66f834156de5e68c7b907236"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchCategoryMenuItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\": 1,\r\n    \"pageSize\": 3\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/categorymenuitems/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categorymenuitems",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidCategoryMenuItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/categorymenuitems/get/6703a4edb3ec6cd088b2483f",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"categorymenuitems",
+								"get",
+								"6703a4edb3ec6cd088b2483f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MenuItems",
+			"item": [
+				{
+					"name": "addMenuItems",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"sua chua\",\r\n    \"stock_quantity\": 1,\r\n    \"image\": \"\",\r\n    \"price\": 1000,\r\n    \"category_id\": \"6703a4edb3ec6cd088b2483f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/menuitems/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"menuitems",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMenuItems",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/menuitems/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"menuitems",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editMenuItems",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66f8d241363f4dac36fc3081\",\r\n    \"name\": \"sua chua\",\r\n    \"stock_quantity\": 11,\r\n    \"image\": \"\",\r\n    \"price\": 1000,\r\n    \"category_id\": \"qweqweq5we5qw15eq\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/menuitems/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"menuitems",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMenuItems",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/menuitems/delete/66f8d241363f4dac36fc3081",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"menuitems",
+								"delete",
+								"66f8d241363f4dac36fc3081"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidMenuItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/menuitems/get/671083778b9643f1cb5fd63e",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"menuitems",
+								"get",
+								"671083778b9643f1cb5fd63e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchMenuItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/menuitems/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"menuitems",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TimeSessions",
+			"item": [
+				{
+					"name": "getTimeSession",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/timesessions/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"timesessions",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addTimeSession",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"table_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"start_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"end_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"price\": 100000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/timesessions/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"timesessions",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editTimeSession",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66f8d439e1baa74a5bc36758\",\r\n    \"table_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"start_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"end_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"price\": 1000001\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/timesessions/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"timesessions",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTimeSession",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/timesessions/delete/66f8d439e1baa74a5bc36758",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"timesessions",
+								"delete",
+								"66f8d439e1baa74a5bc36758"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PricingRules",
+			"item": [
+				{
+					"name": "getPricingRule",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/pricingrules/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"pricingrules",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addPricingRule",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type_table_id\": \"66f7f0c63bba28672d537139\",\r\n    \"rate_per_hour\": 90000,\r\n    \"rate_per_minute\": 100000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/pricingrules/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"pricingrules",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editPricingRule",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66f8d51f8752ac18b6ac02ee\",\r\n    \"type_table_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"rate_per_hour\": 90000,\r\n    \"rate_per_minute\": 1000001\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/pricingrules/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"pricingrules",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletePricingRule",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/pricingrules/delete/66f8d51f8752ac18b6ac02ee",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"pricingrules",
+								"delete",
+								"66f8d51f8752ac18b6ac02ee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidPricingRule",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/pricingrules/get/6710677846f7bcdf4d3329d3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"pricingrules",
+								"get",
+								"6710677846f7bcdf4d3329d3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ImportBills",
+			"item": [
+				{
+					"name": "getImportBill",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/importbills/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"importbills",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addImportBill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"670f17f5279b5da63b9bdc7a\",\r\n    \"supplier_id\": \"6762c1d104b0eb68e11f96bb\",\r\n    \"import_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"total_price\": 100,\r\n    \"import_items\":[{\r\n        \"item_id\": \"67348ac300b08b54fe07fa86\",\r\n      \"quantity\": 2,\r\n      \"unit_price\": 2000000,\r\n      \"total_price\": 4000000\r\n    },{\r\n        \"item_id\": \"67330bd2f42c21ff9487b920\",\r\n      \"quantity\": 2,\r\n      \"unit_price\": 10000,\r\n      \"total_price\": 20000\r\n    }]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/importbills/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"importbills",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editImportBill",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6703aa6aab75119c1201951a\",\r\n    \"user_id\": \"fgfjfgjxsw5w5314dg\",\r\n    \"supplier_id\": \"fgfjfgjxsw5w5314dg\",\r\n    \"import_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"total_price\": 100\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/importbills/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"importbills",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteImportBill",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/importbills/delete/6703aa6aab75119c1201951a",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"importbills",
+								"delete",
+								"6703aa6aab75119c1201951a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchImportBill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10,\r\n    \"search_term\":\"i\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/importbills/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"importbills",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ImportItems",
+			"item": [
+				{
+					"name": "getImportItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/importitems/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"importitems",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addImportItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"import_id\": \"6762f557abc80fda99db914f\",\r\n    \"item_id\": \"67348b606ad45a91cc960feb\",\r\n    \"quantity\": 1,\r\n    \"unit_price\": 2650000,\r\n    \"total_price\": 2650000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/importitems/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"importitems",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editImportItem",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6703ac35d6934953bc31f32c\",\r\n    \"import_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"item_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"quantity\": 1,\r\n    \"unit_price\": 100,\r\n    \"total_price\": 100\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/importitems/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"importitems",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteImportItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/importitems/delete/6703ac35d6934953bc31f32c",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"importitems",
+								"delete",
+								"6703ac35d6934953bc31f32c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TableMenuItems",
+			"item": [
+				{
+					"name": "addTableMenuItems",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"table_id\": \"6732cedd52e9e56c542a248d\",\r\n    \"item_id\": \"6710887b9456a9b32225c7af\",\r\n    \"quantity\": 1,\r\n    \"unit_price\": 10000,\r\n    \"total_price\": 10000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tablemenuitems/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablemenuitems",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTableMenuItems",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tablemenuitems/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablemenuitems",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editTableMenuItems",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6732f0501bed456b740649da\",\r\n    \"table_id\": \"6703a4edb3ec6cd088b2483f\",\r\n    \"item_id\": \"6710887b9456a9b32225c7af\",\r\n    \"quantity\": 10,\r\n    \"unit_price\": 10000,\r\n    \"total_price\": 100000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tablemenuitems/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablemenuitems",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTableMenuItems",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tablemenuitems/deletes/6710887b9456a9b32225c7af",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablemenuitems",
+								"deletes",
+								"6710887b9456a9b32225c7af"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMenuItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tablemenuitems/deleteitem/6733178ef42c21ff9487b921",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablemenuitems",
+								"deleteitem",
+								"6733178ef42c21ff9487b921"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidTableMenuItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tablemenuitems/get/6759a2f250d3ad0b4806bbdb",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablemenuitems",
+								"get",
+								"6759a2f250d3ad0b4806bbdb"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TableRentalItems",
+			"item": [
+				{
+					"name": "addTableRentalItems",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"table_id\": \"6732cee052e9e56c542a248e\",\r\n    \"item_id\": \"67348ac300b08b54fe07fa86\",\r\n    \"unit_price\": 10000,\r\n    \"start_time\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tablerentalitems/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablerentalitems",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTableRentalItems",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tablerentalitems/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablerentalitems",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editTableRentalItems",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6732f44cf42c21ff9487b91f\",\r\n    \"table_id\": \"6710887b9456a9b32225c7af\",\r\n    \"item_id\": \"6728dbf2ca79a63e267e6760\",\r\n    \"quantity\": 100,\r\n    \"unit_price\": 10000,\r\n    \"total_price\": 100000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tablerentalitems/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablerentalitems",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTableRentalItems",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tablerentalitems/deletes/6710887b9456a9b32225c7af",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablerentalitems",
+								"deletes",
+								"6710887b9456a9b32225c7af"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteRentalItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tablerentalitems/deleteitem/6710887b9456a9b32225c7af",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablerentalitems",
+								"deleteitem",
+								"6710887b9456a9b32225c7af"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidTableRentalItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tablerentalitems/get/6710887b9456a9b32225c7af",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablerentalitems",
+								"get",
+								"6710887b9456a9b32225c7af"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Carts",
+			"item": [
+				{
+					"name": "addCart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\":\"67344bc5537addcee8f599d5\",\r\n    \"item_id\":\"6728dbf2ca79a63e267e6760\",\r\n    \"quantity\":1,\r\n    \"status\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carts/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carts",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/carts/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carts",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editCart",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"673453104ac71e053e4fea6a\",\r\n    \"user_id\":\"\",\r\n    \"item_id\":\"6728dbf2ca79a63e267e6760\",\r\n    \"quantity\":12,\r\n    \"status\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carts/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carts",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carts/delete/673452426d0c33408020c2c1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carts",
+								"delete",
+								"673452426d0c33408020c2c1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCartByUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/carts/get/67344bc5537addcee8f599d5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carts",
+								"get",
+								"67344bc5537addcee8f599d5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCartFalseStatus",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/carts/updatefalsestatus/67344bc5537addcee8f599d5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carts",
+								"updatefalsestatus",
+								"67344bc5537addcee8f599d5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteManyCart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n[\"67599e5650d3ad0b4806bbda\"]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/carts/delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"carts",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Banners",
+			"item": [
+				{
+					"name": "addBanner",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"TEST\",\r\n    \"image\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/banners/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"banners",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBanner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/banners/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"banners",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editBanner",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6738528179211fc4beb78448\",\r\n    \"description\": \"TEST1\",\r\n    \"image\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/banners/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"banners",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteBanner",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/banners/delete/6738529c79211fc4beb78449",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"banners",
+								"delete",
+								"6738529c79211fc4beb78449"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidBanner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/banners/get/6738529c79211fc4beb78449",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"banners",
+								"get",
+								"6738529c79211fc4beb78449"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchBanner",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/banners/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"banners",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BillSell",
+			"item": [
+				{
+					"name": "getBillSell",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/billsells/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"billsells",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addBillSell",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"user_id\": \"fgfjfgjxsw5w534dg\",\r\n  \"sell_date\": \"2024-12-11T10:30:00\",\r\n  \"name\": \"Nguyen Van A\",\r\n  \"email\": \"example@gmail.com\",\r\n  \"phone\": \"0123456789\",\r\n  \"address\": \"123 Street\",\r\n  \"address_detail\": \"Apartment 456\",\r\n  \"total_price\": 100000,\r\n  \"status\": \"đang chờ\",\r\n  \"sell_items\": [\r\n    {\r\n      \"item_id\": \"fgfjfgjxsw5w534dg\",\r\n      \"quantity\": 2,\r\n      \"unit_price\": 10000,\r\n      \"total_price\": 20000\r\n    },\r\n    {\r\n      \"item_id\": \"fgfjfgjxsw5w534dg\",\r\n      \"quantity\": 1,\r\n      \"unit_price\": 80000,\r\n      \"total_price\": 80000\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/billsells/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"billsells",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editBillSell",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6758505573e9236a044d1e2d\",\r\n    \"user_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"sell_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"name\": \"quang\",\r\n    \"email\": \"quang\",\r\n    \"phone\": \"quang\",\r\n    \"address\": \"quang\",\r\n    \"address_detail\": \"quangg\",\r\n    \"total_price\": 100,\r\n    \"status\": \"đang chờ xử lý\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/billsells/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"billsells",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteBillSell",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/billsells/delete/6758505573e9236a044d1e2d",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"billsells",
+								"delete",
+								"6758505573e9236a044d1e2d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyuser_id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/billsells/get/675843fd9b0d901f90eb92d5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"billsells",
+								"get",
+								"675843fd9b0d901f90eb92d5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBySellId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/billsells/get-billsell-id/6759a2f250d3ad0b4806bbdb",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"billsells",
+								"get-billsell-id",
+								"6759a2f250d3ad0b4806bbdb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchBillSell",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10,\r\n    \"search_term\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/billsells/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"billsells",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDetalbyBillSellid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/billsells/get-detail-billsell/67625dc58d7efa64d5df9ddb",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"billsells",
+								"get-detail-billsell",
+								"67625dc58d7efa64d5df9ddb"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SelItems",
+			"item": [
+				{
+					"name": "getSellItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/sellitems/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sellitems",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addSellItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"sell_id\": \"67625dc58d7efa64d5df9ddb\",\r\n    \"item_id\": \"67348ac300b08b54fe07fa86\",\r\n    \"quantity\": 1,\r\n    \"unit_price\": 2800000,\r\n    \"total_price\": 2800000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/sellitems/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sellitems",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editSellItem",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"676267957a30b79c3e61682e\",\r\n    \"sell_id\": \"67625dc58d7efa64d5df9ddb\",\r\n    \"item_id\": \"67348ac300b08b54fe07fa86\",\r\n    \"quantity\": 4,\r\n    \"unit_price\": 2800000,\r\n    \"total_price\": 8400000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/sellitems/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sellitems",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSellItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/sellitems/delete/67625dc58d7efa64d5df9ddc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"sellitems",
+								"delete",
+								"67625dc58d7efa64d5df9ddc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Statistic",
+			"item": [
+				{
+					"name": "getOverview",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/statistic/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"statistic",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRevenueMonth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/statistic/monthly-revenue",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"statistic",
+								"monthly-revenue"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "upload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "postman-cloud:///1eff4359-cf1e-4fc0-95ed-08c2e743f247"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/upload/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"upload",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"quang\",\r\n    \"password\":\"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"luuquang654321@gmail.com\",\r\n    \"password\": \"1\",\r\n    \"role_name\": \"ADMIN\",\r\n    \"fullname\": \"luuducquang\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/register",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verify otp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"luuquang654321@gmail.com\",\r\n    \"otp\": \"281338\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/verify-otp",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"verify-otp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "resent_otp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"luuquang654321@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/resend-otp",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"resend-otp"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		}
+	]
+}
