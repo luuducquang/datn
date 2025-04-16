@@ -21,6 +21,11 @@ class VerifyOTP(BaseModel):
 class EmailRequest(BaseModel):
     email: EmailStr
 
+class ResetPassword(BaseModel):
+    email: str
+    otp: str
+    new_password: str
+
 class Roles(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     role_name: str
@@ -39,6 +44,7 @@ class Users(BaseModel):
     is_verified: bool = False
     otp: Optional[str] = None
     otp_expires_at: Optional[datetime] = None
+    created_at: Optional[datetime]
 
 class News(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
