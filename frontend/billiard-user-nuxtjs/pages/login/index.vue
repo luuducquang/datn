@@ -55,9 +55,15 @@
                         }}</span>
                     </button>
 
-                    <NuxtLink class="createAccount" to="/registry"
-                        >Tạo tài khoản</NuxtLink
-                    >
+                    <div class="d-flex justify-content-between" >
+                        <NuxtLink class="createAccount" to="/forgotpass"
+                            >Quên mật khẩu</NuxtLink
+                        >
+    
+                        <NuxtLink class="createAccount" to="/registry"
+                            >Tạo tài khoản</NuxtLink
+                        >
+                    </div>
                 </form>
             </div>
             <div class="text-center mt-3">
@@ -113,8 +119,10 @@ const onFinish = async () => {
                 const encoded = email.value;
                 const emailencode = btoa(encoded);
 
+                const passwordencode = btoa(password.value);
+
                 setTimeout(() => {
-                    router.push(`/verifyotp/${emailencode}`);
+                    router.push(`/verifyotp/${emailencode}-${passwordencode}-false`);
                     alertVisible.value = false;
                 }, 2000);
             }
@@ -139,25 +147,79 @@ const loginSuccess = async (res) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #e6e8e4;
+    min-height: 100vh;
+    background-color: var(--color-bg);
+    padding: 20px;
+    font-size: 14px;
 }
 
 .login-form {
-    width: 400px;
-    padding: 20px;
-    background-color: var(--color-primary);
+    width: 100%;
+    max-width: 480px;
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border: none;
+}
+
+.card-body {
+    padding: 2rem;
 }
 
 .login-form-title {
+    color: #343a40;
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
     text-align: center;
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #fff;
+}
+
+.form-group input {
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    border-color: var(--color-primary);
+    box-shadow: none;
+    background-color: #fff;
 }
 
 .btn-primary {
-    background-color: var(--color-second-text);
+    background-color: var(--color-primary);
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #5cc84a;
+    color: #fff;
+}
+
+.createAccount {
+    color: var(--color-primary);
+    padding-top: 10px;
+    float: right;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.createAccount:hover {
+    color: #145c32;
+    text-decoration: underline;
+}
+
+.login_btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.login_btn:hover {
+    transform: scale(1.05);
 }
 
 ::placeholder {
@@ -165,47 +227,4 @@ const loginSuccess = async (res) => {
     font-size: 14px;
 }
 
-input {
-    font-size: 14px;
-}
-
-.remember_label {
-    font-size: 14px;
-}
-
-.remember_label a {
-    color: #ffffff;
-}
-
-.remember_label a:hover {
-    color: #94ef91;
-}
-
-/* .remember_item {
-    gap: 7px;
-} */
-
-.createAccount {
-    color: #fff;
-    padding-top: 5px;
-    float: right;
-    padding-top: 5px;
-}
-
-.createAccount:hover {
-    color: #94ef91;
-}
-
-.remember_item input:hover {
-    cursor: pointer;
-}
-
-.login_btn {
-    border: 1px;
-    transition: all 0.2s ease-in-out;
-}
-
-.login_btn:hover {
-    transform: scale(1.05);
-}
 </style>

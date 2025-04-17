@@ -138,11 +138,20 @@ async def resend_otp(email_request: EmailRequest):
         {"$set": {"otp": otp, "otp_expires_at": otp_expires_at}}
     )
 
+    body = (
+    f"Xin chào {email_request.email},\n\n"
+    f"Bạn vừa yêu cầu một mã OTP để xác thực tài khoản.\n"
+    f"Mã OTP của bạn là: {otp}\n"
+    f"Mã sẽ hết hạn sau 5 phút kể từ bây giờ.\n\n"
+    "Trân trọng,\n"
+    "Q-Billiard Team"
+    )
+
     message = MessageSchema(
-        subject="Mã OTP mới",
-        recipients=[email_request.email],
-        body=f"Mã OTP mới của bạn là: {otp}. Hết hạn sau 5 phút.",
-        subtype="plain"
+    subject="Xác thực tài khoản",
+    recipients=[email_request.email],
+    body=body,
+    subtype="plain"
     )
 
     fm = FastMail(conf)

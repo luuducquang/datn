@@ -6,9 +6,10 @@ body {
 }
   
 :root{
-    --color-primary:#1e1b17;
+    --color-primary:#68da5b;
+    --color-bg:#f8f9fa;
     --color-primary-two:#c1a37e;
-    --color-second-text:#737373;
+    --color-second-text:#343a40;
     --color-price-old:#adadad;
 }
 

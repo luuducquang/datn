@@ -81,11 +81,15 @@
                                     class="form-check-input"
                                     required
                                 />
-                                <label for="terms" class="form-check-label check_conditon">
+                                <label
+                                    for="terms"
+                                    class="form-check-label check_conditon"
+                                >
                                     Tôi đã đọc và đồng ý với
                                     <a href="#">điều khoản chung</a> và
                                     <a href="#"
-                                        >chính sách bảo mật của Q-Billiard Club</a
+                                        >chính sách bảo mật của Q-Billiard
+                                        Club</a
                                     >
                                 </label>
                             </div>
@@ -157,7 +161,9 @@ const onFinish = async () => {
         alertVisible.value = true;
         title.value = "Đăng ký tài khoản thành công !";
         setTimeout(() => {
-            router.push("/login");
+            const emailencode = btoa(email.value);
+            const passwordencode = btoa(password.value);
+            router.push(`/verifyotp/${emailencode}-${passwordencode}-true`);
             alertVisible.value = false;
         }, 1000);
     } catch (error) {
@@ -180,104 +186,83 @@ const onFinish = async () => {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #e6e8e4;
+    background-color: var(--color-bg);
     padding: 20px;
     font-size: 14px;
 }
 
-.card {
-    border-radius: 15px;
-    background-color: var(--color-primary);
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-::placeholder {
-    font-size: 14px;
-}
-
 .registry-form {
-    width: 500px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.card {
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border: none;
 }
 
 .card-body {
-    padding: 30px;
+    padding: 2rem;
 }
 
 .card-title {
-    color: #fff;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-}
-
-.btn-primary {
-    background-color: var(--color-second-text);
-    border: none;
-    padding: 10px;
-    font-size: 1rem;
-}
-
-.btn-primary:hover {
-    background-color: #fff;
-    color: var(--color-primary);
-}
-
-.form-check-label a {
-    color: #fff;
-    text-decoration: underline;
-}
-
-.form-check-label a:hover {
-    color: #ddd;
-}
-
-.text-center p {
-    color: #fff;
-    margin-top: 10px;
+    color: #343a40;
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
 }
 
 .form-label {
-    color: #fff;
+    font-weight: 500;
+    color: #343a40;
 }
 
 .form-control {
-    background-color: #fff;
-    border: none;
-    border-radius: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
     padding: 10px;
     font-size: 14px;
-    /* border: 1px; */
 }
 
 .form-control:focus {
+    border-color: var(--color-primary);
     box-shadow: none;
-    /* border: 1px solid #20b2aa; */
+    background-color: #fff;
 }
 
-.form-check-input {
-    margin-top: 0.3em;
+.btn-primary {
+    background-color: var(--color-primary);
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    color: #fff;
+    transition: all 0.3s ease;
 }
 
-.mt-3 {
-    margin-top: 1rem !important;
+.btn-primary:hover {
+    background-color: #5cc84a;
+    color: #fff;
 }
 
-.mb-3 {
-    margin-bottom: 1rem !important;
+.form-check-label {
+    color: #495057;
+    font-size: 13px;
 }
 
-.text-center {
-    text-align: center !important;
+.form-check-label a {
+    color: var(--color-primary);
+    text-decoration: underline;
 }
 
 .goto_login {
-    color: #fff;
+    color: var(--color-primary);
+    font-weight: 500;
 }
 
 .goto_login:hover {
-    color: #68da5b;
-}
-
-.check_conditon{
-    color: #fff;
+    color: #145c32;
+    text-decoration: underline;
 }
 </style>
