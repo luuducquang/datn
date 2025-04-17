@@ -25,7 +25,7 @@ def login(request_data: LoginRegisterRequest):
     user = user_collection.find_one({"email": request_data.email})
 
     if not user or user["password"] != request_data.password:
-        raise HTTPException(status_code=401, detail="Sai email hoặc mật khẩu")
+        raise HTTPException(status_code=401, detail="Email hoặc mật khẩu không đúng")
     
     elif not user["is_verified"]:
         raise HTTPException(status_code=403, detail="Tài khoản chưa được xác thực")

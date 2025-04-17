@@ -9,19 +9,6 @@
                         </h2>
                         <form @submit.prevent="onFinish">
                             <div class="mb-3">
-                                <label for="username" class="form-label"
-                                    >Tên đăng nhập</label
-                                >
-                                <input
-                                    type="text"
-                                    id="username"
-                                    v-model="username"
-                                    class="form-control"
-                                    required
-                                    placeholder="Tên đăng nhập"
-                                />
-                            </div>
-                            <div class="mb-3">
                                 <label for="fullName" class="form-label"
                                     >Họ và tên</label
                                 >
@@ -34,7 +21,7 @@
                                     placeholder="Họ và tên"
                                 />
                             </div>
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label for="phone" class="form-label"
                                     >Nhập số điện thoại</label
                                 >
@@ -46,10 +33,10 @@
                                     required
                                     placeholder="Nhập số điện thoại"
                                 />
-                            </div>
+                            </div> -->
                             <div class="mb-3">
                                 <label for="email" class="form-label"
-                                    >Nhập địa chỉ email</label
+                                    >Email</label
                                 >
                                 <input
                                     type="email"
@@ -94,20 +81,28 @@
                                     class="form-check-input"
                                     required
                                 />
-                                <label for="terms" class="form-check-label">
+                                <label for="terms" class="form-check-label check_conditon">
                                     Tôi đã đọc và đồng ý với
                                     <a href="#">điều khoản chung</a> và
                                     <a href="#"
-                                        >chính sách bảo mật của SkinCare</a
+                                        >chính sách bảo mật của Q-Billiard Club</a
                                     >
                                 </label>
                             </div>
                             <button
                                 type="submit"
-                                class="btn btn-primary w-100"
+                                class="btn btn-primary w-100 d-flex justify-content-center align-items-center"
                                 :disabled="loading"
                             >
-                                Đăng ký
+                                <span
+                                    v-if="loading"
+                                    class="spinner-border spinner-border-sm me-2"
+                                    role="status"
+                                    aria-hidden="true"
+                                ></span>
+                                <span>{{
+                                    loading ? "Đang xử lý..." : "Đăng ký"
+                                }}</span>
                             </button>
                             <div class="text-center mt-3">
                                 <p>
@@ -136,7 +131,6 @@ definePageMeta({
     layout: "onlychildren",
 });
 
-const username = ref("");
 const fullName = ref("");
 const phone = ref("");
 const email = ref("");
@@ -152,11 +146,9 @@ const onFinish = async () => {
     loading.value = true;
     try {
         await registryUser({
-            username: String(username.value),
+            email: String(email.value),
             password: String(password.value),
             fullname: String(fullName.value),
-            email: String(email.value),
-            phone: String(phone.value),
             address: "",
             avatar: "/static/uploads/user.jpg",
             loyalty_points: 0,
@@ -188,14 +180,14 @@ const onFinish = async () => {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: darkcyan;
+    background-color: #e6e8e4;
     padding: 20px;
     font-size: 14px;
 }
 
 .card {
     border-radius: 15px;
-    background-color: #18a38d;
+    background-color: var(--color-primary);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
@@ -218,14 +210,15 @@ const onFinish = async () => {
 }
 
 .btn-primary {
-    background-color: #20b2aa;
+    background-color: var(--color-second-text);
     border: none;
     padding: 10px;
     font-size: 1rem;
 }
 
 .btn-primary:hover {
-    background-color: #1a998c;
+    background-color: #fff;
+    color: var(--color-primary);
 }
 
 .form-check-label a {
@@ -282,5 +275,9 @@ const onFinish = async () => {
 
 .goto_login:hover {
     color: #68da5b;
+}
+
+.check_conditon{
+    color: #fff;
 }
 </style>

@@ -2,16 +2,16 @@
     <div class="login-container">
         <div class="login-form card">
             <div class="card-body">
-                <h2 class="login-form-title">Login Skin Care</h2>
+                <h2 class="login-form-title">Q-Billiard Club</h2>
                 <form @submit.prevent="onFinish">
                     <div class="form-group mb-3">
                         <input
                             type="text"
-                            id="username"
-                            v-model="username"
+                            id="email"
+                            v-model="email"
                             class="form-control"
                             required
-                            placeholder="Username"
+                            placeholder="Email"
                         />
                     </div>
                     <div class="form-group mb-3">
@@ -21,7 +21,7 @@
                             v-model="password"
                             class="form-control"
                             required
-                            placeholder="Password"
+                            placeholder="Mật khẩu"
                         />
                     </div>
                     <!-- <div class="form-check mb-3 d-flex remember_item"> -->
@@ -38,28 +38,38 @@
                             Remember username
                         </label> -->
                     <!-- </div> -->
+
                     <button
                         type="submit"
-                        class="btn btn-primary w-100 login_btn"
+                        class="btn btn-primary w-100 d-flex justify-content-center align-items-center login_btn"
                         :disabled="loading"
                     >
-                        Log in
+                        <span
+                            v-if="loading"
+                            class="spinner-border spinner-border-sm me-2"
+                            role="status"
+                            aria-hidden="true"
+                        ></span>
+                        <span>{{
+                            loading ? "Đang xử lý..." : "Đăng nhập"
+                        }}</span>
                     </button>
 
                     <NuxtLink class="createAccount" to="/registry"
-                        >Create account</NuxtLink
+                        >Tạo tài khoản</NuxtLink
                     >
                 </form>
             </div>
             <div class="text-center mt-3">
                 <p style="color: #fff; font-size: 11px">
                     Phần mềm quản lý quán bi-a
-                    <i class="fa-solid fa-copyright"></i> SkinCare 2024 NuxtJs
-                    by LuuDucQuang
+                    <i class="fa-solid fa-copyright"></i> Q-Billiard Club 2025
+                    NuxtJs by LuuDucQuang
                 </p>
             </div>
         </div>
     </div>
+    <alert-toast :visible="alertVisible" :message="title" />
 </template>
 
 <script setup>
@@ -67,29 +77,52 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { login } from "~/services/login.service";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 definePageMeta({
     layout: "onlychildren",
 });
 
-const username = ref("");
+const email = ref("");
 const password = ref("");
 const remember = ref(false);
 const loading = ref(false);
 const router = useRouter();
+const alertVisible = ref(false);
+const title = ref("");
 
 const onFinish = async () => {
     loading.value = true;
     try {
         const res = await login({
-            username: username.value,
+            email: email.value,
             password: password.value,
         });
         res.isRemember = remember.value;
 
         await loginSuccess(res);
     } catch (error) {
-        console.error("Error logging in:", error);
+        if (axios.isAxiosError(error)) {
+            alertVisible.value = true;
+            const status = error.response?.status;
+            title.value = error.response?.data.detail;
+
+            if (status === 403) {
+                title.value = "Tài khoản chưa được xác thực.";
+
+                const encoded = email.value;
+                const emailencode = btoa(encoded);
+
+                setTimeout(() => {
+                    router.push(`/verifyotp/${emailencode}`);
+                    alertVisible.value = false;
+                }, 2000);
+            }
+
+            setTimeout(() => {
+                alertVisible.value = false;
+            }, 2000);
+        }
     } finally {
         loading.value = false;
     }
@@ -107,14 +140,13 @@ const loginSuccess = async (res) => {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: darkcyan;
+    background-color: #e6e8e4;
 }
 
 .login-form {
     width: 400px;
     padding: 20px;
-    border-radius: 30px;
-    background-color: #18a38d;
+    background-color: var(--color-primary);
 }
 
 .login-form-title {
@@ -125,7 +157,7 @@ const loginSuccess = async (res) => {
 }
 
 .btn-primary {
-    background-color: #20b2aa;
+    background-color: var(--color-second-text);
 }
 
 ::placeholder {

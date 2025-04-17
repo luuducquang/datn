@@ -5,6 +5,6 @@ import { apiClient } from "~/constant/request";
 export const registryUser = async (
     data: Record<string, string | number>
 ): Promise<Account> => {
-    const res = await apiClient?.post(`${AccountUrl}/add`, data);
+    const res = await apiClient?.post(`/register`, data);
     return res?.data;
 };
