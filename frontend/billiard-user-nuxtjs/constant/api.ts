@@ -120,7 +120,7 @@ export interface SellItems {
     quantity: number;
     unit_price: number;
     total_price: number;
-    rentalitem: Product;
+    rentalitem?: Product;
 }
 
 export interface News {

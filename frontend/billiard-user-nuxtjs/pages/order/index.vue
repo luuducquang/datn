@@ -152,9 +152,9 @@
                                 <option
                                     v-for="(value, index) in country"
                                     :key="index"
-                                    :value="value.province_id"
+                                    :value="value.code"
                                 >
-                                    {{ value.province_name }}
+                                    {{ value.name }}
                                 </option>
                             </select>
                         </div>
@@ -174,9 +174,9 @@
                                 <option
                                     v-for="(value, index) in district"
                                     :key="index"
-                                    :value="value.district_id"
+                                    :value="value.code"
                                 >
-                                    {{ value.district_name }}
+                                    {{ value.name }}
                                 </option>
                             </select>
                         </div>
@@ -195,9 +195,9 @@
                                 <option
                                     v-for="(value, index) in ward"
                                     :key="index"
-                                    :value="value.ward_id"
+                                    :value="value.code"
                                 >
-                                    {{ value.ward_name }}
+                                    {{ value.name }}
                                 </option>
                             </select>
                         </div>
@@ -221,7 +221,10 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-order">
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-order"
+                            >
                                 Đặt hàng
                             </button>
                         </div>
@@ -238,7 +241,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { type Product, type Cart } from "~/constant/api";
+import { type Cart } from "~/constant/api";
 import {
     getCountry,
     getDistrict,
@@ -272,7 +275,15 @@ const formData = ref<Record<string, string>>({
     diaChi: "",
 });
 
-const formErrors = ref({
+const formErrors = ref<{
+    hoTen: boolean | string;
+    soDienThoai: boolean | string;
+    email: boolean | string;
+    province: boolean | string;
+    district: boolean | string;
+    ward: boolean | string;
+    diaChi: boolean | string;
+}>({
     hoTen: false,
     soDienThoai: false,
     email: false,
@@ -293,7 +304,7 @@ const handlerClickCountry = async (event: Event) => {
     const selectedProvinceId = target.value;
     await getDistrict(Number(selectedProvinceId))
         .then((districtData) => {
-            district.value = districtData?.results;
+            district.value = districtData?.districts;
             return districtData;
         })
         .catch((error) => {
@@ -307,7 +318,7 @@ const handlerClickDistrict = async (event: Event) => {
     const selectedDistrictId = target.value;
     await getWard(Number(selectedDistrictId))
         .then((wardData) => {
-            ward.value = wardData?.results;
+            ward.value = wardData?.wards;
             return wardData;
         })
         .catch((error) => {
@@ -441,7 +452,7 @@ const fetchDataCart = async () => {
 
             await getCountry()
                 .then((countryData) => {
-                    country.value = countryData?.results;
+                    country.value = countryData;
                     return countryData;
                 })
                 .catch((error) => {
@@ -503,7 +514,7 @@ onMounted(async () => {
     font-size: 0.9rem;
 }
 
-.btn-order{
+.btn-order {
     background-color: var(--color-primary);
     border: none;
 }
