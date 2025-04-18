@@ -83,7 +83,7 @@ const props = defineProps<{
 }
 
 .product-recommend:hover {
-    border: 1px #ff6600 solid;
+    border: 1px var(--color-sale) solid;
 }
 
 .product-recommend-img img {
@@ -101,7 +101,7 @@ const props = defineProps<{
 }
 
 .product-recommend-price {
-    color: #ff6600;
+    color: var(--color-sale);
     margin-left: 5px;
 }
 
@@ -127,7 +127,7 @@ const props = defineProps<{
 .sale-off {
     display: block;
     flex-direction: column;
-    background-color: #ff235c;
+    background-color: var(--color-saleup-two);
     padding: 4px;
     position: absolute;
     right: 0;

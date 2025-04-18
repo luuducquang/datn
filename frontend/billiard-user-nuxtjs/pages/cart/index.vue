@@ -106,24 +106,37 @@ if (recomendData.value) {
 
 <style lang="css" scoped>
 .type {
-    background: linear-gradient(90deg, var(--color-primary) 0%, #001815 100%) 0%
-        0% no-repeat;
-    padding: 10px;
-    color: #fff;
+    background: linear-gradient(
+        90deg,
+        var(--color-primary),
+        var(--color-linear-gradient)
+    );
+    padding: 12px 20px;
+    color: var(--color-text);
     margin-top: 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
 }
 
 .type a {
     text-decoration: none;
-    color: #ddd;
-    font-size: 14px;
+    color: var(--color-text);
+    font-size: 13px;
     text-transform: uppercase;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.type a:hover {
+    color: #eaffd0;
 }
 
 .type i {
-    color: #fff;
-    font-size: 10px;
-    padding: 0 10px;
+    color: var(--color-text);
+    font-size: 12px;
+    margin: 0 8px;
 }
 .null_content {
     padding: 10px 0;
@@ -141,6 +154,6 @@ if (recomendData.value) {
     margin: 0;
     padding-bottom: 10px;
     padding-top: 20px;
-    color: var(--color-primary-two);
+    color: var(--color-primary);
 }
 </style>

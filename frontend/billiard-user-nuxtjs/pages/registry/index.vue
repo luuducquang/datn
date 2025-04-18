@@ -153,6 +153,7 @@ const onFinish = async () => {
             email: String(email.value),
             password: String(password.value),
             fullname: String(fullName.value),
+            phone: "",
             address: "",
             avatar: "/static/uploads/user.jpg",
             loyalty_points: 0,

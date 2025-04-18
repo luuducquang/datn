@@ -8,9 +8,13 @@ body {
 :root{
     --color-primary:#68da5b;
     --color-bg:#f8f9fa;
-    --color-primary-two:#c1a37e;
-    --color-second-text:#343a40;
+    --color-primary-two:#a9e9a0;
+    --color-text:#fff;
     --color-price-old:#adadad;
+    --color-sale:#ee4d2e;
+    --color-saleup:#e8c021;
+    --color-saleup-two:#ff235c;
+    --color-linear-gradient:#001815;
 }
 
 *::-webkit-scrollbar {

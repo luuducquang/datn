@@ -217,7 +217,7 @@ function submitSearch() {
 </script>
 
 <style scoped>
-.navbar {
+/* .navbar {
     background-color: var(--color-primary) !important;
     padding: 0 10%;
     min-height: 60px;
@@ -238,6 +238,7 @@ function submitSearch() {
 
 .navbar a:hover {
     color: var(--color-primary-two);
+    background-color: transparent;
 }
 
 li {
@@ -304,6 +305,227 @@ input {
     padding: 2px 5px; 
     border-radius: 5px; 
     font-weight: bold; 
+} */
+
+.navbar {
+    background-color: #ffffff !important;
+    padding: 0.5rem 10%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    font-family: 'Montserrat', sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.navbar a {
+    color: #333;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: var(--color-primary);
+}
+
+.navbar .nav-item {
+    margin: 0 8px;
+}
+
+.navbar-brand img {
+    border-radius: 8px;
+    border: 2px solid var(--color-primary);
+}
+
+.navbar-toggler {
+    border: none;
+    background: transparent;
+}
+
+.fa-bars {
+    font-size: 1.2rem;
+    color: var(--color-primary);
+}
+
+form[role="search"] {
+    min-width: 250px;
+    margin: 0 15px;
+}
+
+form[role="search"] input {
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding-right: 40px;
+}
+
+form[role="search"] input:focus {
+    border-color: var(--color-primary);
+    box-shadow: none;
+    background-color: #fff;
+}
+
+form[role="search"] button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 0.375rem 0.75rem;
+    font-size: 15px;
+}
+
+form[role="search"] button:hover {
+    background-color: #5cc14f;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.img_user {
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-primary);
+}
+
+.user p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.dropdown-menu {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.dropdown-menu .dropdown-item {
+    font-size: 0.9rem;
+    padding: 8px 20px;
+    color: #333;
+    transition: background-color 0.2s;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: var(--color-primary-two);
+    color: #111;
+}
+
+.menu_item_right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.booking-link {
+    position: relative;
+}
+
+.booking-link::after {
+    content: "Mới";
+    position: absolute;
+    top: -5px;
+    right: -25px;
+    font-size: 10px;
+    background-color: var(--color-sale);
+    color: white;
+    padding: 2px 5px;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+@media (max-width: 992px) {
+    .navbar {
+        padding: 0.5rem 5%;
+    }
+
+    .navbar .nav-item {
+        margin: 0 6px;
+    }
+
+    .navbar a {
+        font-size: 0.9rem;
+    }
+
+    form[role="search"] {
+        min-width: unset;
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    form[role="search"] input {
+        width: 100%;
+        font-size: 13px;
+    }
+
+    form[role="search"] button {
+        font-size: 13px;
+    }
+
+    .menu_item_right {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 10px 15px;
+    }
+
+    .menu_item_right>div {
+        width: 100%;
+    }
+
+    .user p {
+        font-size: 0.85rem;
+    }
+
+    .img_user {
+        height: 32px;
+        width: 32px;
+    }
+
+    .booking-link::after {
+        top: -2px;
+        right: -20px;
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        padding: 0.4rem 4%;
+    }
+
+    .navbar-brand img {
+        height: 36px;
+    }
+
+    .navbar-toggler {
+        font-size: 1.1rem;
+    }
+
+    .dropdown-menu {
+        width: 100%;
+        left: 0 !important;
+        right: 0 !important;
+        border-radius: 0;
+    }
+
+    .dropdown-menu .dropdown-item {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+    }
 }
 
 </style>

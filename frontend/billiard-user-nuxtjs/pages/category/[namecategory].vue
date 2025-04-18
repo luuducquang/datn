@@ -100,25 +100,77 @@ const changePage = (page: number) => {
 
 fetchProducts(currentPage.value);
 </script>
-<style lang="css" scoped>
-.type {
-    background: linear-gradient(90deg, var(--color-primary) 0%, #001815 100%) 0%
-        0% no-repeat;
-    padding: 10px;
-    color: #fff;
+<style lang="css" scoped>.type {
+    background: linear-gradient(
+        90deg,
+        var(--color-primary),
+        var(--color-linear-gradient)
+    );
+    padding: 12px 20px;
+    color: var(--color-text);
     margin-top: 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
 }
 
 .type a {
     text-decoration: none;
-    color: #ddd;
-    font-size: 14px;
+    color: var(--color-text);
+    font-size: 13px;
     text-transform: uppercase;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.type a:hover {
+    color: #eaffd0;
 }
 
 .type i {
-    color: #fff;
-    font-size: 10px;
-    padding: 0 10px;
+    color: var(--color-text);
+    font-size: 12px;
+    margin: 0 8px;
+}
+
+.pagination {
+    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.page-item {
+    margin: 0 3px;
+}
+
+.page-link {
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s ease-in-out;
+    background-color: #fff;
+}
+
+.page-link:hover {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.page-item.active .page-link {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+.page-item.disabled .page-link {
+    color: #999;
+    background-color: #f9f9f9;
+    pointer-events: none;
+    border-color: #ddd;
 }
 </style>

@@ -122,7 +122,7 @@ const props = defineProps<{
 
 .banner-sale {
     position: absolute;
-    background-color: #ff0000;
+    background-color: var(--color-sale);
     color: #ffffff;
     padding: 5px;
     top: 10px;
@@ -132,7 +132,7 @@ const props = defineProps<{
     position: absolute;
     right: 0;
     top: 0;
-    background-color: #e8c021;
+    background-color: var(--color-saleup);
     padding: 5px;
     color: #ffffff;
     padding: 2px;
@@ -146,7 +146,7 @@ const props = defineProps<{
     right: 0;
     bottom: -5.43px;
     border-style: solid;
-    border-color: transparent #e8c021 transparent #e8c021;
+    border-color: transparent var(--color-saleup) transparent var(--color-saleup);
 } */
 
 .home-product-item_name {
@@ -236,7 +236,7 @@ const props = defineProps<{
 }
 
 .fa-star {
-    color: #e8c021;
+    color: var(--color-saleup);
 }
 
 .fa-shop {

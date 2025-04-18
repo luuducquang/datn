@@ -255,7 +255,7 @@ const deleteCart = async (item: Cart) => {
 }
 
 .nameItem:hover {
-    color: var(--color-primary-two) !important;
+    color: var(--color-primary) !important;
 }
 
 .info_item_cart {
@@ -312,7 +312,7 @@ p {
 
 .del_btn:hover {
     cursor: pointer;
-    color: var(--color-primary-two) !important;
+    color: var(--color-primary) !important;
 }
 
 .list_btn_amount {
@@ -339,11 +339,11 @@ p {
 }
 
 .totalPriceCart {
-    color: var(--color-primary-two);
+    color: var(--color-primary);
 }
 .pay a {
     text-decoration: none;
-    background-color: var(--color-primary-two);
+    background-color: var(--color-primary);
     padding: 5px 10px;
     text-transform: uppercase;
     color: #fff;
@@ -352,9 +352,10 @@ p {
     align-items: center;
     border-radius: 10px;
     cursor: pointer;
+    transition: all .2s ease-in-out;
 }
 
 .pay a:hover {
-    opacity: 0.8;
+    transform: scale(1.01);
 }
 </style>
