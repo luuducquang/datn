@@ -138,6 +138,7 @@ if (recomendData.value) {
     font-size: 12px;
     margin: 0 8px;
 }
+
 .null_content {
     padding: 10px 0;
 }

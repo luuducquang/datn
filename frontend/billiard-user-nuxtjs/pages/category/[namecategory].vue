@@ -5,7 +5,7 @@
             <i class="fa-solid fa-arrow-right"></i>
             <NuxtLink :to="`/category/${name}`">{{ name }}</NuxtLink>
         </div>
-        <div class="row">
+        <div class="row  product_content">
             <div
                 class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 mb-4 d-flex"
                 v-for="product in products"
@@ -134,8 +134,12 @@ fetchProducts(currentPage.value);
     margin: 0 8px;
 }
 
+
+.product_content{
+    margin-top: 20px;
+}
+
 .pagination {
-    margin-top: 30px;
     flex-wrap: wrap;
     gap: 5px;
 }

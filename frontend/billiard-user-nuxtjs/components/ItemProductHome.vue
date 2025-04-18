@@ -1,76 +1,40 @@
 <template>
-    <div class="home-product-item">
-        <NuxtLink class="linkproduct" :to="`/detail/${product?._id}`">
-            <div class="home-product-item_img">
-                <img
-                    style="min-height: 200px; min-width: 100px"
-                    :src="apiImage + product?.image"
-                    alt=""
-                />
+    <div class="product-card">
+        <NuxtLink class="product-link" :to="`/detail/${product?._id}`">
+            <div class="product-image">
+                <img :src="apiImage + product?.image" alt="Product image" />
+                <span v-if="isSale" class="label-new">NEW</span>
+                <span class="label-discount">
+                    {{
+                        (
+                            100 -
+                            (product?.price_reduction / product?.price) * 100
+                        ).toFixed()
+                    }}<sup>%</sup> Giảm
+                </span>
             </div>
-            <h4 class="home-product-item_name">{{ product?.item_name }}</h4>
-            <span class="decrip-item">{{ product?.description }} </span>
+            <div class="product-content">
+                <h4 class="product-name">{{ product?.item_name }}</h4>
+                <p class="product-description">{{ product?.description }}</p>
+                <div class="product-price">
+                    <span class="price-sale"
+                        >{{ product?.price_reduction.toLocaleString("DE-de")
+                        }}<sup>đ</sup></span
+                    >
+                    <span class="price-original"
+                        >{{ product?.price.toLocaleString("DE-de")
+                        }}<sup>đ</sup></span
+                    >
+                </div>
+                <div class="product-meta">
+                    <div class="view" v-if="Number(product?.view) > 0">
+                        <i class="fa-solid fa-eye"></i>
+                        {{ Number(product?.view).toLocaleString("DE-de") }}
+                    </div>
+                    <div class="origin">{{ product?.origin }}</div>
+                </div>
+            </div>
         </NuxtLink>
-        <span v-if="isSale" class="banner-sale">NEW</span>
-        <span class="sale-up"
-            >{{
-                (
-                    100 -
-                    (product?.price_reduction / product?.price) * 100
-                ).toFixed()
-            }}
-            <sup>%</sup>
-            <div>Giảm</div></span
-        >
-        <div class="home-product-item_price">
-            <span class="home-product-item_price_current"
-                >{{
-                    product?.price_reduction > 0
-                        ? product?.price_reduction.toLocaleString("DE-de")
-                        : ""
-                }}<sup>đ</sup></span
-            >
-            <span class="home-product-item_price_old"
-                >{{
-                    product?.price > 0
-                        ? product?.price.toLocaleString("DE-de")
-                        : ""
-                }}<sup>đ</sup></span
-            >
-        </div>
-        <!-- <div class="icon_item_product">
-            <div class="home-icon-recommend">
-                 <span v-if="product?.view > 0">{{
-                    product?.view > 0 ? product?.view.toFixed(1) : ""
-                }}</span>
-                <i
-                    v-if="product?.view > 0"
-                    title="Đánh giá"
-                    class="fa-solid fa-star"
-                ></i> 
-                 <span v-if="product?.view > 0">|</span> 
-                <span v-if="Number(product?.sales) > 0" title="Đã bán" class="fa-solid fa-shop"></span>
-                <span title="Đã bán" class="amount-product">{{
-                    Number(product?.sales) > 0
-                        ? Number(product?.sales).toLocaleString("DE-de")
-                        : ""
-                }}</span>
-            </div>
-            <span class="fa-solid fa-truck-fast free-ship"></span>
-        </div> -->
-        <div class="icon_item_product">
-            <div v-if="Number(product?.view) > 0" class="view">
-                <i class="fa-solid fa-eye"></i>
-                {{
-                    Number(product?.view) > 0
-                        ? Number(product?.view).toLocaleString("DE-de")
-                        : ""
-                }}
-            </div>
-            <div class="country">
-                {{ product?.origin }}
-            </div>
-        </div>
     </div>
 </template>
 
@@ -84,166 +48,121 @@ const props = defineProps<{
 }>();
 </script>
 
-<style>
-.home-product-item {
-    box-sizing: border-box;
-    border: solid 1px #dddddd;
-    margin: 1% 0;
-    background-color: #ffffff;
+<style scoped>
+.product-card {
+    background: #fff;
+    border-radius: 12px;
     overflow: hidden;
-    position: relative;
-    width: 100%;
-    /* box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px; */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
 }
 
-.home-product-item:hover {
-    border: solid 1px var(--color-primary-two);
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
-.home-product-item a {
+.product-link {
+    color: inherit;
     text-decoration: none;
+}
+
+.product-image {
     position: relative;
-}
-
-.home-product-item_img img:hover {
-    transform: scale(1.1);
-}
-
-.home-product-item_img {
     overflow: hidden;
+    border-bottom: 1px solid #eee;
 }
 
-.home-product-item_img img {
+.product-image img {
     width: 100%;
-    background-size: cover;
-    background-position: center;
-    transition: 0.2s ease-in-out;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-.banner-sale {
+.product-image:hover img {
+    transform: scale(1.05);
+}
+
+.label-new {
     position: absolute;
-    background-color: var(--color-sale);
-    color: #ffffff;
-    padding: 5px;
     top: 10px;
+    left: 10px;
+    background: var(--color-sale);
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 6px;
+    border-radius: 4px;
 }
 
-.sale-up {
+.label-discount {
     position: absolute;
-    right: 0;
-    top: 0;
-    background-color: var(--color-saleup);
-    padding: 5px;
-    color: #ffffff;
-    padding: 2px;
-    font-size: 11px;
+    top: 10px;
+    right: 10px;
+    background: var(--color-saleup);
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 6px;
+    border-radius: 4px;
 }
 
-/* .sale-up::after {
-    content: "";
-    position: absolute;
-    border-width: 0 17px 6px;
-    right: 0;
-    bottom: -5.43px;
-    border-style: solid;
-    border-color: transparent var(--color-saleup) transparent var(--color-saleup);
-} */
+.product-content {
+    padding: 12px;
+}
 
-.home-product-item_name {
-    margin: 10px 10px;
-    line-height: 1.3rem;
+.product-name {
     font-size: 1rem;
-    height: 2.6rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #222;
+    height: 2.4rem;
     overflow: hidden;
-    display: block;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    color: black;
-    transition: all 0.2s ease;
 }
 
-.home-product-item_name:hover {
-    color: var(--color-primary-two);
-}
-
-.decrip-item {
-    margin: 0px 10px;
-    line-height: 1.3rem;
-    height: 2.6rem;
+.product-description {
+    font-size: 0.875rem;
+    color: #666;
+    height: 2.4rem;
     overflow: hidden;
-    display: block;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    font-size: 0.9rem;
-    color: #555555;
+    margin-bottom: 8px;
 }
 
-.decrip-item:hover {
-    color: #222222;
+.product-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
 }
 
-.home-product-item_price {
-    text-align: left;
-    margin-left: 10px;
-}
-
-.home-product-item_price_current {
+.price-sale {
+    color: var(--color-primary);
+    font-weight: bold;
     font-size: 1rem;
-    color: var(--color-primary-two);
 }
 
-.home-product-item_price_old {
+.price-original {
     text-decoration: line-through;
-    margin-right: 10px;
-    color: var(--color-price-old);
-    margin-left: 5px;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    color: #999;
 }
 
-.icon_item_product {
+.product-meta {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin: 0px 10px;
+    font-size: 0.85rem;
+    color: #999;
 }
 
-.home-icon-recommend {
+.view,
+.origin {
     display: flex;
     align-items: center;
-    gap: 6px;
-}
-
-.home-icon-recommend i,
-.icon-recommend i {
-    font-size: 13px;
-}
-
-.view {
-    font-size: 15px;
-    color: #999999;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.country {
-    font-size: 15px;
-    color: #999999;
-    float: right;
-    padding: 6px 0;
-}
-
-.fa-star {
-    color: var(--color-saleup);
-}
-
-.fa-shop {
-    color: #5f9ea0;
-}
-
-.fa-truck-fast {
-    color: #63c2b6;
+    gap: 4px;
 }
 </style>

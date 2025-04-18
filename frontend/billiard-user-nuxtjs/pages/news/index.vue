@@ -130,7 +130,6 @@ fetchNews(currentPage.value);
 }
 
 .pagination {
-    margin-top: 30px;
     flex-wrap: wrap;
     gap: 5px;
 }

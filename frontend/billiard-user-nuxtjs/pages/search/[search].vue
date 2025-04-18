@@ -137,4 +137,43 @@ fetchProducts(currentPage.value);
     font-size: 12px;
     margin: 0 8px;
 }
+
+.pagination {
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.page-item {
+    margin: 0 3px;
+}
+
+.page-link {
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s ease-in-out;
+    background-color: #fff;
+}
+
+.page-link:hover {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.page-item.active .page-link {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+.page-item.disabled .page-link {
+    color: #999;
+    background-color: #f9f9f9;
+    pointer-events: none;
+    border-color: #ddd;
+}
 </style>
