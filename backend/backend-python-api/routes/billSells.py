@@ -4,6 +4,7 @@ from pymongo.collection import Collection
 from config.database import database
 from schemas.schemas import BillSells, Searchs
 from service.billSells import ser_get_billsell_by_billsell_id,ser_get_billsell,ser_delete_billsell, ser_insert_billsell, ser_search_billsell, ser_update_billsell,ser_get_billsell_by_user,ser_get_billsell_by_sell_id
+from service.paypal import capture_order, create_order
 
 
 router = APIRouter()
@@ -38,6 +39,16 @@ async def search_billsells(data: Searchs):
 async def create_billsell(data: BillSells):
     _id = ser_insert_billsell(data)
     return {"message": "Created successfully", "_id": _id}
+
+@router.post("/paypal/create-order")
+async def create_paypal_order(amount: float):
+    order = create_order(str(amount))
+    return order
+
+@router.post("/paypal/capture-order/{order_id}")
+async def capture_paypal_order(order_id: str):
+    result = capture_order(order_id)
+    return result
 
 @router.put("/billsells/update")
 def edit_billsell(_data: BillSells):
