@@ -1,10 +1,10 @@
 from typing import List
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pymongo.collection import Collection
 from config.database import database
-from schemas.schemas import BillSells, Searchs
+from schemas.schemas import BillSells, PaymentRequest, Searchs
 from service.billSells import ser_get_billsell_by_billsell_id,ser_get_billsell,ser_delete_billsell, ser_insert_billsell, ser_search_billsell, ser_update_billsell,ser_get_billsell_by_user,ser_get_billsell_by_sell_id
-from service.paypal import capture_order, create_order
+from service.paypal import capture_order, create_order, get_vcb_usd_rate
 
 
 router = APIRouter()
@@ -41,9 +41,15 @@ async def create_billsell(data: BillSells):
     return {"message": "Created successfully", "_id": _id}
 
 @router.post("/paypal/create-order")
-async def create_paypal_order(amount: float):
-    order = create_order(str(amount))
-    return order
+async def create_paypal_order(data: PaymentRequest):  
+    try:
+        exchange_rate = get_vcb_usd_rate()
+        usd_amount = round(data.amount / exchange_rate, 2)
+        order = create_order(str(usd_amount))
+        return order
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
 
 @router.post("/paypal/capture-order/{order_id}")
 async def capture_paypal_order(order_id: str):

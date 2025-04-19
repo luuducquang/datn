@@ -220,10 +220,64 @@
                                 Vui lòng nhập địa chỉ!
                             </div>
                         </div>
-                        <div class="d-flex justify-content-center">
+                        <!-- <div class="d-flex justify-content-center">
                             <button
                                 type="submit"
                                 class="btn btn-primary btn-order"
+                            >
+                                Đặt hàng
+                            </button>
+                            <div>
+                                <PayPalButton
+                                    :amount="totalPrice + 30000"
+                                    :onSuccess="handleSuccess"
+                                />
+                            </div>
+                        </div> -->
+                        <div class="mb-3">
+                            <label class="form-label"
+                                >Chọn phương thức thanh toán:</label
+                            >
+                            <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    id="cod"
+                                    value="cod"
+                                    v-model="paymentMethod"
+                                />
+                                <label class="form-check-label" for="cod">
+                                    Thanh toán khi nhận hàng
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    id="paypal"
+                                    value="paypal"
+                                    v-model="paymentMethod"
+                                />
+                                <label class="form-check-label" for="paypal">
+                                    Thanh toán bằng PayPal
+                                </label>
+                            </div>
+                        </div>
+                        <div
+                            v-if="paymentMethod === 'paypal'"
+                            class="mt-3 d-flex justify-content-center"
+                        >
+                            <PayPalButton
+                                :amount="totalPrice + 30000"
+                                :onSuccess="handleSuccess"
+                            />
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-order me-2"
+                                :disabled="!paymentMethod"
                             >
                                 Đặt hàng
                             </button>
@@ -264,6 +318,7 @@ const totalPrice = ref(0);
 
 const alertVisible = ref(false);
 const TitleToast = ref("");
+const paymentMethod = ref("cod");
 
 const formData = ref<Record<string, string>>({
     hoTen: "",
@@ -333,6 +388,10 @@ const getDefaultDateTime = () => {
     return vietnamTime.toISOString().slice(0, 16);
 };
 
+const handleSuccess = async (result: Object) => {
+    console.log("Thanh toán thành công:", result);
+};
+
 const handleSubmit = async () => {
     formErrors.value = {
         hoTen: !formData.value.hoTen,
@@ -350,13 +409,13 @@ const handleSubmit = async () => {
 
     if (Object.values(formErrors.value).every((field) => field === false)) {
         const countryName = country.value.find(
-            (item) => item.province_id === formData.value.province
+            (item) => item.code === formData.value.province
         );
         const districtName = district.value.find(
-            (item) => item.district_id === formData.value.district
+            (item) => item.code === formData.value.district
         );
         const wardName = ward.value.find(
-            (item) => item.ward_id === formData.value.ward
+            (item) => item.code === formData.value.ward
         );
         const listIdDel: Array<string> = dataCart.value.map((item) =>
             String(item._id)
@@ -392,29 +451,42 @@ const handleSubmit = async () => {
                     const checkQuantity = await checkQuantityItems(listitems);
 
                     if (checkQuantity) {
-                        await checkAndUpdateQuantityItems(listitems);
-                        await sendOrder({
-                            status: "Đang xử lý",
-                            sell_date: getDefaultDateTime(),
-                            total_price: Number(totalPrice.value) + 30000,
-                            name: formData.value.hoTen,
-                            address: `${countryName.province_name}-${districtName.district_name}-${wardName.ward_name}`,
-                            email: formData.value.email,
-                            phone: formData.value.soDienThoai,
-                            address_detail: formData.value.diaChi,
-                            user_id: customer._id,
-                            sell_items: listJsonBuy,
-                        });
-                        await deleteManyCarts(listIdDel);
-                        TitleToast.value = "Đặt hàng thành công!";
-                        alertVisible.value = true;
+                        // await checkAndUpdateQuantityItems(listitems);
+                        // await sendOrder({
+                        //     status: "Đang xử lý",
+                        //     sell_date: getDefaultDateTime(),
+                        //     total_price: Number(totalPrice.value) + 30000,
+                        //     name: formData.value.hoTen,
+                        //     address: `${countryName.province_name}-${districtName.district_name}-${wardName.ward_name}`,
+                        //     email: formData.value.email,
+                        //     phone: formData.value.soDienThoai,
+                        //     address_detail: formData.value.diaChi,
+                        //     user_id: customer._id,
+                        //     sell_items: listJsonBuy,
+                        // });
+                        // await deleteManyCarts(listIdDel);
+                        // TitleToast.value = "Đặt hàng thành công!";
+                        // alertVisible.value = true;
 
-                        setTimeout(() => {
-                            router.replace("/");
-                        }, 1000);
-                        setTimeout(() => {
-                            alertVisible.value = false;
-                        }, 3000);
+                        // setTimeout(() => {
+                        //     router.replace("/");
+                        // }, 1000);
+                        // setTimeout(() => {
+                        //     alertVisible.value = false;
+                        // }, 3000);
+                        if (paymentMethod.value === "cod") {
+                            // 👉 Xử lý đơn hàng thanh toán khi nhận hàng
+                            console.log(
+                                "Đặt hàng với phương thức: Thanh toán khi nhận hàng"
+                            );
+                        } else if (paymentMethod.value === "paypal") {
+                            // 👉 Chờ PayPal xử lý xong mới gọi submit từ onSuccess
+                            console.log("Vui lòng thanh toán qua PayPal");
+                            alert(
+                                "Sau khi thanh toán qua PayPal, đơn hàng sẽ được xử lý."
+                            );
+                            // Không cần gọi API ở đây vì PayPal xử lý ở handleSuccess
+                        }
                     }
                 }
             } catch (error) {
@@ -428,6 +500,7 @@ const handleSubmit = async () => {
             }
         } else {
             console.error("Error api country");
+            console.log(countryName, districtName, wardName);
         }
     } else {
         console.log("Form is invalid!", formErrors.value);
@@ -517,5 +590,6 @@ onMounted(async () => {
 .btn-order {
     background-color: var(--color-primary);
     border: none;
+    margin-bottom: 20px;
 }
 </style>

@@ -10,6 +10,9 @@ class Searchs(BaseModel):
     category_name:Optional[str] = Body(None)
     status:Optional[bool] = Body(None)
 
+class PaymentRequest(BaseModel):
+    amount: float
+
 class LoginRegisterRequest(BaseModel):
     email: EmailStr
     password: str

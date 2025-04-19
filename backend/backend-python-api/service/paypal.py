@@ -1,9 +1,10 @@
+from bs4 import BeautifulSoup
 import requests
 from fastapi import HTTPException
 
 PAYPAL_CLIENT_ID = "AevnZPJJW8_kjKZW3V2nrryVCEreZzQJXFodD54xoNJaXLLEF8hh3863ld1FWjY3w1QJDUbx9UrobbHr"
-PAYPAL_SECRET = "AevnZPJJW8_kjKZW3V2nrryVCEreZzQJXFodD54xoNJaXLLEF8hh3863ld1FWjY3w1QJDUbx9UrobbHr"
-PAYPAL_API_BASE = "https://api-m.sandbox.paypal.com"  
+PAYPAL_SECRET = "ELEGM5gSAY2KWEfiaGFLGy8egXE6LxA4YuXANWeoiO8wMri_C97-MvcsO3q1CCH3lcy5bvbvL0XTpMsn"
+PAYPAL_API_BASE = "https://sandbox.paypal.com"  
 
 def get_access_token():
     response = requests.post(
@@ -15,6 +16,16 @@ def get_access_token():
     if response.status_code != 200:
         raise HTTPException(status_code=500, detail="Failed to get PayPal token")
     return response.json()["access_token"]
+
+def get_vcb_usd_rate():
+    url = "https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "xml")
+    usd = soup.find("Exrate", attrs={"CurrencyCode": "USD"})
+    if usd:
+        sell_rate = usd["Sell"].replace(",", "") 
+        return float(sell_rate)
+    raise HTTPException(status_code=500, detail="Failed to get VCB exchange rate")
 
 def create_order(total_amount: str, currency="USD"):
     access_token = get_access_token()
@@ -35,7 +46,8 @@ def create_order(total_amount: str, currency="USD"):
             "Content-Type": "application/json",
             "Authorization": f"Bearer {access_token}"
         },
-        json=data
+        json=data,
+        timeout=10
     )
     if response.status_code != 201:
         raise HTTPException(status_code=500, detail="Failed to create PayPal order")
