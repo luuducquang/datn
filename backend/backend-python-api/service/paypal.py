@@ -1,21 +1,26 @@
+import time
 from bs4 import BeautifulSoup
 import requests
 from fastapi import HTTPException
 
 PAYPAL_CLIENT_ID = "AevnZPJJW8_kjKZW3V2nrryVCEreZzQJXFodD54xoNJaXLLEF8hh3863ld1FWjY3w1QJDUbx9UrobbHr"
 PAYPAL_SECRET = "ELEGM5gSAY2KWEfiaGFLGy8egXE6LxA4YuXANWeoiO8wMri_C97-MvcsO3q1CCH3lcy5bvbvL0XTpMsn"
-PAYPAL_API_BASE = "https://sandbox.paypal.com"  
+PAYPAL_API_BASE = "https://api.sandbox.paypal.com"
 
-def get_access_token():
-    response = requests.post(
-        f"{PAYPAL_API_BASE}/v1/oauth2/token",
-        headers={"Accept": "application/json"},
-        auth=(PAYPAL_CLIENT_ID, PAYPAL_SECRET),
-        data={"grant_type": "client_credentials"}
-    )
-    if response.status_code != 200:
-        raise HTTPException(status_code=500, detail="Failed to get PayPal token")
-    return response.json()["access_token"]
+ 
+
+def get_access_token(retries=3):
+    for i in range(retries):
+        response = requests.post(
+            f"{PAYPAL_API_BASE}/v1/oauth2/token",
+            headers={"Accept": "application/json"},
+            auth=(PAYPAL_CLIENT_ID, PAYPAL_SECRET),
+            data={"grant_type": "client_credentials"}
+        )
+        if response.status_code == 200:
+            return response.json()["access_token"]
+        time.sleep(1) 
+    raise HTTPException(status_code=500, detail="Failed to get PayPal token after retries")
 
 def get_vcb_usd_rate():
     url = "https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx"

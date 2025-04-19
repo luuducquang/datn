@@ -69,9 +69,10 @@
                     v-model="formData.diaChi"
                 ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Cập nhật</button>
+            <button type="submit" class="btn btn-primary btn_updater">Cập nhật</button>
         </form>
     </div>
+    <alert-toast :visible="alertVisible" :message="TitleToast" />
 </template>
 
 <script setup lang="ts">
@@ -97,6 +98,9 @@ interface FormData {
     fileName: string;
     file: File | null;
 }
+
+const alertVisible = ref(false);
+const TitleToast = ref("");
 
 const router = useRouter();
 const fileList = ref<{ url: string }[]>([]);
@@ -192,14 +196,25 @@ const handleUpdateInformation = async () => {
                 });
             }
             const res = await login({
-                username: String(dataUser.username),
+                email: String(dataUser.email),
                 password: String(dataUser.password),
             });
             Cookies.set("customer", JSON.stringify(res), { expires: 1 });
-            window.location.reload();
+            TitleToast.value = `Cập nhật thông tin thành công`;
+            alertVisible.value = true;
+            setTimeout(() => {
+                alertVisible.value = false;
+                window.location.reload();
+            }, 2000);
         }
     } catch (error) {
-        console.error("Lỗi khi cập nhật thông tin:", error);
+        if (axios.isAxiosError(error)) {
+            TitleToast.value = `${error.response?.data?.detail}`;
+            alertVisible.value = true;
+            setTimeout(() => {
+                alertVisible.value = false;
+            }, 3000);
+        }
     }
 };
 </script>
@@ -211,5 +226,16 @@ const handleUpdateInformation = async () => {
 .img-thumbnail {
     max-width: 150px;
     height: auto;
+}
+
+.btn_updater{
+    background-color: var(--color-primary);
+    border: none;
+    margin-bottom: 15px;
+    transition: all .5s ease-in-out;
+}
+
+.btn_updater:hover{
+    transform: scale(1.1);
 }
 </style>

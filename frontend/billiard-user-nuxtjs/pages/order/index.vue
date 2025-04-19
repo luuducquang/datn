@@ -242,7 +242,6 @@
                                 <input
                                     class="form-check-input"
                                     type="radio"
-                                    id="cod"
                                     value="cod"
                                     v-model="paymentMethod"
                                 />
@@ -254,7 +253,6 @@
                                 <input
                                     class="form-check-input"
                                     type="radio"
-                                    id="paypal"
                                     value="paypal"
                                     v-model="paymentMethod"
                                 />
@@ -262,25 +260,33 @@
                                     Thanh toán bằng PayPal
                                 </label>
                             </div>
-                        </div>
-                        <div
-                            v-if="paymentMethod === 'paypal'"
-                            class="mt-3 d-flex justify-content-center"
-                        >
-                            <PayPalButton
-                                :amount="totalPrice + 30000"
-                                :onSuccess="handleSuccess"
-                            />
-                        </div>
-
-                        <div class="d-flex justify-content-center">
-                            <button
-                                type="submit"
-                                class="btn btn-primary btn-order me-2"
-                                :disabled="!paymentMethod"
+                            <div
+                                v-if="
+                                    paymentMethod === 'paypal' &&
+                                    formData.hoTen != '' &&
+                                    formData.soDienThoai != '' &&
+                                    formData.email != '' &&
+                                    formData.diaChi != '' &&
+                                    formData.province != '' &&
+                                    formData.district != '' &&
+                                    formData.ward != ''
+                                "
+                                class="mt-3 mb-3 d-flex justify-content-center"
                             >
-                                Đặt hàng
-                            </button>
+                                <PayPalButton
+                                    :amount="totalPrice + 30000"
+                                    :onSuccess="handleSuccess"
+                                />
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-order me-2"
+                                    :disabled="!paymentMethod"
+                                >
+                                    Đặt hàng
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -388,8 +394,69 @@ const getDefaultDateTime = () => {
     return vietnamTime.toISOString().slice(0, 16);
 };
 
-const handleSuccess = async (result: Object) => {
+const handleSuccess = async (result: any) => {
     console.log("Thanh toán thành công:", result);
+
+    const listitems = dataCart.value.reduce(
+        (acc: { ids: string[]; quantities: number[] }, value: Cart) => {
+            acc.ids.push(value.item_id);
+            acc.quantities.push(value.quantity);
+            return acc;
+        },
+        { ids: [], quantities: [] }
+    );
+
+    const listIdDel: Array<string> = dataCart.value.map((item) =>
+        String(item._id)
+    );
+
+    const countryName = country.value.find(
+        (item) => item.code === formData.value.province
+    );
+    const districtName = district.value.find(
+        (item) => item.code === formData.value.district
+    );
+    const wardName = ward.value.find(
+        (item) => item.code === formData.value.ward
+    );
+
+    const listJsonBuy = dataCart.value.map(function (value: Cart) {
+        return {
+            item_id: value.item_id,
+            quantity: value.quantity,
+            unit_price: value.rentalitem?.price_reduction || 0,
+            total_price:
+                (Number(value.rentalitem?.price_reduction) || 0) *
+                Number(value.quantity),
+        };
+    });
+
+    const customer = JSON.parse(customerData ?? "{}");
+
+    if (countryName && districtName && wardName) {
+        await checkAndUpdateQuantityItems(listitems);
+        await sendOrder({
+            status: "Đang xử lý",
+            sell_date: getDefaultDateTime(),
+            total_price: Number(totalPrice.value) + 30000,
+            name: formData.value.hoTen,
+            address: `${countryName.name}-${districtName.name}-${wardName.name}`,
+            email: formData.value.email,
+            phone: formData.value.soDienThoai,
+            address_detail: formData.value.diaChi,
+            user_id: customer._id,
+            sell_items: listJsonBuy,
+            is_paid: true,
+        });
+        await deleteManyCarts(listIdDel);
+        alertVisible.value = true;
+        TitleToast.value = "Đặt hàng thành công!";
+
+        setTimeout(() => {
+            router.replace("/");
+            alertVisible.value = false;
+        }, 3000);
+    }
 };
 
 const handleSubmit = async () => {
@@ -420,7 +487,7 @@ const handleSubmit = async () => {
         const listIdDel: Array<string> = dataCart.value.map((item) =>
             String(item._id)
         );
-        const customer = JSON.parse(customerData);
+        const customer = JSON.parse(customerData ?? "{}");
 
         const listJsonBuy = dataCart.value.map(function (value: Cart) {
             return {
@@ -451,41 +518,35 @@ const handleSubmit = async () => {
                     const checkQuantity = await checkQuantityItems(listitems);
 
                     if (checkQuantity) {
-                        // await checkAndUpdateQuantityItems(listitems);
-                        // await sendOrder({
-                        //     status: "Đang xử lý",
-                        //     sell_date: getDefaultDateTime(),
-                        //     total_price: Number(totalPrice.value) + 30000,
-                        //     name: formData.value.hoTen,
-                        //     address: `${countryName.province_name}-${districtName.district_name}-${wardName.ward_name}`,
-                        //     email: formData.value.email,
-                        //     phone: formData.value.soDienThoai,
-                        //     address_detail: formData.value.diaChi,
-                        //     user_id: customer._id,
-                        //     sell_items: listJsonBuy,
-                        // });
-                        // await deleteManyCarts(listIdDel);
-                        // TitleToast.value = "Đặt hàng thành công!";
-                        // alertVisible.value = true;
-
-                        // setTimeout(() => {
-                        //     router.replace("/");
-                        // }, 1000);
-                        // setTimeout(() => {
-                        //     alertVisible.value = false;
-                        // }, 3000);
                         if (paymentMethod.value === "cod") {
-                            // 👉 Xử lý đơn hàng thanh toán khi nhận hàng
-                            console.log(
-                                "Đặt hàng với phương thức: Thanh toán khi nhận hàng"
-                            );
+                            await checkAndUpdateQuantityItems(listitems);
+                            await sendOrder({
+                                status: "Đang xử lý",
+                                sell_date: getDefaultDateTime(),
+                                total_price: Number(totalPrice.value) + 30000,
+                                name: formData.value.hoTen,
+                                address: `${countryName.name}-${districtName.name}-${wardName.name}`,
+                                email: formData.value.email,
+                                phone: formData.value.soDienThoai,
+                                address_detail: formData.value.diaChi,
+                                user_id: customer._id,
+                                sell_items: listJsonBuy,
+                                is_paid: false,
+                            });
+                            await deleteManyCarts(listIdDel);
+                            TitleToast.value = "Đặt hàng thành công!";
+                            alertVisible.value = true;
+
+                            setTimeout(() => {
+                                router.replace("/");
+                                alertVisible.value = false;
+                            }, 3000);
                         } else if (paymentMethod.value === "paypal") {
-                            // 👉 Chờ PayPal xử lý xong mới gọi submit từ onSuccess
-                            console.log("Vui lòng thanh toán qua PayPal");
-                            alert(
-                                "Sau khi thanh toán qua PayPal, đơn hàng sẽ được xử lý."
-                            );
-                            // Không cần gọi API ở đây vì PayPal xử lý ở handleSuccess
+                            TitleToast.value = `Vui lòng thanh toán qua PayPal, sau khi thanh toán đơn hàng sẽ được xử lý.`;
+                            alertVisible.value = true;
+                            setTimeout(() => {
+                                alertVisible.value = false;
+                            }, 3000);
                         }
                     }
                 }

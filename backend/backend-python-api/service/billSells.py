@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from bson import ObjectId
 from fastapi import HTTPException
@@ -123,7 +124,9 @@ def ser_insert_billsell(_data: BillSells) -> str:
         "address": _data.address,
         "address_detail": _data.address_detail,
         "total_price": _data.total_price,
-        "status": _data.status
+        "status": _data.status,
+        "is_paid": _data.is_paid,
+        "created_at": datetime.now() 
     }
 
     result = billsell_collection.insert_one(bill_data)

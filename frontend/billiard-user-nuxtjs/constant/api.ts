@@ -61,9 +61,9 @@ export interface Product {
     manufactor?: Manufactors;
 }
 
-export interface CheckorUpdateQuantityRequest{
-    ids: string[]
-    quantities: number[]
+export interface CheckorUpdateQuantityRequest {
+    ids: string[];
+    quantities: number[];
 }
 
 export interface CategoryRentalItems {
@@ -110,11 +110,13 @@ export interface BillSells {
     address_detail: string;
     total_price: number;
     status: string;
+    is_paid: boolean;
+    created_at?: string;
     sell_items?: SellItems[];
 }
 
 export interface SellItems {
-    id?: string ;
+    id?: string;
     sell_id?: string;
     item_id: string;
     quantity: number;

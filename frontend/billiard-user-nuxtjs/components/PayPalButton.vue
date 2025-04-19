@@ -8,7 +8,7 @@ import { loadScript } from "@paypal/paypal-js";
 import {
     capturePaypalOrder,
     createPaypalOrder,
-} from "~/services/payment.service";
+} from "~/services/paypal.service";
 
 const props = defineProps({
     amount: {
@@ -25,7 +25,14 @@ onMounted(async () => {
     const paypal = await loadScript({
         clientId:
             "AevnZPJJW8_kjKZW3V2nrryVCEreZzQJXFodD54xoNJaXLLEF8hh3863ld1FWjY3w1QJDUbx9UrobbHr",
+        // currency: "USD",
+        // components: "buttons",
     });
+
+    if (!paypal || !paypal.Buttons) {
+        console.error("PayPal Buttons chưa sẵn sàng");
+        return;
+    }
 
     if (paypal) {
         paypal

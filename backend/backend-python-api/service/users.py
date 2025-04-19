@@ -35,7 +35,7 @@ def ser_update_user(_data: Users, user_collection: Collection):
     
     updated_user = user_collection.update_one(
     {"_id": ObjectId(_data.id)},  
-    {"$set": _data.dict(exclude={"id"})} 
+    {"$set": _data.dict(exclude={"id", "is_verified"})} 
 )
     
     if updated_user.modified_count == 0:

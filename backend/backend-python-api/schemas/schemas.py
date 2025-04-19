@@ -238,6 +238,8 @@ class BillSells(BaseModel):
     address_detail:str
     total_price: int
     status:str
+    is_paid:bool
+    created_at:Optional[datetime]
     sell_items: Optional[List[SellItems]] = None
 
 class Carts(BaseModel):
