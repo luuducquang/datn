@@ -17,9 +17,10 @@
         </div>
     </div>
 </template>
+
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { type News } from "~/constant/api";
 import { getNewById } from "~/services/new.service";
 
@@ -28,23 +29,27 @@ const id = route.params.id;
 
 const dataNewDetail = ref<News>();
 
-const fetchProducts = async (id: string) => {
-    const { data, error } = await useAsyncData("dataNewDetail", () =>
-        getNewById(id)
-    );
-
-    if (data.value) {
-        dataNewDetail.value = data.value;
-    } else if (error.value) {
-        console.error("Error while fetching data:", error.value);
+const fetchNewDetail = async (id: string) => {
+    try {
+        const res = await getNewById(id);
+        dataNewDetail.value = res;
+    } catch (error) {
+        console.error("Error while fetching data:", error);
     }
 };
 
-fetchProducts(String(id));
+onMounted(() => {
+    fetchNewDetail(String(id));
+});
 </script>
+
 <style lang="css" scoped>
 .type {
-    background: linear-gradient(90deg, var(--color-primary), var(--color-linear-gradient));
+    background: linear-gradient(
+        90deg,
+        var(--color-primary),
+        var(--color-linear-gradient)
+    );
     padding: 12px 20px;
     color: var(--color-text);
     margin-top: 10px;
@@ -52,7 +57,7 @@ fetchProducts(String(id));
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 13px;
 }
 
@@ -74,7 +79,6 @@ fetchProducts(String(id));
     font-size: 12px;
     margin: 0 8px;
 }
-
 
 .newsDetail {
     margin: 10px 0;

@@ -58,71 +58,45 @@ import Cookies from "js-cookie";
 import { getGioHangByIdTaiKhoan } from "~/services/cart.service";
 import { useCartStore } from "~/store";
 
-useHead({
-    title: "Trang chủ",
-});
+// useHead({
+//     title: "Trang chủ",
+// });
 
 const productNew = ref<Product[]>([]);
 const productCoBan = ref<Product[]>([]);
 const productCoPha = ref<Product[]>([]);
 const store = useCartStore();
 
-const { data: newData, error: er } = await useAsyncData("productNew", () =>
-    getProductHome({
-        page: 1,
-        pageSize: 12,
-    })
-);
+const fetchProducts = async () => {
+    try {
+        const [newRes, coBanRes, coPhaRes] = await Promise.all([
+            getProductHome({ page: 1, pageSize: 12 }),
+            getProductHome({ page: 1, pageSize: 12, category_name: "Cơ bắn" }),
+            getProductHome({ page: 1, pageSize: 12, category_name: "Cơ phá" }),
+        ]);
 
-if (newData.value) {
-    productNew.value = newData.value?.data;
-} else if (er.value) {
-    console.error("Error while fetching products:", er.value);
-}
+        productNew.value = newRes.data;
+        productCoBan.value = coBanRes.data;
+        productCoPha.value = coPhaRes.data;
+    } catch (error) {
+        console.error("Error while fetching products:", error);
+    }
+};
 
-const { data: coBanData, error: erBan } = await useAsyncData(
-    "productCoBan",
-    () =>
-        getProductHome({
-            page: 1,
-            pageSize: 12,
-            category_name: "Cơ bắn",
-        })
-);
-
-if (coBanData.value) {
-    productCoBan.value = coBanData.value?.data;
-} else if (erBan.value) {
-    console.error("Error while fetching products:", erBan.value);
-}
-
-const { data: cophaData, error: erCoPha } = await useAsyncData(
-    "productCoPha",
-    () =>
-        getProductHome({
-            page: 1,
-            pageSize: 12,
-            category_name: "Cơ phá",
-        })
-);
-
-if (cophaData.value) {
-    productCoPha.value = cophaData.value?.data;
-} else if (erCoPha.value) {
-    console.error("Error while fetching products:", erCoPha.value);
-}
-
-onMounted(async () => {
+const fetchCart = async () => {
     const customerData = Cookies.get("customer");
     if (customerData) {
         try {
             const customer = JSON.parse(customerData);
             const cart = await getGioHangByIdTaiKhoan(customer._id);
-
             store.setCart(cart);
         } catch (error) {
             console.error("Failed to parse customer data from cookies:", error);
         }
     }
+};
+
+onMounted(async () => {
+    await Promise.all([fetchProducts(), fetchCart()]);
 });
 </script>

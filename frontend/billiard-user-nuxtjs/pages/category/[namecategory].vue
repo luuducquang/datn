@@ -5,7 +5,7 @@
             <i class="fa-solid fa-arrow-right"></i>
             <NuxtLink :to="`/category/${name}`">{{ name }}</NuxtLink>
         </div>
-        <div class="row  product_content">
+        <div class="row product_content">
             <div
                 class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 mb-4 d-flex"
                 v-for="product in products"
@@ -74,20 +74,18 @@ const totalPages = ref(1);
 const products = ref<Product[]>([]);
 
 const fetchProducts = async (page: number) => {
-    const { data, error } = await useAsyncData("product", () =>
-        getProductCategory({
+    try {
+        const response = await getProductCategory({
             page,
             pageSize: 12,
             category_name: String(name),
-        })
-    );
+        });
 
-    if (data.value) {
-        products.value = data.value?.data;
-        totalPages.value = Math.ceil(data.value?.totalItems / 12);
+        products.value = response.data;
+        totalPages.value = Math.ceil(response.totalItems / 12);
         console.log(products.value);
-    } else if (error.value) {
-        console.error("Error while fetching products:", error.value);
+    } catch (error) {
+        console.error("Error while fetching products:", error);
     }
 };
 
@@ -100,7 +98,8 @@ const changePage = (page: number) => {
 
 fetchProducts(currentPage.value);
 </script>
-<style lang="css" scoped>.type {
+<style lang="css" scoped>
+.type {
     background: linear-gradient(
         90deg,
         var(--color-primary),
@@ -134,8 +133,7 @@ fetchProducts(currentPage.value);
     margin: 0 8px;
 }
 
-
-.product_content{
+.product_content {
     margin-top: 20px;
 }
 

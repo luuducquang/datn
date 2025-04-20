@@ -194,18 +194,14 @@ onMounted(async () => {
             Cookies.remove("customer");
         }
     }
+
+    try {
+        const categoryData = await getCategory();
+        category.value = categoryData;
+    } catch (error) {
+        console.error("Error while fetching categories:", error);
+    }
 });
-
-const { data: categoryData, error: erCategory } = await useAsyncData(
-    "category",
-    () => getCategory()
-);
-
-if (categoryData.value) {
-    category.value = categoryData.value;
-} else if (erCategory.value) {
-    console.error("Error while fetching products:", erCategory.value);
-}
 
 function submitSearch() {
     if (searchQuery.value === "") {
@@ -311,7 +307,7 @@ input {
     background-color: #ffffff !important;
     padding: 0.5rem 10%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     position: sticky;
     top: 0;
     z-index: 999;
@@ -428,7 +424,6 @@ form[role="search"] button:hover {
     gap: 15px;
 }
 
-
 .booking-link {
     position: relative;
 }
@@ -482,7 +477,7 @@ form[role="search"] button:hover {
         padding: 10px 15px;
     }
 
-    .menu_item_right>div {
+    .menu_item_right > div {
         width: 100%;
     }
 
@@ -527,5 +522,4 @@ form[role="search"] button:hover {
         font-size: 0.95rem;
     }
 }
-
 </style>

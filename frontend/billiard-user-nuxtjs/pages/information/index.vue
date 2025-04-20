@@ -69,7 +69,9 @@
                     v-model="formData.diaChi"
                 ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn_updater">Cập nhật</button>
+            <button type="submit" class="btn btn-primary btn_updater">
+                Cập nhật
+            </button>
         </form>
     </div>
     <alert-toast :visible="alertVisible" :message="TitleToast" />
@@ -228,14 +230,14 @@ const handleUpdateInformation = async () => {
     height: auto;
 }
 
-.btn_updater{
+.btn_updater {
     background-color: var(--color-primary);
     border: none;
     margin-bottom: 15px;
-    transition: all .5s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
-.btn_updater:hover{
+.btn_updater:hover {
     transform: scale(1.1);
 }
 </style>

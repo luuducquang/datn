@@ -23,7 +23,7 @@
                                 v-if="!table.status"
                                 data-bs-toggle="modal"
                                 data-bs-target="#exampleModal"
-                                @click="openModal(table._id)"
+                                @click="openModal(table?._id)"
                                 href="#exampleModalToggle"
                                 role="button"
                             >

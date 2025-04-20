@@ -275,7 +275,7 @@
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router";
 import Cookies from "js-cookie";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { type Product } from "~/constant/api";
 import { getProductById, getProductRecomend } from "~/services/detail.service";
 import { apiImage } from "~/constant/request";
@@ -300,32 +300,36 @@ const amountProduct = ref(1);
 const alertVisible = ref(false);
 const titleAddItem = ref("");
 
-const { data: detailData, error: erDetail } = await useAsyncData(
-    "productDetail",
-    () => getProductById(String(id))
-);
+const fetchProductDetail = async () => {
+    try {
+        const res = await getProductById(String(id));
+        productDetail.value = res;
+    } catch (error) {
+        console.error("Error while fetching product detail:", error);
+    }
+};
 
-if (detailData.value) {
-    productDetail.value = detailData.value;
-} else if (erDetail.value) {
-    console.error("Error while fetching products:", erDetail.value);
-}
-
-const { data: recomendData, error: erRecomend } = await useAsyncData(
-    "productRecomend",
-    () =>
-        getProductRecomend({
+const fetchProductRecomend = async () => {
+    try {
+        const res = await getProductRecomend({
             page: 1,
             pageSize: 6,
-            category_name: productDetail?.categoryrentalitem?.category_name,
-        })
-);
+            category_name: String(
+                productDetail.value?.categoryrentalitem?.category_name
+            ),
+        });
+        productRecomend.value = res?.data ?? [];
+    } catch (error) {
+        console.error("Error while fetching recommended products:", error);
+    }
+};
 
-if (recomendData.value) {
-    productRecomend.value = recomendData.value?.data;
-} else if (erRecomend.value) {
-    console.error("Error while fetching products:", erRecomend.value);
-}
+onMounted(async () => {
+    await fetchProductDetail();
+    if (productDetail.value) {
+        await fetchProductRecomend();
+    }
+});
 
 const validateAmount = (event: Event): void => {
     const target = event.target as HTMLInputElement;

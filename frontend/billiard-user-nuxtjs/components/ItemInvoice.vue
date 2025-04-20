@@ -27,7 +27,9 @@
                             value?.total_price > 0
                                 ? value?.total_price.toLocaleString("DE-de")
                                 : 0
-                        }đ | ${value?.address_detail} | ${value?.status} | ${value?.is_paid ? 'Đã thanh toán':'Chưa thanh toán'}`
+                        }đ | ${value?.address_detail} | ${value?.status} | ${
+                            value?.is_paid ? "Đã thanh toán" : "Chưa thanh toán"
+                        }`
                     }}
                 </button>
             </h2>
@@ -48,13 +50,23 @@
                         class="d-flex accordion-body"
                     >
                         <img
-                            :src="apiImage + item.rentalitem.image"
+                            :src="
+                                item.rentalitem
+                                    ? apiImage + item.rentalitem.image
+                                    : ''
+                            "
                             alt="image"
                             width="200"
                             height="200"
                         />
                         <div class="p-3">
-                            <h5>{{ item.rentalitem.item_name }}</h5>
+                            <h5>
+                                {{
+                                    item.rentalitem
+                                        ? item.rentalitem.item_name
+                                        : ""
+                                }}
+                            </h5>
                             <div>
                                 Số lượng:
                                 {{ item.quantity }}

@@ -58,29 +58,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { type News } from "~/constant/api";
 import { getNews } from "~/services/new.service";
 
 const currentPage = ref(1);
 const totalPages = ref(1);
-
 const news = ref<News[]>([]);
 
 const fetchNews = async (page: number) => {
-    const { data, error } = await useAsyncData("product", () =>
-        getNews({
+    try {
+        const res = await getNews({
             page,
             pageSize: 6,
-        })
-    );
+        });
 
-    if (data.value) {
-        news.value = data.value?.data;
-        totalPages.value = Math.ceil(data.value?.totalItems / 6);
+        news.value = res.data;
+        totalPages.value = Math.ceil(res.totalItems / 6);
         console.log(news.value);
-    } else if (error.value) {
-        console.error("Error while fetching:", error.value);
+    } catch (error) {
+        console.error("Error while fetching:", error);
     }
 };
 
@@ -91,7 +88,9 @@ const changePage = (page: number) => {
     }
 };
 
-fetchNews(currentPage.value);
+onMounted(() => {
+    fetchNews(currentPage.value);
+});
 </script>
 
 <style lang="css" scoped>

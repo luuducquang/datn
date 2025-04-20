@@ -61,7 +61,6 @@ const fetchDataCart = async () => {
         try {
             const customer = JSON.parse(customerData);
             dataCart.value = await getGioHangByIdTaiKhoan(customer._id);
-            console.log(dataCart.value);
             const dataBuy = dataCart.value.filter(
                 (value) => value?.status === true
             );
@@ -84,24 +83,22 @@ const fetchDataCart = async () => {
     }
 };
 
-onMounted(async () => {
-    fetchDataCart();
-});
-
-const { data: recomendData, error: erRecomend } = await useAsyncData(
-    "productRecomend",
-    () =>
-        getProductRecomend({
+const fetchProductRecomend = async () => {
+    try {
+        const res = await getProductRecomend({
             page: 1,
             pageSize: 6,
-        })
-);
+        });
+        productRecomend.value = res?.data ?? [];
+    } catch (error) {
+        console.error("Error while fetching recommended products:", error);
+    }
+};
 
-if (recomendData.value) {
-    productRecomend.value = recomendData.value?.data;
-} else if (erRecomend.value) {
-    console.error("Error while fetching products:", erRecomend.value);
-}
+onMounted(async () => {
+    await fetchDataCart();
+    await fetchProductRecomend();
+});
 </script>
 
 <style lang="css" scoped>

@@ -62,7 +62,7 @@
 </template>
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
-import { onUnmounted, ref } from "vue";
+import { ref } from "vue";
 import { type Product } from "~/constant/api";
 import { getProductCategory } from "~/services/category.service";
 
@@ -76,21 +76,19 @@ const itemFit = ref(0);
 const products = ref<Product[]>([]);
 
 const fetchProducts = async (page: number) => {
-    const { data, error } = await useAsyncData("product", () =>
-        getProductCategory({
+    try {
+        const response = await getProductCategory({
             page,
             pageSize: 12,
-            search_term: name,
-        })
-    );
+            search_term: String(name),
+        });
 
-    if (data.value) {
-        products.value = data.value?.data;
-        totalPages.value = Math.ceil(data.value?.totalItems / 12);
-        itemFit.value = data.value?.totalItems;
+        products.value = response.data;
+        totalPages.value = Math.ceil(response.totalItems / 12);
+        itemFit.value = response.totalItems;
         console.log(products.value);
-    } else if (error.value) {
-        console.error("Error while fetching products:", error.value);
+    } catch (error) {
+        console.error("Error while fetching products:", error);
     }
 };
 
@@ -103,6 +101,7 @@ const changePage = (page: number) => {
 
 fetchProducts(currentPage.value);
 </script>
+
 <style lang="css" scoped>
 .type {
     background: linear-gradient(
