@@ -58,32 +58,6 @@ class News(BaseModel):
     view: Optional[int] = 0
     status: bool
 
-class EmployeeTypes(BaseModel):
-    id: Optional[str] = Field(None, alias="_id")  
-    employee_type_name: str
-
-class Employees(BaseModel):
-    id: Optional[str] = Field(None, alias="_id")  
-    employee_type_id: str
-    user_id: str
-    hourly_rate: Optional[float]    
-    monthly_salary: Optional[float]
-
-class Shifts(BaseModel):
-    id: Optional[str] = Field(None, alias="_id")  
-    employee_id: str
-    shift_date: datetime
-    start_time: datetime
-    end_time: datetime
-    hours_worked: Optional[float]
-
-class EmployeePayments(BaseModel):
-    id: Optional[str] = Field(None, alias="_id")  
-    employee_id: str
-    pay_period_start: datetime
-    pay_period_end: datetime
-    total_hours: Optional[float]
-    total_payment: Optional[float]
 
 class Bookings(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  

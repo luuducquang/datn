@@ -132,7 +132,7 @@ const handleAvatarChange = async (event: Event) => {
     }
 };
 
-const fetchDataCart = async () => {
+const fetchData = async () => {
     const customerData = Cookies.get("customer");
     if (customerData) {
         try {
@@ -142,7 +142,7 @@ const fetchDataCart = async () => {
             formData.soDienThoai = String(dataUser?.phone);
             formData.email = String(dataUser?.email);
             formData.diaChi = String(dataUser?.address);
-            formData.matKhau = String(dataUser?.password);
+            formData.matKhau = String(customer?.password);
             formData.anhDaiDien = apiImage + dataUser?.avatar;
             formData.fileName = "";
             formData.file = null;
@@ -157,7 +157,7 @@ const fetchDataCart = async () => {
 };
 
 onMounted(async () => {
-    fetchDataCart();
+    fetchData();
 });
 
 const handleUpdateInformation = async () => {
@@ -199,7 +199,7 @@ const handleUpdateInformation = async () => {
             }
             const res = await login({
                 email: String(dataUser.email),
-                password: String(dataUser.password),
+                password: String(formData.matKhau),
             });
             Cookies.set("customer", JSON.stringify(res), { expires: 1 });
             TitleToast.value = `Cập nhật thông tin thành công`;

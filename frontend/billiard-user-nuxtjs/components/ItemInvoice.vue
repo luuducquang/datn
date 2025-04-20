@@ -28,7 +28,7 @@
                                 ? value?.total_price.toLocaleString("DE-de")
                                 : 0
                         }đ | ${value?.address_detail} | ${value?.status} | ${
-                            value?.is_paid ? "Đã thanh toán" : "Chưa thanh toán"
+                            value?.is_paid ? "Đã thanh toán" : "Thanh toán khi nhận hàng"
                         }`
                     }}
                 </button>

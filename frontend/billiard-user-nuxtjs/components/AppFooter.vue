@@ -32,7 +32,7 @@
           <div class="col-md-3 col-sm-6 mb-4">
             <h5 class="footer-title">FANPAGE</h5>
             <a href="https://www.facebook.com" target="_blank">
-              <img src="https://via.placeholder.com/250x120" alt="Fanpage" class="img-fluid rounded shadow" />
+              <img src="http://127.0.0.1:8000/static/uploads/banner-thế-giới-bida.jpg" alt="Fanpage" class="img-fluid rounded shadow" />
             </a>
           </div>
         </div>

@@ -1,65 +1,52 @@
-import jwt
-import random
-import string
+
 
 from fastapi import APIRouter, Depends,Body, HTTPException
 from pymongo.collection import Collection
 from config.database import database
 from schemas.schemas import LoginRegisterRequest, ResetPassword
-from typing import Union, Any
 from datetime import datetime, timedelta
 from fastapi_mail import FastMail, MessageSchema
 from config.config import conf
 from schemas.schemas import EmailRequest, Users,VerifyOTP
+from service.login import check_password, generate_otp, generate_token, hash_password
 
 
 router = APIRouter()
 
 user_collection: Collection = database['Users']
 
-SECURITY_ALGORITHM = 'HS256'
-SECRET_KEY = '123456'
 
 @router.post("/login")
 def login(request_data: LoginRegisterRequest):
     user = user_collection.find_one({"email": request_data.email})
 
-    if not user or user["password"] != request_data.password:
+    if not user:
         raise HTTPException(status_code=401, detail="Email hoặc mật khẩu không đúng")
-    
-    elif not user["is_verified"]:
+
+    stored_password = user.get("password", "")
+    entered_password = request_data.password
+
+    if not check_password(stored_password, entered_password):
+        raise HTTPException(status_code=401, detail="Email hoặc mật khẩu không đúng")
+
+    if not user["is_verified"]:
         raise HTTPException(status_code=403, detail="Tài khoản chưa được xác thực")
-         
-    else:
-        token = generate_token(request_data.email)
-    
-        return {
-                "_id": str(user.get("_id")),   
-                "email": user["email"],
-                "password": user.get("password", ""),
-                "fullname": user.get("fullname", ""),
-                "phone": user.get("phone", ""),
-                "address": user.get("address", ""),
-                "avatar": user.get("avatar", ""),
-                "loyalty_points": user.get("loyalty_points", ""),
-                "role_name": user.get("role_name", ""),
-                "token": token
-        }
-    
 
-def generate_token(email: Union[str, Any]) -> str:
-    expire = datetime.utcnow() + timedelta(
-        seconds=60 * 60 * 24 * 3 
-    )
-    to_encode = {
-        "exp": expire, "email": email
+    token = generate_token(request_data.email)
+
+    return {
+        "_id": str(user.get("_id")),
+        "email": user["email"],
+        "password": entered_password,
+        "fullname": user.get("fullname", ""),
+        "phone": user.get("phone", ""),
+        "address": user.get("address", ""),
+        "avatar": user.get("avatar", ""),
+        "loyalty_points": user.get("loyalty_points", 0),
+        "role_name": user.get("role_name", ""),
+        "token": token
     }
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=SECURITY_ALGORITHM)
-    return encoded_jwt
-
-
-def generate_otp():
-    return ''.join(random.choices(string.digits, k=6))
+    
 
 @router.post("/register")
 async def register_user(request_data: Users):
@@ -70,7 +57,10 @@ async def register_user(request_data: Users):
     otp = generate_otp()
     otp_expires_at = datetime.utcnow() + timedelta(minutes=5)
 
+    hashed_password = hash_password(request_data.password)
+
     new_user = request_data.dict(exclude={"id"})
+    new_user["password"] = hashed_password
     new_user["otp"] = otp
     new_user["otp_expires_at"] = otp_expires_at
     new_user["is_verified"] = False
@@ -209,11 +199,13 @@ async def reset_password(data: ResetPassword):
 
     if datetime.utcnow() > user["otp_expires_at"]:
         raise HTTPException(status_code=400, detail="Mã OTP đã hết hạn")
+    
+    hashed_password = hash_password(data.new_password)
 
     user_collection.update_one(
         {"email": data.email},
         {"$set": {
-            "password": data.new_password,  
+            "password": hashed_password,
             "otp": None,
             "otp_expires_at": None
         }}
