@@ -19,6 +19,8 @@ user_collection: Collection = database['Users']
 @router.post("/login")
 def login(request_data: LoginRegisterRequest):
     user = user_collection.find_one({"email": request_data.email})
+    print (datetime.now())
+    print (datetime.now())
 
     if not user:
         raise HTTPException(status_code=401, detail="Email hoặc mật khẩu không đúng")
@@ -55,7 +57,7 @@ async def register_user(request_data: Users):
         raise HTTPException(status_code=400, detail="Email đã tồn tại")
 
     otp = generate_otp()
-    otp_expires_at = datetime.utcnow() + timedelta(minutes=5)
+    otp_expires_at = datetime.now() + timedelta(minutes=5)
 
     hashed_password = hash_password(request_data.password)
 
@@ -64,7 +66,7 @@ async def register_user(request_data: Users):
     new_user["otp"] = otp
     new_user["otp_expires_at"] = otp_expires_at
     new_user["is_verified"] = False
-    new_user["created_at"] = datetime.utcnow()
+    new_user["created_at"] = datetime.now()
 
     user_collection.insert_one(new_user)
 
@@ -99,7 +101,7 @@ async def verify_otp(request_data: VerifyOTP):
     if user["otp"] != request_data.otp:
         raise HTTPException(status_code=400, detail="Mã OTP không hợp lệ")
 
-    if datetime.utcnow() > user["otp_expires_at"]:
+    if datetime.now() > user["otp_expires_at"]:
         raise HTTPException(status_code=400, detail="Mã OTP đã hết hạn")
 
     user_collection.update_one(
@@ -121,7 +123,7 @@ async def resend_otp(email_request: EmailRequest):
         raise HTTPException(status_code=400, detail="Tài khoản đã được xác thực")
 
     otp = generate_otp()
-    otp_expires_at = datetime.utcnow() + timedelta(minutes=5)
+    otp_expires_at = datetime.now() + timedelta(minutes=5)
 
     user_collection.update_one(
         {"email": email_request.email},
@@ -158,7 +160,7 @@ async def forgot_password(email_request: EmailRequest):
         raise HTTPException(status_code=404, detail="Email không tồn tại")
 
     otp = generate_otp()
-    otp_expires_at = datetime.utcnow() + timedelta(minutes=5)
+    otp_expires_at = datetime.now() + timedelta(minutes=5)
 
     user_collection.update_one(
         {"email": email_request.email},
@@ -197,7 +199,7 @@ async def reset_password(data: ResetPassword):
     if user["otp"] != data.otp:
         raise HTTPException(status_code=400, detail="Mã OTP không đúng")
 
-    if datetime.utcnow() > user["otp_expires_at"]:
+    if datetime.now() > user["otp_expires_at"]:
         raise HTTPException(status_code=400, detail="Mã OTP đã hết hạn")
     
     hashed_password = hash_password(data.new_password)

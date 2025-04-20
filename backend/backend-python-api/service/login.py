@@ -9,7 +9,7 @@ SECURITY_ALGORITHM = 'HS256'
 SECRET_KEY = '123456'
 
 def generate_token(email: Union[str, Any]) -> str:
-    expire = datetime.utcnow() + timedelta(
+    expire = datetime.now() + timedelta(
         seconds=60 * 60 * 24 * 3 
     )
     to_encode = {
