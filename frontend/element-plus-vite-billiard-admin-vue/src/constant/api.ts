@@ -127,20 +127,6 @@ export interface Suppliers {
     address: string;
 }
 
-export interface EmployeeTypes {
-    _id?: string;
-    employee_type_name: string;
-}
-
-export interface Employees {
-    _id?: string;
-    employee_type_id: string;
-    user_id?: string;
-    hourly_rate: number;
-    monthly_salary: number;
-    user_info?: Users;
-}
-
 export interface PricingRules {
     _id?: string;
     type_table_id: string;

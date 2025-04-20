@@ -61,25 +61,6 @@
             </router-link>
         </el-sub-menu>
 
-        <el-sub-menu index="10-11-12-13">
-            <template #title>
-                <el-icon><Ship /></el-icon>
-                <span>Nhân viên</span>
-            </template>
-            <router-link to="/employeetype">
-                <el-menu-item index="10">Loại nhân viên</el-menu-item>
-            </router-link>
-            <router-link to="/employee">
-                <el-menu-item index="11">Nhân viên</el-menu-item>
-            </router-link>
-            <router-link to="/shift">
-                <el-menu-item index="12">Ca làm việc</el-menu-item>
-            </router-link>
-            <router-link to="/employeepayment">
-                <el-menu-item index="13">Lương</el-menu-item>
-            </router-link>
-        </el-sub-menu>
-
         <router-link to="/news">
             <el-menu-item index="14">
                 <el-icon><Files /></el-icon>
@@ -174,18 +155,14 @@ const activeIndex = computed(() => {
     if (path.startsWith("/importbill")) return "7";
     if (path.startsWith("/menuitem")) return "8";
     if (path.startsWith("/rentalitem")) return "9";
-    if (path.startsWith("/employeetype")) return "10";
-    if (path.startsWith("/employee")) return "11";
-    if (path.startsWith("/shift")) return "12";
-    if (path.startsWith("/employeepayment")) return "13";
-    if (path.startsWith("/news")) return "14";
-    if (path.startsWith("/banner")) return "15";
-    if (path.startsWith("/categorymenuitem")) return "16";
-    if (path.startsWith("/categoryrentalitem")) return "17";
-    if (path.startsWith("/manufactor")) return "18";
-    if (path.startsWith("/supplier")) return "19";
-    if (path.startsWith("/typeaccount")) return "20";
-    if (path.startsWith("/account")) return "21";
+    if (path.startsWith("/news")) return "10";
+    if (path.startsWith("/banner")) return "11";
+    if (path.startsWith("/categorymenuitem")) return "12";
+    if (path.startsWith("/categoryrentalitem")) return "13";
+    if (path.startsWith("/manufactor")) return "14";
+    if (path.startsWith("/supplier")) return "15";
+    if (path.startsWith("/typeaccount")) return "16";
+    if (path.startsWith("/account")) return "17";
 
     return "0";
 });
