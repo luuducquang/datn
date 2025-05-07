@@ -1,4 +1,4 @@
-import type { Bookings, Tables } from "~/constant/api";
+import type { Bookings, ResponseData, Tables } from "~/constant/api";
 import { BookingUrl, TableUrl } from "~/constant/endpoints";
 import { apiClient } from "~/constant/request";
 
@@ -36,7 +36,7 @@ export const checkBooking = async (
 
 export const searchBooking = async (
     data: Record<string, string | number | Boolean>
-): Promise<Bookings> => {
+): Promise<ResponseData<Bookings>> => {
     const res = await apiClient?.post(`${BookingUrl}/search`, data);
     return res?.data;
 };

@@ -22,32 +22,45 @@ async def ser_check_availability_booking(
     end_time: datetime,
     booking_collection
 ):
-    if not ObjectId.is_valid(table_id):
+    # Không cần ObjectId nếu table_id trong DB là string
+    if not table_id:
         raise HTTPException(status_code=400, detail="Invalid table ID")
-    
-    if start_time >= end_time:
-        raise HTTPException(status_code=400, detail="Start time must be earlier than end time")
-    
+
+    # Parse thời gian nếu là string
     if isinstance(start_time, str):
         start_time = datetime.fromisoformat(start_time)
     if isinstance(end_time, str):
         end_time = datetime.fromisoformat(end_time)
 
-    start_time = start_time.replace(tzinfo=None)  
-    end_time = end_time.replace(tzinfo=None)    
+    # Bỏ timezone
+    start_time = start_time.replace(tzinfo=None)
+    end_time = end_time.replace(tzinfo=None)
+
+    if start_time >= end_time:
+        raise HTTPException(status_code=400, detail="Start time must be earlier than end time")
 
     try:
         conflict_count = booking_collection.count_documents({
-            "table_id": table_id,
+            "table_id": table_id,  # giữ nguyên kiểu string
             "status": True,
             "$and": [
-                {"start_time": {"$lt": end_time}}, 
-                {"end_time": {"$gt": start_time}}   
+                {"start_time": {"$lt": end_time}},
+                {"end_time": {"$gt": start_time}}
             ]
         })
+        print(f"[DEBUG] conflict_count: {conflict_count}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database query error: {e}")
-    
+    query = {
+        "table_id": table_id,
+        "status": True,
+        "$and": [
+            {"start_time": {"$lt": end_time}},
+            {"end_time": {"$gt": start_time}}
+        ]
+    }
+    print("[DEBUG QUERY]", query)
+    print(booking_collection.find_one({}))
     return conflict_count == 0
 
 
@@ -97,42 +110,34 @@ def ser_search_booking(_data:Searchs):
 def ser_insert_booking(_data: Bookings) -> str:
     booking_data = _data.dict(exclude={"id"})
     
-    if isinstance(booking_data.get("start_time"), datetime):
-        booking_data["start_time"] = booking_data["start_time"].isoformat()
-    elif not isinstance(booking_data.get("start_time"), str):
-        raise HTTPException(status_code=400, detail="Start time is required and must be a valid ISO 8601 string.")
+    # Giữ nguyên start_time và end_time dưới dạng datetime
+    if isinstance(booking_data.get("start_time"), datetime) and isinstance(booking_data.get("end_time"), datetime):
+        # Không cần phải chuyển đổi thành chuỗi ISO 8601
+        start_time = booking_data["start_time"]
+        end_time = booking_data["end_time"]
+    else:
+        raise HTTPException(status_code=400, detail="Start time and End time must be valid datetime objects.")
     
-    if isinstance(booking_data.get("end_time"), datetime):
-        booking_data["end_time"] = booking_data["end_time"].isoformat()
-    elif not isinstance(booking_data.get("end_time"), str):
-        raise HTTPException(status_code=400, detail="End time is required and must be a valid ISO 8601 string.")
+    # Lấy thời gian hiện tại của hệ thống
+    vietnam_now = datetime.now()
     
-    try:
-        start_time = datetime.fromisoformat(booking_data["start_time"])
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Start time format is invalid. Must be ISO 8601 format.")
+    # Kiểm tra thời gian bắt đầu có cách thời gian hiện tại ít nhất 30 phút không
+    if start_time < vietnam_now + timedelta(minutes=30):
+        raise HTTPException(status_code=400, detail="Vui lòng chọn thời gian bắt đầu sau hiện tại 30 phút để chúng tôi chuẩn bị.")
     
-    start_time = start_time.replace(tzinfo=timezone.utc)  
-
-    vietnam_now = datetime.now(timezone.utc) + timedelta(hours=7)
-
-    if start_time < vietnam_now + timedelta(minutes=29):
-        raise HTTPException(status_code=400, detail="Vui lòng chọn thời gian bắt đầu sau hiện tại 30 phút để chúng tôi chuẩn bị")
-    
-    try:
-        end_time = datetime.fromisoformat(booking_data["end_time"])
-    except ValueError:
-        raise HTTPException(status_code=400, detail="End time format is invalid. Must be ISO 8601 format.")
-    
-    end_time = end_time.replace(tzinfo=timezone.utc)
-
+    # Kiểm tra thời gian kết thúc có ít nhất 30 phút sau thời gian bắt đầu không
     if end_time <= start_time + timedelta(minutes=30):
         raise HTTPException(status_code=400, detail="Vui lòng chọn thời gian kết thúc sau thời gian bắt đầu ít nhất 30 phút.")
     
+    # Cập nhật created_at với thời gian hiện tại của hệ thống
     booking_data["created_at"] = vietnam_now
-
-    result = booking_collection.insert_one(booking_data)
-    return str(result.inserted_id)
+    
+    # Lưu booking vào MongoDB
+    try:
+        result = booking_collection.insert_one(booking_data)
+        return str(result.inserted_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error inserting booking: {e}")
 
 
 def ser_update_booking(_data: Bookings, booking_collection: Collection):

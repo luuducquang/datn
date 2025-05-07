@@ -23,7 +23,7 @@
                                 v-if="!table.status"
                                 data-bs-toggle="modal"
                                 data-bs-target="#exampleModal"
-                                @click="openModal(table?._id)"
+                                @click="openModal(String(table?._id))"
                                 href="#exampleModalToggle"
                                 role="button"
                             >
@@ -266,6 +266,8 @@ const submitBooking = async () => {
                 closeModal();
                 fetchData();
                 Swal.fire("Thành công", "Đặt bàn thành công!", "success");
+                console.log(startTime.value);
+                console.log(endTime.value);
             } else {
                 Swal.fire(
                     "Thất bại",
@@ -291,16 +293,20 @@ const onModalHidden = () => {
 
 const closeModal = () => {
     const modalElement = document.getElementById("exampleModal");
-    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-    modalInstance.hide();
+    const modalInstance = bootstrap?.Modal.getInstance(modalElement);
+    modalInstance?.hide();
+
     isModalOpen.value = false;
     customerName.value = "";
     customerPhone.value = "";
+    startTime.value = getDefaultDateTime();
+    endTime.value = getDefaultDateTime();
+    selectedTableId.value = "";
 };
 
 const getTimeDifference = (createdAt: Date) => {
-    const createdDate = new Date(createdAt);
-    const currentDate = new Date();
+    const createdDate: any = new Date(createdAt);
+    const currentDate: any = new Date();
     const differenceMs = currentDate - createdDate;
     const differenceMinutes = Math.floor(differenceMs / (1000 * 60));
     if (differenceMinutes < 60) {
@@ -346,6 +352,8 @@ const fetchData = async () => {
 
 onMounted(async () => {
     await fetchData();
+    // const now = DateTime.now().toISO();
+    // console.log(now);
     const modalElement = document.getElementById("exampleModal");
     if (modalElement) {
         modalElement.addEventListener("hidden.bs.modal", onModalHidden);
@@ -440,13 +448,18 @@ onMounted(async () => {
     background-color: #2ecc71 !important;
 }
 
+.btn-success {
+    background-color: var(--color-primary) !important;
+    border: none;
+}
+
 .modal-content {
     border-radius: 10px;
     overflow: hidden;
 }
 
 .modal-header {
-    background: linear-gradient(90deg, #007bff, #0056b3);
+    background: linear-gradient(90deg, var(--color-primary), #0056b3);
 }
 
 .btn-close-white {
@@ -470,7 +483,7 @@ onMounted(async () => {
 
 .form-control:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    border-color: #007bff;
+    border-color: var(--color-primary);
 }
 
 .list-booking {
