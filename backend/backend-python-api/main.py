@@ -5,6 +5,7 @@ from routes.upload import router as upload_router
 from routes.roles import router as roles_router
 from routes.users import router as users_router
 from routes.bookings import router as booking_router
+from routes.bookingItems import router as bookingItems_router
 from routes.tableTypes import router as tableTypes_router
 from routes.tables import router as tables_router
 from routes.rentals import router as rentals_router
@@ -57,6 +58,7 @@ app.include_router(upload_router)
 app.include_router(roles_router)
 app.include_router(users_router)
 app.include_router(booking_router)
+app.include_router(bookingItems_router)
 app.include_router(tableTypes_router)
 app.include_router(tables_router)
 app.include_router(rentals_router)

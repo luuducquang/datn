@@ -1,10 +1,10 @@
 <template>
     <div class="container py-4">
         <div class="row g-3">
-            <div class="col-12 col-lg-9 order-1 order-lg-1">
+            <div class="col-12 col-lg-12 order-1 order-lg-1">
                 <div class="row g-3">
                     <div
-                        class="col-6 col-md-6 col-lg-4"
+                        class="col-12 col-md-6 col-lg-4"
                         v-for="table in tableData"
                         :key="table._id"
                     >
@@ -33,33 +33,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-12 col-lg-3 order-2 order-lg-2">
-                <div class="p-3 border rounded shadow-sm bg-light list-booking">
-                    <h4>Danh sách đặt bàn</h4>
-                    <div v-if="searchBookingData && searchBookingData.length">
-                        <div
-                            v-for="(booking, index) in searchBookingData"
-                            :key="index"
-                            class="mb-3 p-2 border-bottom"
-                        >
-                            <p class="fw-bold">
-                                Bàn: {{ booking.table?.table_number }}
-                            </p>
-                            <p>Tên: {{ booking.name }}</p>
-                            <p>Điện thoại: {{ booking.phone }}</p>
-                            <p>Bắt đầu: {{ formatTime(booking.start_time) }}</p>
-                            <p>Kết thúc: {{ formatTime(booking.end_time) }}</p>
-                            <p class="text-end">
-                                {{ getTimeDifference(booking.created_at) }}
-                            </p>
-                        </div>
-                    </div>
-                    <div v-else>
-                        <p>Không có dữ liệu đặt bàn.</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -69,12 +42,16 @@
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
-        v-show="isModalOpen"
     >
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content shadow-lg border-0">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="exampleModalLabel">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div
+                class="modal-content shadow-lg border-0 rounded-4 overflow-hidden"
+            >
+                <div class="modal-header bg-primary text-white py-3 px-4">
+                    <h5
+                        class="modal-title fw-semibold mb-0"
+                        id="exampleModalLabel"
+                    >
                         Thông tin đặt bàn
                     </h5>
                     <button
@@ -84,83 +61,262 @@
                         aria-label="Close"
                     ></button>
                 </div>
-                <div class="modal-body">
-                    <form id="booking-form" @submit.prevent="submitBooking">
-                        <div class="mb-3">
-                            <label
-                                for="recipient-name"
-                                class="form-label fw-bold"
-                                >Tên khách hàng:</label
+
+                <div class="modal-body p-0">
+                    <div class="row g-0">
+                        <div class="col-12 col-lg-8 border-end p-4">
+                            <form
+                                id="booking-form"
+                                @submit.prevent="submitBooking"
                             >
-                            <input
-                                type="text"
-                                class="form-control rounded-3"
-                                id="recipient-name"
-                                v-model="customerName"
-                                placeholder="Nhập tên khách hàng"
-                                required
-                            />
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold"
+                                            >Tên khách hàng</label
+                                        >
+                                        <input
+                                            type="text"
+                                            class="form-control rounded-3"
+                                            v-model="customerName"
+                                            placeholder="Nhập tên khách hàng"
+                                            required
+                                        />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold"
+                                            >Số điện thoại</label
+                                        >
+                                        <input
+                                            type="tel"
+                                            class="form-control rounded-3"
+                                            v-model="customerPhone"
+                                            placeholder="Nhập số điện thoại"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold"
+                                            >Thời gian bắt đầu</label
+                                        >
+                                        <input
+                                            type="datetime-local"
+                                            class="form-control rounded-3"
+                                            v-model="startTime"
+                                            required
+                                        />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-bold"
+                                            >Thời gian kết thúc</label
+                                        >
+                                        <input
+                                            type="datetime-local"
+                                            class="form-control rounded-3"
+                                            v-model="endTime"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p class="form-label fw-bold mb-3">
+                                        Thêm dịch vụ
+                                    </p>
+                                    <div
+                                        class="row g-2 align-items-center mb-3"
+                                    >
+                                        <div class="col-md-6">
+                                            <select
+                                                class="form-select"
+                                                v-model="selectedItem"
+                                            >
+                                                <option disabled value="">
+                                                    Chọn dịch vụ
+                                                </option>
+                                                <option
+                                                    v-for="item in optionListMenuItems"
+                                                    :key="item.label"
+                                                    :value="item"
+                                                >
+                                                    {{ item.label }} -
+                                                    {{
+                                                        item?.price
+                                                            ? item?.price.toLocaleString()
+                                                            : ""
+                                                    }}đ
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input
+                                                type="number"
+                                                class="form-control"
+                                                placeholder="Số lượng"
+                                                v-model.number="
+                                                    selectedQuantity
+                                                "
+                                                min="1"
+                                            />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button
+                                                class="btn btn-primary w-100"
+                                                type="button"
+                                                @click="addService"
+                                            >
+                                                Thêm
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <table
+                                        class="table table-bordered mt-3"
+                                        v-if="addedServices.length"
+                                    >
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="text-center">
+                                                    Tên dịch vụ
+                                                </th>
+                                                <th class="text-center">
+                                                    Số lượng
+                                                </th>
+                                                <th class="text-center">
+                                                    Đơn giá (đ)
+                                                </th>
+                                                <th class="text-center">
+                                                    Thành tiền (đ)
+                                                </th>
+                                                <th class="text-center">
+                                                    Hành động
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-for="(
+                                                    item, index
+                                                ) in addedServices"
+                                                :key="index"
+                                            >
+                                                <td>
+                                                    {{ item.name }}
+                                                </td>
+                                                <td class="text-center">
+                                                    <div
+                                                        class="d-flex justify-content-center align-items-center gap-2"
+                                                    >
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-sm btn-outline-secondary"
+                                                            @click="
+                                                                decreaseQuantity(
+                                                                    index
+                                                                )
+                                                            "
+                                                        >
+                                                            -
+                                                        </button>
+                                                        <span
+                                                            class="btn btn-sm"
+                                                            >{{
+                                                                item.quantity
+                                                            }}</span
+                                                        >
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-sm btn-outline-secondary"
+                                                            @click="
+                                                                increaseQuantity(
+                                                                    index
+                                                                )
+                                                            "
+                                                        >
+                                                            +
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    {{
+                                                        item.unit_price
+                                                            ? item.unit_price.toLocaleString()
+                                                            : ""
+                                                    }}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{
+                                                        item.unit_price
+                                                            ? item.total_price.toLocaleString()
+                                                            : ""
+                                                    }}
+                                                </td>
+                                                <td class="text-center">
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-sm btn-danger"
+                                                        @click="
+                                                            removeService(index)
+                                                        "
+                                                    >
+                                                        Xoá
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="text-center">
+                                    <button
+                                        type="submit"
+                                        class="btn btn-success px-5"
+                                    >
+                                        Đặt bàn ngay
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label
-                                for="recipient-phone"
-                                class="form-label fw-bold"
-                                >Số điện thoại:</label
+
+                        <div class="col-12 col-lg-4 p-4 bg-light">
+                            <h5 class="fw-bold mb-3">Danh sách đặt bàn</h5>
+                            <div
+                                v-if="
+                                    searchBookingData &&
+                                    searchBookingData.length
+                                "
                             >
-                            <input
-                                type="tel"
-                                class="form-control rounded-3"
-                                id="recipient-phone"
-                                v-model="customerPhone"
-                                placeholder="Nhập số điện thoại"
-                                required
-                            />
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label
-                                    for="start-time"
-                                    class="form-label fw-bold"
-                                    >Thời gian bắt đầu:</label
+                                <div
+                                    v-for="(
+                                        booking, index
+                                    ) in searchBookingData"
+                                    :key="index"
+                                    class="mb-3 p-3 border rounded bg-white shadow-sm"
                                 >
-                                <input
-                                    type="datetime-local"
-                                    class="form-control rounded-3"
-                                    id="start-time"
-                                    v-model="startTime"
-                                    required
-                                />
+                                    <div>
+                                        <strong>Bắt đầu:</strong>
+                                        {{ formatTime(booking.start_time) }}
+                                    </div>
+                                    <div>
+                                        <strong>Kết thúc:</strong>
+                                        {{ formatTime(booking.end_time) }}
+                                    </div>
+                                    <div class="text-end text-muted small mt-1">
+                                        {{
+                                            getTimeDifference(
+                                                booking.created_at
+                                            )
+                                        }}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="end-time" class="form-label fw-bold"
-                                    >Thời gian kết thúc:</label
-                                >
-                                <input
-                                    type="datetime-local"
-                                    class="form-control rounded-3"
-                                    id="end-time"
-                                    v-model="endTime"
-                                    required
-                                />
+                            <div v-else class="text-muted">
+                                <p>Không có dữ liệu đặt bàn.</p>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                    >
-                        Đóng
-                    </button>
-                    <button
-                        type="submit"
-                        class="btn btn-success"
-                        @click="submitBooking"
-                    >
-                        Đặt bàn ngay
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -175,9 +331,15 @@ import {
     createBooking,
     getAllTable,
     getTableById,
-    searchBooking,
+    getBookingByID,
+    getAllMenuItem,
 } from "~/services/booking.service";
-import { type Bookings, type Tables } from "~/constant/api";
+import {
+    type OptionSelect,
+    type Bookings,
+    type Tables,
+    type BookingItems,
+} from "~/constant/api";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -187,6 +349,10 @@ const getDefaultDateTime = () => {
     return vietnamTime.toISOString().slice(0, 16);
 };
 
+const selectedItem = ref<any>("");
+const selectedQuantity = ref(1);
+const addedServices = ref<BookingItems[]>([]);
+const optionListMenuItems = ref<OptionSelect[]>();
 const tableData = ref<Tables[]>([]);
 const searchBookingData = ref<Bookings[]>([]);
 const loading = ref(true);
@@ -216,9 +382,49 @@ socket.on("table_status_updated", (data) => {
     }
 });
 
-const openModal = (id: string) => {
+const openModal = async (id: string) => {
     selectedTableId.value = id;
     isModalOpen.value = true;
+    const resBooking = await getBookingByID(id);
+    searchBookingData.value = resBooking;
+};
+
+const addService = () => {
+    if (!selectedItem.value || selectedQuantity.value <= 0) {
+        Swal.fire("Lỗi", "Vui lòng chọn dịch vụ và số lượng hợp lệ!", "error");
+        return;
+    }
+
+    addedServices.value.push({
+        booking_id: selectedTableId.value,
+        item_id: String(selectedItem?.value?.value),
+        quantity: Number(selectedQuantity.value),
+        unit_price: Number(selectedItem.value.price),
+        total_price: Number(selectedItem.value.price) * selectedQuantity.value,
+
+        name: String(selectedItem?.value?.label),
+    });
+    selectedQuantity.value = 1;
+};
+
+const increaseQuantity = (index: number) => {
+    addedServices.value[index].quantity += 1;
+    addedServices.value[index].total_price =
+        addedServices.value[index].quantity *
+        addedServices.value[index].unit_price;
+};
+
+const decreaseQuantity = (index: number) => {
+    if (addedServices.value[index].quantity > 1) {
+        addedServices.value[index].quantity -= 1;
+        addedServices.value[index].total_price =
+            addedServices.value[index].quantity *
+            addedServices.value[index].unit_price;
+    }
+};
+
+const removeService = (index: number) => {
+    addedServices.value.splice(index, 1);
 };
 
 const submitBooking = async () => {
@@ -266,8 +472,6 @@ const submitBooking = async () => {
                 closeModal();
                 fetchData();
                 Swal.fire("Thành công", "Đặt bàn thành công!", "success");
-                console.log(startTime.value);
-                console.log(endTime.value);
             } else {
                 Swal.fire(
                     "Thất bại",
@@ -284,18 +488,14 @@ const submitBooking = async () => {
     }
 };
 
-const onModalHidden = () => {
-    const backdrop = document.querySelector(".modal-backdrop");
-    if (backdrop) {
-        backdrop.remove();
-    }
-};
+// const onModalHidden = () => {
+//     const backdrop = document.querySelector(".modal-backdrop");
+//     if (backdrop) {
+//         backdrop.remove();
+//     }
+// };
 
 const closeModal = () => {
-    const modalElement = document.getElementById("exampleModal");
-    const modalInstance = bootstrap?.Modal.getInstance(modalElement);
-    modalInstance?.hide();
-
     isModalOpen.value = false;
     customerName.value = "";
     customerPhone.value = "";
@@ -336,12 +536,21 @@ const fetchData = async () => {
         const res = await getAllTable();
         tableData.value = res;
 
-        const resBooking = await searchBooking({
-            page: 1,
-            pageSize: 100,
-            status: true,
-        });
-        searchBookingData.value = resBooking?.data.reverse();
+        const resListMenuItem = await getAllMenuItem();
+        optionListMenuItems.value = resListMenuItem
+            ?.filter(function (item) {
+                return item?.stock_quantity > 0;
+            })
+            ?.map(function ({ _id, name, price }) {
+                return {
+                    value: _id || 0,
+                    label: name || "",
+                    price: price || 0,
+                };
+            })
+            ?.sort(function (a, b) {
+                return a.label.localeCompare(b.label);
+            });
     } catch (error) {
         console.error("Error fetching:", error);
         tableData.value = [];
@@ -356,7 +565,9 @@ onMounted(async () => {
     // console.log(now);
     const modalElement = document.getElementById("exampleModal");
     if (modalElement) {
-        modalElement.addEventListener("hidden.bs.modal", onModalHidden);
+        modalElement.addEventListener("hidden.bs.modal", () => {
+            closeModal(); // làm sạch dữ liệu
+        });
     }
 });
 </script>
@@ -484,10 +695,5 @@ onMounted(async () => {
 .form-control:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     border-color: var(--color-primary);
-}
-
-.list-booking {
-    max-height: 560px;
-    overflow-y: scroll;
 }
 </style>

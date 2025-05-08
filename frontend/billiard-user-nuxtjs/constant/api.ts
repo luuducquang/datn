@@ -5,6 +5,14 @@ export interface ResponseData<T> {
     totalItems: number;
 }
 
+export interface OptionSelect {
+    value: string | number;
+    label: string;
+    price?: number;
+    gia?: number;
+    hinhAnh?: string;
+}
+
 export interface TableTypes {
     _id?: string;
     table_type_name: string;
@@ -31,6 +39,32 @@ export interface Bookings {
     status: Boolean;
     created_at: Date;
     table?: Tables;
+}
+
+export interface BookingItems {
+    _id?: string;
+    booking_id: string;
+    item_id: string;
+    quantity: number;
+    unit_price: number;
+    total_price: number;
+    menuitem?: MenuItems;
+    name?: string;
+}
+
+export interface CategoryMenuItems {
+    _id?: string;
+    category_name: string;
+}
+
+export interface MenuItems {
+    _id?: string;
+    name: string;
+    image: string;
+    stock_quantity: number;
+    price: number;
+    category_id: string;
+    categorymenuitem?: CategoryMenuItems;
 }
 
 export interface PricingRules {

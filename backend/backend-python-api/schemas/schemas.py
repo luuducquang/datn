@@ -68,6 +68,15 @@ class Bookings(BaseModel):
     end_time: datetime
     status: Optional[bool]
 
+class BookingItems(BaseModel):
+    id: Optional[str] = Field(None, alias="_id")  
+    booking_id: str
+    item_id: str
+    name:str
+    quantity: int
+    unit_price: int
+    total_price: int
+
 class TableTypes(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     table_type_name: str
