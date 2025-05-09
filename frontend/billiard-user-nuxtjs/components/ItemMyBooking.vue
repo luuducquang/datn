@@ -94,8 +94,11 @@
 
                 <div class="text-center">
                     <button
-                        v-if="new Date(now) > new Date(value?.start_time)"
-                        class="btn btn-danger mt-2"
+                        v-if="
+                            new Date(now) < new Date(value?.start_time) &&
+                            value.status
+                        "
+                        class="btn btn-danger mt-2 mb-3"
                         @click="
                             handleCancelBooking(
                                 String(value?._id),
@@ -108,16 +111,51 @@
                 </div>
 
                 <div
-                    v-if="new Date(now) <= new Date(value?.end_time)"
+                    v-if="new Date(now) >= new Date(value?.end_time)"
                     class="mt-3 text-center"
                 >
                     <h6>Đánh giá dịch vụ</h6>
+
                     <textarea
                         v-model="reviewText"
                         class="form-control mb-2"
                         placeholder="Nhập nhận xét của bạn"
                         rows="3"
                     ></textarea>
+
+                    <div class="mb-2">
+                        <label class="me-2">Chọn số sao:</label>
+                        <span
+                            v-for="star in 5"
+                            :key="star"
+                            class="me-1"
+                            style="cursor: pointer"
+                            @click="selectedStar = star"
+                        >
+                            <i
+                                :class="
+                                    star <= selectedStar
+                                        ? 'bi bi-star-fill text-warning'
+                                        : 'bi bi-star text-muted'
+                                "
+                            ></i>
+                        </span>
+                    </div>
+
+                    <div class="mb-2">
+                        <input
+                            type="file"
+                            @change="handleImageUpload"
+                            accept="image/*"
+                        />
+                        <div v-if="previewImage" class="mt-2">
+                            <img
+                                :src="previewImage"
+                                alt="Preview"
+                                style="max-width: 100%; max-height: 200px"
+                            />
+                        </div>
+                    </div>
 
                     <button
                         class="btn btn-primary"
@@ -138,15 +176,22 @@ import { apiImage } from "~/constant/request";
 import { getDetailBookingItemById } from "~/services/mybooking.service";
 import formatTime from "~/store/formatTime";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
+import {
+    getInformation,
+    updateInformation,
+} from "~/services/information.service";
+import { updateStatusBooking } from "~/services/booking.service";
 
 const props = defineProps<{
     booking: Bookings[];
 }>();
 
+const emit = defineEmits(["refreshBooking"]);
+
 const detailBookingItems = ref<BookingItems[]>([]);
 const now = new Date();
 const reviewText: Ref<string> = ref("");
-const reviewImage: Ref<File | null> = ref(null);
 
 function handleCancelBooking(bookingId: string, money_paid: number) {
     Swal.fire({
@@ -163,56 +208,73 @@ function handleCancelBooking(bookingId: string, money_paid: number) {
         cancelButtonColor: "#6c757d",
         confirmButtonText: "Có, huỷ ngay",
         cancelButtonText: "Không",
-    }).then((result) => {
+    }).then(async (result) => {
         if (result.isConfirmed) {
-            // Gọi API huỷ đặt bàn ở đây
-            // Ví dụ:
-            // cancelBookingAPI(bookingId)
-            //   .then(() => Swal.fire("Đã huỷ!", "Bàn đã được huỷ.", "success"))
-            //   .catch(() => Swal.fire("Lỗi!", "Không thể huỷ bàn.", "error"));
-
+            const customerData = Cookies.get("customer");
+            if (customerData) {
+                const customer = JSON.parse(customerData);
+                const dataUser = await getInformation(customer._id);
+                await updateInformation({
+                    _id: customer._id,
+                    username: customer.username,
+                    password: customer.password,
+                    fullname: customer.fullname,
+                    email: customer.email,
+                    phone: customer.phone,
+                    address: customer.address,
+                    avatar: dataUser.avatar,
+                    loyalty_points: customer.loyalty_points + money_paid,
+                    role_name: customer.role_name,
+                });
+                await updateStatusBooking(bookingId);
+                emit("refreshBooking");
+            }
             Swal.fire("Đã huỷ!", "Bàn đã được huỷ thành công.", "success");
         }
     });
 }
 
-function handleReviewImageUpload(e: Event): void {
-    const target = e.target as HTMLInputElement;
-    if (target.files && target.files[0]) {
-        reviewImage.value = target.files[0];
-    }
-}
-async function submitReview(bookingId: string): Promise<void> {
-    if (!reviewText.value.trim()) {
-        alert("Vui lòng nhập nội dung đánh giá.");
-        return;
-    }
+const selectedStar = ref<number>(0);
+const uploadedImage = ref<File | null>(null);
+const previewImage = ref<string | null>(null);
 
-    const formData = new FormData();
-    formData.append("text", reviewText.value);
-    if (reviewImage.value) {
-        formData.append("image", reviewImage.value);
-    }
-    formData.append("booking_id", bookingId);
+const handleImageUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
 
-    try {
-        const response = await fetch("/api/reviews", {
-            method: "POST",
-            body: formData,
-        });
+  if (file) {
+    uploadedImage.value = file;
+    previewImage.value = URL.createObjectURL(file);
+  }
+};
 
-        if (!response.ok) {
-            throw new Error("Gửi đánh giá thất bại.");
-        }
+const submitReview = async (id: string) => {
+  if (!reviewText.value || selectedStar.value === 0) {
+    alert('Vui lòng nhập nhận xét và chọn số sao.');
+    return;
+  }
 
-        alert("Đánh giá đã được gửi thành công.");
-        reviewText.value = "";
-        reviewImage.value = null;
-    } catch (error) {
-        console.error(error);
-        alert("Có lỗi xảy ra khi gửi đánh giá.");
-    }
-}
+  const formData = new FormData();
+  formData.append('reviewText', reviewText.value);
+  formData.append('rating', selectedStar.value.toString());
+
+  if (uploadedImage.value) {
+    formData.append('image', uploadedImage.value);
+  }
+
+  try {
+      console.log(selectedStar.value);
+
+    alert('Đánh giá đã được gửi!');
+    reviewText.value = '';
+    selectedStar.value = 0;
+    uploadedImage.value = null;
+    previewImage.value = null;
+  } catch (error) {
+    console.error('Lỗi khi gửi đánh giá:', error);
+    alert('Có lỗi xảy ra. Vui lòng thử lại.');
+  }
+};
 
 const fetchData = () => {
     setTimeout(async () => {

@@ -5,7 +5,12 @@
             <i class="fa-solid fa-arrow-right"></i>
             <NuxtLink to="/invoice">Lịch sử đặt bàn</NuxtLink>
         </div>
-        <div class="mt-3"><item-my-booking :booking="dataMybooking" /></div>
+        <div class="mt-3">
+            <item-my-booking
+                :booking="dataMybooking"
+                @refreshBooking="fetchData"
+            />
+        </div>
     </div>
 </template>
 
