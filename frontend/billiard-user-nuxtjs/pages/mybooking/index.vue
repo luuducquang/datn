@@ -1,11 +1,11 @@
 <template>
-    <div class="container mb-3">
+    <div class="container mb-3 mt-3">
         <div class="type">
             <NuxtLink to="/">TRANG CHỦ</NuxtLink>
             <i class="fa-solid fa-arrow-right"></i>
-            <NuxtLink to="/invoice">Lịch sử đơn hàng</NuxtLink>
+            <NuxtLink to="/invoice">Lịch sử đặt bàn</NuxtLink>
         </div>
-        <div class="mt-3"><item-invoice :billsell="dataInvoice" /></div>
+        <div class="mt-3"><item-my-booking :booking="dataMybooking" /></div>
     </div>
 </template>
 
@@ -13,20 +13,20 @@
 import { onMounted, ref } from "vue";
 import Cookies from "js-cookie";
 import { useRouter } from "vue-router";
-import { type BillSells } from "~/constant/api";
-import { getInvoiceAll } from "~/services/invoice.service";
+import { type Bookings } from "~/constant/api";
+import { getBookingByID } from "~/services/mybooking.service";
 
 const router = useRouter();
 
-const dataInvoice = ref<BillSells[]>([]);
+const dataMybooking = ref<Bookings[]>([]);
 
 const fetchData = async () => {
     const customerData = Cookies.get("customer");
     if (customerData) {
         try {
             const customer = JSON.parse(customerData);
-            const dataFetch = await getInvoiceAll(customer._id);
-            dataInvoice.value = dataFetch;
+            const dataFetch = await getBookingByID(customer._id);
+            dataMybooking.value = dataFetch.reverse();
         } catch (error) {
             console.error("Failed to parse customer data from cookies:", error);
             Cookies.remove("customer");

@@ -62,10 +62,12 @@ class News(BaseModel):
 class Bookings(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     table_id: str
+    user_id: str
     name: str
     phone: str
     start_time: datetime
     end_time: datetime
+    money_paid:int
     status: Optional[bool]
 
 class BookingItems(BaseModel):
@@ -73,6 +75,7 @@ class BookingItems(BaseModel):
     booking_id: str
     item_id: str
     name:str
+    image:str
     quantity: int
     unit_price: int
     total_price: int

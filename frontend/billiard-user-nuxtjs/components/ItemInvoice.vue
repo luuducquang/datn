@@ -113,7 +113,7 @@
 import { onMounted, ref, nextTick } from "vue";
 import type { BillSells, SellItems } from "~/constant/api";
 import { apiImage } from "~/constant/request";
-import { getInvoiceById } from "~/services/invoice.servie";
+import { getInvoiceById } from "~/services/invoice.service";
 
 const props = defineProps<{
     billsell: BillSells[];
@@ -135,7 +135,6 @@ const fetchData = () => {
             })
         );
         detailBillSells.value = listDetail.flat();
-        console.log(detailBillSells.value);
     }, 1000);
 };
 

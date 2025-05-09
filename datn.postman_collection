@@ -856,7 +856,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"table_id\": \"6732cee552e9e56c542a2490\",\r\n    \"name\": \"123\",\r\n    \"phone\": \"123\",\r\n    \"start_time\": \"2024-09-12T10:00:00.000Z\",\r\n    \"end_time\": \"2024-09-12T10:00:00.000Z\",\r\n    \"status\": true\r\n}",
+							"raw": "{\r\n    \"table_id\": \"6732cee552e9e56c542a2490\",\r\n    \"user_id\": \"6732cee552e9e56c542a2490\",\r\n    \"name\": \"123\",\r\n    \"phone\": \"123\",\r\n    \"start_time\": \"2025-05-09T2:30\",\r\n    \"end_time\": \"2025-05-09T3:00\",\r\n    \"money_paid\": 1000,\r\n    \"status\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -883,7 +883,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"_id\": \"66f7ebc98721b50fa6891900\",\r\n    \"table_id\": \"fgfjfgjxsw5w534dg7\",\r\n    \"name\": \"123\",\r\n    \"phone\": \"123\",\r\n    \"start_time\": \"2019-01-31T10:00:00\",\r\n    \"end_time\": \"2019-01-31T10:00:00\",\r\n    \"status\": true\r\n}",
+							"raw": "{\r\n    \"_id\": \"66f7ebc98721b50fa6891900\",\r\n    \"table_id\": \"6732cee552e9e56c542a2490\",\r\n    \"user_id\": \"6732cee552e9e56c542a2490\",\r\n    \"name\": \"123\",\r\n    \"phone\": \"123\",\r\n    \"start_time\": \"2025-05-09T2:30\",\r\n    \"end_time\": \"2025-05-09T3:00\",\r\n    \"money_paid\": 1000,\r\n    \"status\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -956,7 +956,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"table_id\": \"fgfjfgjxsw5w534dg7\",\r\n    \"start_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"end_time\": \"2020-01-31T10:00:00.000Z\"\r\n}",
+							"raw": "{\r\n    \"table_id\": \"6732cee552e9e56c542a2490\",\r\n    \"start_time\": \"2025-05-08T20:19\",\r\n    \"end_time\": \"2025-05-08T23:19\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -971,6 +971,197 @@
 							"path": [
 								"bookings",
 								"check-availability-booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBookingbyTableID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/bookings/get-by-table/6732cee552e9e56c542a2490",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"get-by-table",
+								"6732cee552e9e56c542a2490"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateStatusBooking",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/bookings/update-status/681da6c60b834a62d276913d",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"update-status",
+								"681da6c60b834a62d276913d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBookingbyUserID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/bookings/get-booking-by-userid/6804adfc832c1ccd40e7b73f",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"get-booking-by-userid",
+								"6804adfc832c1ccd40e7b73f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBookingbyUserID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/bookings/get-booking-by-userid/6804adfc832c1ccd40e7b73f",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"get-booking-by-userid",
+								"6804adfc832c1ccd40e7b73f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BookingItems",
+			"item": [
+				{
+					"name": "addbookingItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"booking_id\": \"6732cee552e9e56c542a2492\",\r\n    \"item_id\": \"6710887b9456a9b32225c7af\",\r\n    \"name\": \"1\",\r\n    \"image\": \"1\",\r\n    \"quantity\": \"1\",\r\n    \"unit_price\": \"13\",\r\n    \"total_price\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/bookingitems/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookingitems",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbookingItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/bookingitems/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookingitems",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editbookingItem",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":  \"66f7f0843bba28672d537138\",\r\n    \"table_type_name\": \"ban11\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tabletypes/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tabletypes",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletebookingItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tabletypes/delete/66f7f0843bba28672d537138",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tabletypes",
+								"delete",
+								"66f7f0843bba28672d537138"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidBookingItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/bookingitems/get/6732cee552e9e56c542a2490",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookingitems",
+								"get",
+								"6732cee552e9e56c542a2490"
 							]
 						}
 					},
@@ -3400,7 +3591,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"user_id\": \"fgfjfgjxsw5w534dg\",\r\n  \"sell_date\": \"2024-12-11T10:30:00\",\r\n  \"name\": \"Nguyen Van A\",\r\n  \"email\": \"example@gmail.com\",\r\n  \"phone\": \"0123456789\",\r\n  \"address\": \"123 Street\",\r\n  \"address_detail\": \"Apartment 456\",\r\n  \"total_price\": 100000,\r\n  \"status\": \"đang chờ\",\r\n  \"sell_items\": [\r\n    {\r\n      \"item_id\": \"fgfjfgjxsw5w534dg\",\r\n      \"quantity\": 2,\r\n      \"unit_price\": 10000,\r\n      \"total_price\": 20000\r\n    },\r\n    {\r\n      \"item_id\": \"fgfjfgjxsw5w534dg\",\r\n      \"quantity\": 1,\r\n      \"unit_price\": 80000,\r\n      \"total_price\": 80000\r\n    }\r\n  ]\r\n}\r\n",
+							"raw": "{\r\n  \"user_id\": \"fgfjfgjxsw5w534dg\",\r\n  \"sell_date\": \"2024-12-11T10:30:00\",\r\n  \"name\": \"Nguyen Van A\",\r\n  \"email\": \"example@gmail.com\",\r\n  \"phone\": \"0123456789\",\r\n  \"address\": \"123 Street\",\r\n  \"address_detail\": \"Apartment 456\",\r\n  \"total_price\": 100000,\r\n  \"status\": \"đang chờ\",\r\n  \"is_paid\":false,\r\n  \"sell_items\": [\r\n    {\r\n      \"item_id\": \"fgfjfgjxsw5w534dg\",\r\n      \"quantity\": 2,\r\n      \"unit_price\": 10000,\r\n      \"total_price\": 20000\r\n    },\r\n    {\r\n      \"item_id\": \"fgfjfgjxsw5w534dg\",\r\n      \"quantity\": 1,\r\n      \"unit_price\": 80000,\r\n      \"total_price\": 80000\r\n    }\r\n  ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3545,6 +3736,52 @@
 								"billsells",
 								"get-detail-billsell",
 								"67625dc58d7efa64d5df9ddb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "paypalCreateOrder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"amount\": 48000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/paypal/create-order",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"paypal",
+								"create-order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "captureOrder",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/paypal/capture-order/88P255218F6529611",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"paypal",
+								"capture-order",
+								"88P255218F6529611"
 							]
 						}
 					},
@@ -3724,7 +3961,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"quang\",\r\n    \"password\":\"1\"\r\n}",
+					"raw": "{\r\n    \"email\":\"luuquang654321@gmail.com\",\r\n    \"password\":\"1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3776,7 +4013,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"luuquang654321@gmail.com\",\r\n    \"otp\": \"281338\"\r\n}",
+					"raw": "{\r\n    \"email\": \"luuquang654321@gmail.com\",\r\n    \"otp\": \"185359\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3816,6 +4053,58 @@
 					],
 					"path": [
 						"resend-otp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forgot pass",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"luuquang654321@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/forgot-password",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reset pass",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"luuquang654321@gmail.com\",\r\n    \"otp\": \"925557\",\r\n    \"new_password\": \"111\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/reset-password",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"reset-password"
 					]
 				}
 			},

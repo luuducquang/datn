@@ -28,6 +28,38 @@ def ser_get_booking_by_table(table_id: str):
         datas.append(data)
     return datas
 
+def ser_get_booking_by_user_id(user_id: str):
+    datas = []
+    now = datetime.now()
+    query = {
+        "user_id": user_id,
+    }
+    for data in booking_collection.find(query):
+        data["_id"] = str(data["_id"])
+        datas.append(data)
+    return datas
+
+def ser_update_booking_status_service(booking_id: str):
+    if not ObjectId.is_valid(booking_id):
+        raise HTTPException(status_code=400, detail="Invalid booking ID")
+
+    booking = booking_collection.find_one({"_id": ObjectId(booking_id)})
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+
+    new_status = not booking.get("status", False)
+
+    result = booking_collection.update_one(
+        {"_id": ObjectId(booking_id)},
+        {"$set": {"status": new_status}}
+    )
+
+    if result.modified_count == 1:
+        return {"message": "Status updated", "new_status": new_status}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to update status")
+    
+
 async def ser_check_availability_booking(
     table_id: str,
     start_time: datetime,

@@ -439,7 +439,7 @@
                         <td>
                             {{ menu?.quantity }}
                         </td>
-                        <td>{{ ConvertPrice(menu?.unit_price) }}/h</td>
+                        <td>{{ ConvertPrice(menu?.unit_price) }}/sp</td>
                         <td>
                             {{
                                 ConvertPrice(

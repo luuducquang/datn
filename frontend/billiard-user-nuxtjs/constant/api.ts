@@ -32,10 +32,12 @@ export interface Tables {
 export interface Bookings {
     _id?: string;
     table_id: string;
+    user_id: string;
     name: string;
     phone: string;
     start_time: Date;
     end_time: Date;
+    money_paid: number;
     status: Boolean;
     created_at: Date;
     table?: Tables;
@@ -45,10 +47,10 @@ export interface BookingItems {
     _id?: string;
     booking_id: string;
     item_id: string;
+    image: string;
     quantity: number;
     unit_price: number;
     total_price: number;
-    menuitem?: MenuItems;
     name?: string;
 }
 

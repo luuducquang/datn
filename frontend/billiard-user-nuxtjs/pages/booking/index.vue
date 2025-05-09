@@ -75,6 +75,7 @@
                                             >Tên khách hàng</label
                                         >
                                         <input
+                                            :disabled="idCreatedBooking != ''"
                                             type="text"
                                             class="form-control rounded-3"
                                             v-model="customerName"
@@ -87,6 +88,7 @@
                                             >Số điện thoại</label
                                         >
                                         <input
+                                            :disabled="idCreatedBooking != ''"
                                             type="tel"
                                             class="form-control rounded-3"
                                             v-model="customerPhone"
@@ -96,12 +98,13 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-4">
+                                <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold"
                                             >Thời gian bắt đầu</label
                                         >
                                         <input
+                                            :disabled="idCreatedBooking != ''"
                                             type="datetime-local"
                                             class="form-control rounded-3"
                                             v-model="startTime"
@@ -113,6 +116,7 @@
                                             >Thời gian kết thúc</label
                                         >
                                         <input
+                                            :disabled="idCreatedBooking != ''"
                                             type="datetime-local"
                                             class="form-control rounded-3"
                                             v-model="endTime"
@@ -120,7 +124,6 @@
                                         />
                                     </div>
                                 </div>
-
                                 <div>
                                     <p class="form-label fw-bold mb-3">
                                         Thêm dịch vụ
@@ -130,6 +133,9 @@
                                     >
                                         <div class="col-md-6">
                                             <select
+                                                :disabled="
+                                                    idCreatedBooking != ''
+                                                "
                                                 class="form-select"
                                                 v-model="selectedItem"
                                             >
@@ -152,6 +158,9 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input
+                                                :disabled="
+                                                    idCreatedBooking != ''
+                                                "
                                                 type="number"
                                                 class="form-control"
                                                 placeholder="Số lượng"
@@ -163,6 +172,9 @@
                                         </div>
                                         <div class="col-md-3">
                                             <button
+                                                :disabled="
+                                                    idCreatedBooking != ''
+                                                "
                                                 class="btn btn-primary w-100"
                                                 type="button"
                                                 @click="addService"
@@ -178,6 +190,9 @@
                                     >
                                         <thead class="table-light">
                                             <tr>
+                                                <th class="text-center">
+                                                    Hình ảnh
+                                                </th>
                                                 <th class="text-center">
                                                     Tên dịch vụ
                                                 </th>
@@ -202,6 +217,19 @@
                                                 ) in addedServices"
                                                 :key="index"
                                             >
+                                                <td>
+                                                    <img
+                                                        :src="
+                                                            item.image
+                                                                ? apiImage +
+                                                                  item.image
+                                                                : ''
+                                                        "
+                                                        alt="image"
+                                                        width="50"
+                                                        height="50"
+                                                    />
+                                                </td>
                                                 <td>
                                                     {{ item.name }}
                                                 </td>
@@ -268,14 +296,81 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <p
+                                    class="form-label fw-bold mb-3"
+                                    v-if="startTime && endTime"
+                                >
+                                    Thời gian chơi:
+                                    {{ formatDuration(duration) }} ({{
+                                        ConvertPrice(
+                                            Number(
+                                                dataDetailTable?.pricingrule
+                                                    ?.rate_per_hour
+                                            )
+                                        ) || "Chưa có dữ liệu"
+                                    }}/h)
+                                </p>
+
+                                <p
+                                    class="form-label fw-bold mb-3"
+                                    v-if="startTime && endTime"
+                                >
+                                    Thành tiền:
+                                    {{
+                                        ConvertPrice(
+                                            Number(
+                                                dataDetailTable?.pricingrule
+                                                    ?.rate_per_hour
+                                            ) * Number(duration / 3600)
+                                        ) || "Chưa có dữ liệu"
+                                    }}
+                                </p>
+
+                                <p class="form-label fw-bold mb-3">
+                                    Phí dịch vụ:
+                                    {{ ConvertPrice(getTotalAmount()) || "0" }}
+                                </p>
+
+                                <h4 class="form-label fw-bold mb-3">
+                                    Tổng thanh toán :
+                                    {{
+                                        ConvertPrice(
+                                            Number(
+                                                getTotalAmount() +
+                                                    Number(
+                                                        dataDetailTable
+                                                            ?.pricingrule
+                                                            ?.rate_per_hour
+                                                    ) *
+                                                        Number(duration / 3600)
+                                            )
+                                        )
+                                    }}
+                                </h4>
 
                                 <div class="text-center">
                                     <button
+                                        v-show="!idCreatedBooking"
                                         type="submit"
                                         class="btn btn-success px-5"
                                     >
                                         Đặt bàn ngay
                                     </button>
+                                    <PayPalButton
+                                        v-show="idCreatedBooking"
+                                        :amount="
+                                            Number(
+                                                getTotalAmount() +
+                                                    Number(
+                                                        dataDetailTable
+                                                            ?.pricingrule
+                                                            ?.rate_per_hour
+                                                    ) *
+                                                        Number(duration / 3600)
+                                            )
+                                        "
+                                        :onSuccess="handleSuccess"
+                                    />
                                 </div>
                             </form>
                         </div>
@@ -324,8 +419,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { io } from "socket.io-client";
+import { useRouter } from "vue-router";
+import Cookies from "js-cookie";
 import {
     checkBooking,
     createBooking,
@@ -333,6 +430,8 @@ import {
     getTableById,
     getBookingByID,
     getAllMenuItem,
+    createBookingItem,
+    updateStatusBooking,
 } from "~/services/booking.service";
 import {
     type OptionSelect,
@@ -342,6 +441,9 @@ import {
 } from "~/constant/api";
 import Swal from "sweetalert2";
 import axios from "axios";
+import ConvertPrice from "~/store/convertprice";
+import formatTime from "~/store/formatTime";
+import { apiImage } from "~/constant/request";
 
 const getDefaultDateTime = () => {
     const now = new Date();
@@ -349,6 +451,8 @@ const getDefaultDateTime = () => {
     return vietnamTime.toISOString().slice(0, 16);
 };
 
+const dataDetailTable = ref<Tables | null>(null);
+const duration = ref<number>(0);
 const selectedItem = ref<any>("");
 const selectedQuantity = ref(1);
 const addedServices = ref<BookingItems[]>([]);
@@ -362,6 +466,10 @@ const startTime = ref(getDefaultDateTime());
 const endTime = ref(getDefaultDateTime());
 const selectedTableId = ref("");
 const isModalOpen = ref(false);
+const idCreatedBooking = ref("");
+const dataCustomer = ref();
+
+const router = useRouter();
 
 const socket = io("http://127.0.0.1:8000/", {
     transports: ["websocket"],
@@ -387,6 +495,21 @@ const openModal = async (id: string) => {
     isModalOpen.value = true;
     const resBooking = await getBookingByID(id);
     searchBookingData.value = resBooking;
+    const resIdTable = await getTableById(id);
+    dataDetailTable.value = resIdTable;
+};
+
+const closeModal = async () => {
+    const resBooking = await getBookingByID(String(dataDetailTable.value?._id));
+    searchBookingData.value = resBooking;
+    isModalOpen.value = false;
+    customerName.value = "";
+    customerPhone.value = "";
+    startTime.value = getDefaultDateTime();
+    endTime.value = getDefaultDateTime();
+    selectedTableId.value = "";
+    addedServices.value = [];
+    idCreatedBooking.value = "";
 };
 
 const addService = () => {
@@ -394,16 +517,30 @@ const addService = () => {
         Swal.fire("Lỗi", "Vui lòng chọn dịch vụ và số lượng hợp lệ!", "error");
         return;
     }
+    const existingIndex = addedServices.value.findIndex(
+        (item) => item.name === selectedItem.value.label
+    );
 
-    addedServices.value.push({
-        booking_id: selectedTableId.value,
-        item_id: String(selectedItem?.value?.value),
-        quantity: Number(selectedQuantity.value),
-        unit_price: Number(selectedItem.value.price),
-        total_price: Number(selectedItem.value.price) * selectedQuantity.value,
+    if (existingIndex !== -1) {
+        addedServices.value[existingIndex].quantity += Number(
+            selectedQuantity.value
+        );
+        addedServices.value[existingIndex].total_price =
+            addedServices.value[existingIndex].quantity *
+            addedServices.value[existingIndex].unit_price;
+    } else {
+        addedServices.value.push({
+            booking_id: "",
+            image: String(selectedItem?.value?.hinhAnh),
+            item_id: String(selectedItem?.value?.value),
+            quantity: Number(selectedQuantity.value),
+            unit_price: Number(selectedItem.value.price),
+            total_price:
+                Number(selectedItem.value.price) * selectedQuantity.value,
+            name: String(selectedItem?.value?.label),
+        });
+    }
 
-        name: String(selectedItem?.value?.label),
-    });
     selectedQuantity.value = 1;
 };
 
@@ -427,6 +564,37 @@ const removeService = (index: number) => {
     addedServices.value.splice(index, 1);
 };
 
+const getTotalAmount = (): number => {
+    return addedServices.value.reduce((sum, item) => {
+        return sum + (item.total_price || 0);
+    }, 0);
+};
+
+watch([startTime, endTime], () => {
+    if (!startTime.value || !endTime.value) {
+        duration.value = 0;
+        return;
+    }
+
+    const start = new Date(startTime.value);
+    const end = new Date(endTime.value);
+    const diff = Math.floor((end.getTime() - start.getTime()) / 1000);
+    duration.value = diff > 0 ? diff : 0;
+});
+
+const formatDuration = (seconds: number) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    return `${hrs} giờ ${mins} phút `;
+};
+
+const handleSuccess = async (result: any) => {
+    console.log("Thanh toán thành công:", result);
+    await updateStatusBooking(idCreatedBooking.value);
+    closeModal();
+    Swal.fire("Thông Báo", "Đặt bàn thành công !", "success");
+};
+
 const submitBooking = async () => {
     if (!customerName.value.trim()) {
         Swal.fire("Lỗi", "Vui lòng nhập tên khách hàng!", "error");
@@ -448,11 +616,17 @@ const submitBooking = async () => {
     try {
         const bookingData = {
             table_id: selectedTableId.value,
+            user_id: dataCustomer?.value?._id,
             name: customerName.value,
             phone: customerPhone.value,
             start_time: startTime.value,
             end_time: endTime.value,
-            status: true,
+            money_paid: Number(
+                getTotalAmount() +
+                    Number(dataDetailTable.value?.pricingrule?.rate_per_hour) *
+                        Number(duration.value / 3600)
+            ),
+            status: false,
         };
         const TableInfo = await getTableById(selectedTableId.value);
         if (TableInfo?.status === true) {
@@ -468,10 +642,30 @@ const submitBooking = async () => {
                 end_time: endTime.value,
             });
             if (ischeckBooking) {
-                await createBooking(bookingData);
-                closeModal();
-                fetchData();
-                Swal.fire("Thành công", "Đặt bàn thành công!", "success");
+                const rescreateBooking = await createBooking(bookingData);
+
+                idCreatedBooking.value = String(rescreateBooking?._id);
+
+                const listBookingItem = addedServices.value.map((service) => ({
+                    booking_id: idCreatedBooking.value,
+                    item_id: String(service.item_id),
+                    image: String(service.image),
+                    quantity: Number(service.quantity),
+                    unit_price: Number(service.unit_price),
+                    total_price:
+                        Number(service.unit_price) * Number(service.quantity),
+                    name: String(service.name),
+                }));
+
+                for (const element of listBookingItem) {
+                    await createBookingItem(element);
+                }
+
+                Swal.fire(
+                    "Thông Báo",
+                    "Vui lòng thanh toán để hoàn tất !",
+                    "warning"
+                );
             } else {
                 Swal.fire(
                     "Thất bại",
@@ -486,22 +680,6 @@ const submitBooking = async () => {
             // console.log(error.response?.data.detail);
         }
     }
-};
-
-// const onModalHidden = () => {
-//     const backdrop = document.querySelector(".modal-backdrop");
-//     if (backdrop) {
-//         backdrop.remove();
-//     }
-// };
-
-const closeModal = () => {
-    isModalOpen.value = false;
-    customerName.value = "";
-    customerPhone.value = "";
-    startTime.value = getDefaultDateTime();
-    endTime.value = getDefaultDateTime();
-    selectedTableId.value = "";
 };
 
 const getTimeDifference = (createdAt: Date) => {
@@ -520,17 +698,6 @@ const getTimeDifference = (createdAt: Date) => {
     }
 };
 
-const formatTime = (datetime: Date) => {
-    const date = new Date(datetime);
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-
-    return `${hours}:${minutes} | ${day}/${month}/${year}`;
-};
-
 const fetchData = async () => {
     try {
         const res = await getAllTable();
@@ -541,11 +708,12 @@ const fetchData = async () => {
             ?.filter(function (item) {
                 return item?.stock_quantity > 0;
             })
-            ?.map(function ({ _id, name, price }) {
+            ?.map(function ({ _id, name, price, image }) {
                 return {
                     value: _id || 0,
                     label: name || "",
                     price: price || 0,
+                    hinhAnh: image || "",
                 };
             })
             ?.sort(function (a, b) {
@@ -560,14 +728,19 @@ const fetchData = async () => {
 };
 
 onMounted(async () => {
-    await fetchData();
-    // const now = DateTime.now().toISO();
-    // console.log(now);
-    const modalElement = document.getElementById("exampleModal");
-    if (modalElement) {
-        modalElement.addEventListener("hidden.bs.modal", () => {
-            closeModal(); // làm sạch dữ liệu
-        });
+    const customerData = Cookies.get("customer");
+    if (customerData) {
+        const customer = JSON.parse(customerData);
+        dataCustomer.value = customer;
+        await fetchData();
+        const modalElement = document.getElementById("exampleModal");
+        if (modalElement) {
+            modalElement.addEventListener("hidden.bs.modal", () => {
+                closeModal();
+            });
+        }
+    } else {
+        router.push("/login");
     }
 });
 </script>

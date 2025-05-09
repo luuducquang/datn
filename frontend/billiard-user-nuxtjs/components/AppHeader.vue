@@ -128,12 +128,11 @@
 
                         <ul class="dropdown-menu w-100">
                             <li>
-                                <NuxtLink
-                                    class="dropdown-item nav-link"
-                                    to="/invoice"
-                                    >Đơn hàng của bạn</NuxtLink
-                                >
+                                <span class="dropdown-item nav-link disabled">
+                                    Số dư ví: {{ ConvertPrice(customer?.loyalty_points) }}
+                                </span>
                             </li>
+
                             <li>
                                 <NuxtLink
                                     class="dropdown-item nav-link"
@@ -142,6 +141,21 @@
                                     Thông tin tài khoản
                                 </NuxtLink>
                             </li>
+                            <li>
+                                <NuxtLink
+                                    class="dropdown-item nav-link"
+                                    to="/invoice"
+                                    >Lịch sử đơn hàng</NuxtLink
+                                >
+                            </li>
+                            <li>
+                                <NuxtLink
+                                    class="dropdown-item nav-link"
+                                    to="/mybooking"
+                                    >Lịch sử đặt bàn</NuxtLink
+                                >
+                            </li>
+
                             <li>
                                 <a
                                     class="dropdown-item nav-link"
@@ -168,6 +182,7 @@ import { getCategory } from "~/services/home.service";
 import { apiImage } from "~/constant/request";
 import { useCartStore } from "~/store";
 import { getGioHangByIdTaiKhoan } from "~/services/cart.service";
+import ConvertPrice from "~/store/convertprice";
 
 const category = ref<Category[]>([]);
 
