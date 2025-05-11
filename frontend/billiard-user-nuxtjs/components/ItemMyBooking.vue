@@ -93,12 +93,20 @@
                 </div>
 
                 <div class="text-center">
+                    <h6 class="m-0 mt-3 mb-3">
+                        Lưu ý: bạn chỉ có thể huỷ bàn trước 2h khi bắt đầu và đã
+                        thanh toán <br />
+                        Và đánh giá dịch vụ sau khi đã chơi xong
+                    </h6>
                     <button
                         v-if="
-                            new Date(now) < new Date(value?.start_time) &&
-                            value.status
+                            new Date(now) <
+                                new Date(
+                                    new Date(value?.start_time).getTime() -
+                                        2 * 60 * 60 * 1000
+                                ) && value.status
                         "
-                        class="btn btn-danger mt-2 mb-3"
+                        class="btn btn-danger mb-3"
                         @click="
                             handleCancelBooking(
                                 String(value?._id),
@@ -111,7 +119,10 @@
                 </div>
 
                 <div
-                    v-if="new Date(now) >= new Date(value?.end_time) && value?.status"
+                    v-if="
+                        new Date(now) >= new Date(value?.end_time) &&
+                        value?.status
+                    "
                     class="mt-4 p-4 border rounded shadow-sm bg-light"
                 >
                     <template v-if="!rateBooking[index]">
@@ -261,7 +272,8 @@ function handleCancelBooking(bookingId: string, money_paid: number) {
                     phone: customer.phone,
                     address: customer.address,
                     avatar: dataUser.avatar,
-                    loyalty_points: customer.loyalty_points + money_paid,
+                    loyalty_points: dataUser.loyalty_points + money_paid * 0.2,
+                    wallet: Number(dataUser.wallet) + money_paid,
                     role_name: customer.role_name,
                 });
                 await updateStatusBooking(bookingId);
@@ -305,7 +317,7 @@ const submitReview = async (id: string) => {
         }
 
         Swal.fire("Đã huỷ!", "Bàn đã được huỷ thành công.", "success");
-        fetchData()
+        fetchData();
     } catch (error) {
         console.error("Lỗi khi gửi đánh giá:", error);
         alert("Có lỗi xảy ra. Vui lòng thử lại.");

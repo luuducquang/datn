@@ -1,8 +1,46 @@
 <template>
-    <div class="container mt-5">
+    <div class="container mt-3">
         <form @submit.prevent="handleUpdateInformation">
             <div class="mb-3">
-                <label for="avatar" class="form-label">Avatar</label>
+                <label class="form-label fw-bold">Xếp hạng hiện tại</label>
+
+                <div class="current-points mb-2">
+                    {{ formData.loyalty_points.toLocaleString("de-DE") || 0 }}
+                    điểm ({{
+                        getMembershipRank(formData.loyalty_points || 0).rank
+                    }}) khi mua hàng bạn sẽ được giảm
+                    {{
+                        getMembershipRank(formData.loyalty_points || 0).voucher
+                    }}
+                    %
+                </div>
+
+                <div class="progress-rank-container">
+                    <div class="progress-bar-bg">
+                        <div
+                            class="progress-bar-fill"
+                            :style="{
+                                width:
+                                    getProgressWidth(
+                                        formData.loyalty_points || 0
+                                    ) + '%',
+                                backgroundColor: getMembershipRank(
+                                    formData.loyalty_points || 0
+                                ).color,
+                            }"
+                        ></div>
+                    </div>
+                    <div class="rank-labels">
+                        <span style="left: 1%">0</span>
+                        <span style="left: 25%">500.000</span>
+                        <span style="left: 50%">1.000.000</span>
+                        <span style="left: 100%">3.000.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="avatar" class="form-label fw-bold">Avatar</label>
                 <input
                     type="file"
                     class="form-control"
@@ -24,7 +62,7 @@
                 <p v-if="formData.fileName">{{ formData.fileName }}</p>
             </div>
             <div class="mb-3">
-                <label for="hoTen" class="form-label">Họ tên</label>
+                <label for="hoTen" class="form-label fw-bold">Họ tên</label>
                 <input
                     type="text"
                     class="form-control"
@@ -33,7 +71,7 @@
                 />
             </div>
             <div class="mb-3">
-                <label for="soDienThoai" class="form-label"
+                <label for="soDienThoai" class="form-label fw-bold"
                     >Số điện thoại</label
                 >
                 <input
@@ -44,7 +82,7 @@
                 />
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label for="email" class="form-label fw-bold">Email</label>
                 <input
                     type="email"
                     class="form-control"
@@ -53,7 +91,7 @@
                 />
             </div>
             <div class="mb-3">
-                <label for="matKhau" class="form-label">Mật khẩu</label>
+                <label for="matKhau" class="form-label fw-bold">Mật khẩu</label>
                 <input
                     type="password"
                     class="form-control"
@@ -62,7 +100,7 @@
                 />
             </div>
             <div class="mb-3">
-                <label for="diaChi" class="form-label">Địa chỉ</label>
+                <label for="diaChi" class="form-label fw-bold">Địa chỉ</label>
                 <textarea
                     class="form-control"
                     id="diaChi"
@@ -89,6 +127,7 @@ import {
 import { apiImage } from "~/constant/request";
 import { uploadImage } from "~/services/upload.service";
 import { login } from "~/services/login.service";
+import { getMembershipRank } from "~/store/getMemberShip";
 
 interface FormData {
     hoTen: string;
@@ -98,6 +137,7 @@ interface FormData {
     anhDaiDien: string;
     matKhau: string;
     fileName: string;
+    loyalty_points: number;
     file: File | null;
 }
 
@@ -114,8 +154,21 @@ const formData = reactive<FormData>({
     anhDaiDien: "",
     matKhau: "",
     fileName: "",
+    loyalty_points: 0,
     file: null as File | null,
 });
+
+const getProgressWidth = (points: number): number => {
+    if (points <= 500000) {
+        return (points / 500000) * 25;
+    } else if (points <= 1000000) {
+        return 25 + ((points - 500000) / 500000) * 25;
+    } else if (points <= 3000000) {
+        return 50 + ((points - 1000000) / 2000000) * 50;
+    } else {
+        return 100;
+    }
+};
 
 const handleAvatarChange = async (event: Event) => {
     const input = event.target as HTMLInputElement;
@@ -145,6 +198,7 @@ const fetchData = async () => {
             formData.matKhau = String(customer?.password);
             formData.anhDaiDien = apiImage + dataUser?.avatar;
             formData.fileName = "";
+            formData.loyalty_points = Number(dataUser?.loyalty_points);
             formData.file = null;
         } catch (error) {
             console.error("Failed to parse customer data from cookies:", error);
@@ -181,6 +235,7 @@ const handleUpdateInformation = async () => {
                     address: formData.diaChi,
                     avatar: "/static/uploads/" + formData.fileName,
                     loyalty_points: customer.loyalty_points,
+                    wallet: Number(dataUser.wallet),
                     role_name: customer.role_name,
                 });
             } else {
@@ -194,6 +249,7 @@ const handleUpdateInformation = async () => {
                     address: formData.diaChi,
                     avatar: dataUser.avatar,
                     loyalty_points: customer.loyalty_points,
+                    wallet: Number(dataUser.wallet),
                     role_name: customer.role_name,
                 });
             }
@@ -239,5 +295,34 @@ const handleUpdateInformation = async () => {
 
 .btn_updater:hover {
     transform: scale(1.1);
+}
+
+.progress-rank-container {
+    width: 100%;
+}
+
+.progress-bar-bg {
+    background-color: #e0e0e0;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    transition: width 0.3s ease-in-out;
+}
+
+.rank-labels {
+    position: relative;
+    margin-top: 8px;
+    height: 20px;
+}
+
+.rank-labels span {
+    position: absolute;
+    transform: translateX(-50%);
+    font-size: 12px;
 }
 </style>

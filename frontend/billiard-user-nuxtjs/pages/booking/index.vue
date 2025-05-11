@@ -20,10 +20,11 @@
                             </p>
                             <button
                                 class="btn btn-primary btn-booking"
-                                v-if="!table.status"
                                 data-bs-toggle="modal"
                                 data-bs-target="#exampleModal"
-                                @click="openModal(String(table?._id))"
+                                @click="
+                                    openModal(String(table?._id), table?.status)
+                                "
                                 href="#exampleModalToggle"
                                 role="button"
                             >
@@ -98,6 +99,13 @@
                                     </div>
                                 </div>
 
+                                <div v-if="isStatusTable" class="row g-3">
+                                    <p class="fw-bold">
+                                        Lưu ý: Bàn này có người đặt vui lòng
+                                        chọn thời gian bắt đầu sau 4 tiếng
+                                    </p>
+                                </div>
+
                                 <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold"
@@ -124,6 +132,7 @@
                                         />
                                     </div>
                                 </div>
+
                                 <div>
                                     <p class="form-label fw-bold mb-3">
                                         Thêm dịch vụ
@@ -308,14 +317,7 @@
                                                     ?.rate_per_hour
                                             )
                                         ) || "Chưa có dữ liệu"
-                                    }}/h)
-                                </p>
-
-                                <p
-                                    class="form-label fw-bold mb-3"
-                                    v-if="startTime && endTime"
-                                >
-                                    Thành tiền:
+                                    }}/h) =
                                     {{
                                         ConvertPrice(
                                             Number(
@@ -331,6 +333,40 @@
                                     {{ ConvertPrice(getTotalAmount()) || "0" }}
                                 </p>
 
+                                <p class="form-label fw-bold mb-3">
+                                    Giảm giá thành viên hạng
+                                    {{
+                                        getMembershipRank(
+                                            dataCustomer?.loyalty_points
+                                        ).rank
+                                    }}:
+                                    {{
+                                        getMembershipRank(
+                                            dataCustomer?.loyalty_points
+                                        ).voucher
+                                    }}
+                                    % =
+                                    {{
+                                        ConvertPrice(
+                                            Number(
+                                                getTotalAmount() +
+                                                    Number(
+                                                        dataDetailTable
+                                                            ?.pricingrule
+                                                            ?.rate_per_hour
+                                                    ) *
+                                                        Number(duration / 3600)
+                                            ) *
+                                                (Number(
+                                                    getMembershipRank(
+                                                        dataCustomer?.loyalty_points
+                                                    ).voucher
+                                                ) /
+                                                    100)
+                                        )
+                                    }}
+                                </p>
+
                                 <h4 class="form-label fw-bold mb-3">
                                     Tổng thanh toán :
                                     {{
@@ -343,7 +379,14 @@
                                                             ?.rate_per_hour
                                                     ) *
                                                         Number(duration / 3600)
-                                            )
+                                            ) *
+                                                (1 -
+                                                    Number(
+                                                        getMembershipRank(
+                                                            dataCustomer?.loyalty_points
+                                                        ).voucher
+                                                    ) /
+                                                        100)
                                         )
                                     }}
                                 </h4>
@@ -444,6 +487,7 @@ import axios from "axios";
 import ConvertPrice from "~/store/convertprice";
 import formatTime from "~/store/formatTime";
 import { apiImage } from "~/constant/request";
+import { getMembershipRank } from "~/store/getMemberShip";
 
 const getDefaultDateTime = () => {
     const now = new Date();
@@ -458,6 +502,7 @@ const selectedQuantity = ref(1);
 const addedServices = ref<BookingItems[]>([]);
 const optionListMenuItems = ref<OptionSelect[]>();
 const tableData = ref<Tables[]>([]);
+const isStatusTable = ref(false);
 const searchBookingData = ref<Bookings[]>([]);
 const loading = ref(true);
 const customerName = ref("");
@@ -490,13 +535,54 @@ socket.on("table_status_updated", (data) => {
     }
 });
 
-const openModal = async (id: string) => {
+const openModal = async (id: string, status: boolean) => {
     selectedTableId.value = id;
     isModalOpen.value = true;
+
     const resBooking = await getBookingByID(id);
     searchBookingData.value = resBooking;
+
     const resIdTable = await getTableById(id);
     dataDetailTable.value = resIdTable;
+    isStatusTable.value = status;
+
+    const now = new Date();
+    const vietnamTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);
+    if (status) {
+        const startTimeAfter4Hours = new Date(
+            vietnamTime.getTime() + 4 * 60 * 60 * 1000
+        );
+        const formattedStartTime = startTimeAfter4Hours
+            .toISOString()
+            .slice(0, 16);
+        startTime.value = formattedStartTime;
+
+        const endTimeAfter1Hour = new Date(
+            startTimeAfter4Hours.getTime() + 1 * 60 * 60 * 1000
+        );
+        const formattedEndTime = endTimeAfter1Hour.toISOString().slice(0, 16);
+        endTime.value = formattedEndTime;
+
+        Swal.fire(
+            "Lưu ý",
+            "Bàn này đang có người chơi. Thời gian bắt đầu đặt bàn được đặt sau thời điểm hiện tại 4 tiếng.",
+            "info"
+        );
+    } else {
+        const startTimeAfter1Hour = new Date(
+            vietnamTime.getTime() + 1 * 60 * 60 * 1000
+        );
+        const formattedStartTime = startTimeAfter1Hour
+            .toISOString()
+            .slice(0, 16);
+        startTime.value = formattedStartTime;
+
+        const endTimeAfter2Hours = new Date(
+            vietnamTime.getTime() + 2 * 60 * 60 * 1000
+        );
+        const formattedEndTime = endTimeAfter2Hours.toISOString().slice(0, 16);
+        endTime.value = formattedEndTime;
+    }
 };
 
 const closeModal = async () => {
@@ -507,7 +593,6 @@ const closeModal = async () => {
     customerPhone.value = "";
     startTime.value = getDefaultDateTime();
     endTime.value = getDefaultDateTime();
-    selectedTableId.value = "";
     addedServices.value = [];
     idCreatedBooking.value = "";
 };
@@ -613,6 +698,19 @@ const submitBooking = async () => {
         return;
     }
 
+    const now = new Date();
+    const start = new Date(startTime.value);
+    const fourHoursLater = new Date(now.getTime() + 4 * 60 * 60 * 1000);
+
+    if (start <= fourHoursLater) {
+        Swal.fire(
+            "Lỗi",
+            "Thời gian bắt đầu phải sau thời điểm hiện tại ít nhất 4 giờ!",
+            "error"
+        );
+        return;
+    }
+
     try {
         const bookingData = {
             table_id: selectedTableId.value,
@@ -664,7 +762,7 @@ const submitBooking = async () => {
                 Swal.fire(
                     "Thông Báo",
                     "Vui lòng thanh toán để hoàn tất !",
-                    "warning"
+                    "info"
                 );
             } else {
                 Swal.fire(
@@ -677,7 +775,6 @@ const submitBooking = async () => {
     } catch (error) {
         if (axios.isAxiosError(error)) {
             Swal.fire("Lỗi", error.response?.data.detail, "error");
-            // console.log(error.response?.data.detail);
         }
     }
 };
@@ -791,8 +888,8 @@ onMounted(async () => {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    background: linear-gradient(90deg, #4caf50, #81c784);
-    color: #fff;
+    background: #fff;
+    color: #4d4d4d;
     font-size: 1rem;
     font-weight: bold;
     border: none;
@@ -803,7 +900,6 @@ onMounted(async () => {
 }
 
 .btn-booking:hover {
-    background: linear-gradient(90deg, #388e3c, #66bb6a);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
     transform: translate(-50%, 60%) scale(1.05);
 }

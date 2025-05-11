@@ -132,6 +132,7 @@ export interface User {
     address: string;
     avatar: string;
     loyalty_points: number;
+    wallet: number;
     role_name: string;
     token?: string;
 }
@@ -208,6 +209,7 @@ export interface Account {
     address: string;
     avatar: string;
     loyalty_points: number;
+    wallet: number;
     role_name: string;
     token?: string;
 }

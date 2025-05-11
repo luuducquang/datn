@@ -26,7 +26,7 @@ const fetchData = async () => {
         try {
             const customer = JSON.parse(customerData);
             const dataFetch = await getInvoiceAll(customer._id);
-            dataInvoice.value = dataFetch;
+            dataInvoice.value = dataFetch.reverse();
         } catch (error) {
             console.error("Failed to parse customer data from cookies:", error);
             Cookies.remove("customer");

@@ -43,6 +43,7 @@ class Users(BaseModel):
     address: Optional[str] = None
     avatar: Optional[str] = None
     loyalty_points: Optional[int] = 0
+    wallet: Optional[int] = 0
     role_name: str
     is_verified: bool = False
     otp: Optional[str] = None

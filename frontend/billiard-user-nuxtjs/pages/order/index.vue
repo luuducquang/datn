@@ -49,8 +49,27 @@
                                 <tr>
                                     <td>Giảm giá:</td>
                                     <td>
-                                        <span>0</span>
+                                        <span>{{
+                                            (
+                                                (totalPrice *
+                                                    Number(
+                                                        getMembershipRank(
+                                                            dataCustomer?.loyalty_points
+                                                        ).voucher
+                                                    )) /
+                                                100
+                                            ).toLocaleString("DE-de")
+                                        }}</span>
                                         <sup>đ</sup>
+                                        <span
+                                            >({{
+                                                Number(
+                                                    getMembershipRank(
+                                                        dataCustomer?.loyalty_points
+                                                    ).voucher
+                                                )
+                                            }}% hạng thành viên)</span
+                                        >
                                     </td>
                                 </tr>
                                 <tr>
@@ -66,7 +85,15 @@
                                         >
                                             {{
                                                 (
-                                                    totalPrice + 30000
+                                                    totalPrice *
+                                                        (1 -
+                                                            Number(
+                                                                getMembershipRank(
+                                                                    dataCustomer?.loyalty_points
+                                                                ).voucher
+                                                            ) /
+                                                                100) +
+                                                    30000
                                                 ).toLocaleString("DE-de")
                                             }}
                                         </span>
@@ -274,7 +301,18 @@
                                 class="mt-3 mb-3 d-flex justify-content-center"
                             >
                                 <PayPalButton
-                                    :amount="totalPrice + 30000"
+                                    :amount="
+                                        Number(
+                                            Number(totalPrice) *
+                                                (1 -
+                                                    getMembershipRank(
+                                                        dataCustomer.value
+                                                            ?.loyalty_points
+                                                    ).voucher /
+                                                        100) +
+                                                30000
+                                        )
+                                    "
                                     :onSuccess="handleSuccess"
                                 />
                             </div>
@@ -315,7 +353,12 @@ import {
     checkAndUpdateQuantityItems,
     checkQuantityItems,
 } from "~/services/home.service";
+import {
+    getInformation,
+    updateInformation,
+} from "~/services/information.service";
 import { sendOrder } from "~/services/order.service";
+import { getMembershipRank } from "~/store/getMemberShip";
 
 const router = useRouter();
 
@@ -325,6 +368,8 @@ const totalPrice = ref(0);
 const alertVisible = ref(false);
 const TitleToast = ref("");
 const paymentMethod = ref("cod");
+
+const dataCustomer = ref();
 
 const formData = ref<Record<string, string>>({
     hoTen: "",
@@ -438,7 +483,13 @@ const handleSuccess = async (result: any) => {
         await sendOrder({
             status: "Đang xử lý",
             sell_date: getDefaultDateTime(),
-            total_price: Number(totalPrice.value) + 30000,
+            total_price:
+                Number(totalPrice.value) *
+                    (1 -
+                        getMembershipRank(dataCustomer.value?.loyalty_points)
+                            .voucher /
+                            100) +
+                30000,
             name: formData.value.hoTen,
             address: `${countryName.name}-${districtName.name}-${wardName.name}`,
             email: formData.value.email,
@@ -452,10 +503,33 @@ const handleSuccess = async (result: any) => {
         alertVisible.value = true;
         TitleToast.value = "Đặt hàng thành công!";
 
+        const dataUser = await getInformation(customer._id);
+
+        await updateInformation({
+            _id: customer._id,
+            username: customer.username,
+            password: customer.password,
+            fullname: customer.fullname,
+            email: customer.email,
+            phone: customer.phone,
+            address: customer.address,
+            avatar: customer.avatar,
+            loyalty_points:
+            dataUser.loyalty_points +
+                (Number(totalPrice.value) *
+                    (1 -
+                        getMembershipRank(dataCustomer.value?.loyalty_points)
+                            .voucher /
+                            100) +
+                30000) * 0.2,
+            wallet: Number(dataUser.wallet),
+            role_name: customer.role_name,
+        });
+
         setTimeout(() => {
             router.replace("/");
             alertVisible.value = false;
-        }, 3000);
+        }, 1500);
     }
 };
 
@@ -523,7 +597,15 @@ const handleSubmit = async () => {
                             await sendOrder({
                                 status: "Đang xử lý",
                                 sell_date: getDefaultDateTime(),
-                                total_price: Number(totalPrice.value) + 30000,
+                                total_price:
+                                    Number(totalPrice.value) *
+                                        (1 -
+                                            getMembershipRank(
+                                                dataCustomer.value
+                                                    ?.loyalty_points
+                                            ).voucher /
+                                                100) +
+                                    30000,
                                 name: formData.value.hoTen,
                                 address: `${countryName.name}-${districtName.name}-${wardName.name}`,
                                 email: formData.value.email,
@@ -540,7 +622,7 @@ const handleSubmit = async () => {
                             setTimeout(() => {
                                 router.replace("/");
                                 alertVisible.value = false;
-                            }, 3000);
+                            }, 1500);
                         } else if (paymentMethod.value === "paypal") {
                             TitleToast.value = `Vui lòng thanh toán qua PayPal, sau khi thanh toán đơn hàng sẽ được xử lý.`;
                             alertVisible.value = true;
@@ -573,6 +655,7 @@ const fetchDataCart = async () => {
     if (customerData) {
         try {
             const customer = JSON.parse(customerData);
+            dataCustomer.value = customer;
             const dataTemp = await getGioHangByIdTaiKhoan(customer._id);
             const dataBuy = dataTemp.filter((value) => value.status === true);
             dataCart.value = dataBuy;

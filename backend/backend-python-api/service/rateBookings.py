@@ -33,8 +33,6 @@ def ser_getby_booking_id(booking_id: str):
 
     return ratebooking  
 
-
-
 # def ser_getby_booking_id(booking_id: str):
 #     ratebookings = list(ratebooking_collection.find({"booking_id": booking_id}))
 

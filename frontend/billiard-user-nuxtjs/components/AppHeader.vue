@@ -129,7 +129,27 @@
                         <ul class="dropdown-menu w-100">
                             <li>
                                 <span class="dropdown-item nav-link disabled">
-                                    Số dư ví: {{ ConvertPrice(customer?.loyalty_points) }}
+                                    Số dư ví:
+                                    {{ ConvertPrice(customer?.wallet) }}
+                                </span>
+                            </li>
+
+                            <li>
+                                <span class="dropdown-item nav-link disabled">
+                                    Xếp hạng:
+                                    <span
+                                        :style="{
+                                            color: getMembershipRank(
+                                                customer?.loyalty_points || 0
+                                            ).color,
+                                        }"
+                                    >
+                                        {{
+                                            getMembershipRank(
+                                                customer?.loyalty_points || 0
+                                            ).rank
+                                        }}
+                                    </span>
                                 </span>
                             </li>
 
@@ -183,6 +203,7 @@ import { apiImage } from "~/constant/request";
 import { useCartStore } from "~/store";
 import { getGioHangByIdTaiKhoan } from "~/services/cart.service";
 import ConvertPrice from "~/store/convertprice";
+import { getMembershipRank } from "~/store/getMemberShip";
 
 const category = ref<Category[]>([]);
 

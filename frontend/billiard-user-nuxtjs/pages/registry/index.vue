@@ -157,6 +157,7 @@ const onFinish = async () => {
             address: "",
             avatar: "/static/uploads/user.jpg",
             loyalty_points: 0,
+            wallet: 0,
             role_name: "USER",
         });
         alertVisible.value = true;

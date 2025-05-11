@@ -45,6 +45,7 @@ def login(request_data: LoginRegisterRequest):
         "address": user.get("address", ""),
         "avatar": user.get("avatar", ""),
         "loyalty_points": user.get("loyalty_points", 0),
+        "wallet": user.get("wallet", 0),
         "role_name": user.get("role_name", ""),
         "token": token
     }
