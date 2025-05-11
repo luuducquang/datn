@@ -96,7 +96,7 @@
                                               ) < 5
                                                 ? "Hết hàng"
                                                 : "Còn hàng"
-                                            : ""
+                                            : "Hết hàng"
                                     }}</span
                                 >
                             </div>

@@ -12,3 +12,4 @@ export const TableUrl = "/tables";
 export const BookingUrl = "/bookings";
 export const BookingItemUrl = "/bookingitems";
 export const MenuItemUrl = "/menuitems";
+export const RateBookingUrl = "/ratebookings";

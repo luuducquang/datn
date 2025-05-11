@@ -58,7 +58,7 @@
                 >
                     <div
                         v-if="item.booking_id === value?._id"
-                        class="d-flex mb-3"
+                        class="d-flex mb-3 p-2"
                     >
                         <img
                             :src="item.image ? apiImage + item.image : ''"
@@ -66,7 +66,7 @@
                             width="100"
                             height="100"
                         />
-                        <div class="p-3 flex-grow-1">
+                        <div class="flex-grow-1">
                             <h5>{{ item.name || "" }}</h5>
                             <div>Số lượng: {{ item.quantity }}</div>
                             <div>
@@ -111,58 +111,88 @@
                 </div>
 
                 <div
-                    v-if="new Date(now) >= new Date(value?.end_time)"
-                    class="mt-3 text-center"
+                    v-if="new Date(now) >= new Date(value?.end_time) && value?.status"
+                    class="mt-4 p-4 border rounded shadow-sm bg-light"
                 >
-                    <h6>Đánh giá dịch vụ</h6>
+                    <template v-if="!rateBooking[index]">
+                        <h5 class="text-center mb-3 text-primary fw-bold">
+                            Đánh giá dịch vụ
+                        </h5>
 
-                    <textarea
-                        v-model="reviewText"
-                        class="form-control mb-2"
-                        placeholder="Nhập nhận xét của bạn"
-                        rows="3"
-                    ></textarea>
-
-                    <div class="mb-2">
-                        <label class="me-2">Chọn số sao:</label>
-                        <span
-                            v-for="star in 5"
-                            :key="star"
-                            class="me-1"
-                            style="cursor: pointer"
-                            @click="selectedStar = star"
-                        >
-                            <i
-                                :class="
-                                    star <= selectedStar
-                                        ? 'bi bi-star-fill text-warning'
-                                        : 'bi bi-star text-muted'
-                                "
-                            ></i>
-                        </span>
-                    </div>
-
-                    <div class="mb-2">
-                        <input
-                            type="file"
-                            @change="handleImageUpload"
-                            accept="image/*"
-                        />
-                        <div v-if="previewImage" class="mt-2">
-                            <img
-                                :src="previewImage"
-                                alt="Preview"
-                                style="max-width: 100%; max-height: 200px"
-                            />
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold"
+                                >Chọn số sao</label
+                            >
+                            <div>
+                                <span
+                                    v-for="star in 5"
+                                    :key="star"
+                                    class="me-1"
+                                    style="cursor: pointer; font-size: 1.5rem"
+                                    @click="selectedStar = star"
+                                >
+                                    <i
+                                        :class="
+                                            star <= selectedStar
+                                                ? 'bi bi-star-fill text-warning'
+                                                : 'bi bi-star text-secondary'
+                                        "
+                                    ></i>
+                                </span>
+                            </div>
                         </div>
-                    </div>
 
-                    <button
-                        class="btn btn-primary"
-                        @click="submitReview(String(value?._id))"
-                    >
-                        Gửi đánh giá
-                    </button>
+                        <div class="mb-3">
+                            <label
+                                for="reviewText"
+                                class="form-label fw-semibold"
+                                >Nhận xét của bạn</label
+                            >
+                            <textarea
+                                id="reviewText"
+                                v-model="reviewText"
+                                class="form-control"
+                                placeholder="Nhập nhận xét..."
+                                rows="3"
+                            ></textarea>
+                        </div>
+
+                        <div class="text-center">
+                            <button
+                                class="btn btn-success px-4"
+                                @click="submitReview(String(value?._id))"
+                            >
+                                <i class="bi bi-send-fill me-1"></i> Gửi đánh
+                                giá
+                            </button>
+                        </div>
+                    </template>
+
+                    <template v-else>
+                        <h5 class="text-center mb-3 text-success fw-bold">
+                            Bạn đã đánh giá
+                        </h5>
+                        <div
+                            class="d-flex align-items-center justify-content-center mb-2"
+                        >
+                            <span
+                                v-for="star in 5"
+                                :key="star"
+                                style="font-size: 1.5rem"
+                            >
+                                <i
+                                    :class="
+                                        star <= rateBooking[index]?.quality
+                                            ? 'bi bi-star-fill text-warning'
+                                            : 'bi bi-star text-secondary'
+                                    "
+                                ></i>
+                            </span>
+                        </div>
+                        <p class="text-center fst-italic">
+                            "{{ rateBooking[index]?.text }}"
+                        </p>
+                    </template>
                 </div>
             </div>
         </div>
@@ -171,7 +201,7 @@
 
 <script setup lang="ts">
 import { onMounted, type Ref, ref } from "vue";
-import type { Bookings, BookingItems } from "~/constant/api";
+import type { Bookings, BookingItems, RateBookings } from "~/constant/api";
 import { apiImage } from "~/constant/request";
 import { getDetailBookingItemById } from "~/services/mybooking.service";
 import formatTime from "~/store/formatTime";
@@ -182,6 +212,11 @@ import {
     updateInformation,
 } from "~/services/information.service";
 import { updateStatusBooking } from "~/services/booking.service";
+import {
+    createRateBooking,
+    getRateBookingByIdBooking,
+} from "~/services/ratebooking.service";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
     booking: Bookings[];
@@ -192,6 +227,9 @@ const emit = defineEmits(["refreshBooking"]);
 const detailBookingItems = ref<BookingItems[]>([]);
 const now = new Date();
 const reviewText: Ref<string> = ref("");
+const selectedStar = ref<number>(5);
+const router = useRouter();
+const rateBooking = ref<RateBookings[]>([]);
 
 function handleCancelBooking(bookingId: string, money_paid: number) {
     Swal.fire({
@@ -234,46 +272,44 @@ function handleCancelBooking(bookingId: string, money_paid: number) {
     });
 }
 
-const selectedStar = ref<number>(0);
-const uploadedImage = ref<File | null>(null);
-const previewImage = ref<string | null>(null);
-
-const handleImageUpload = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
-
-  if (file) {
-    uploadedImage.value = file;
-    previewImage.value = URL.createObjectURL(file);
-  }
-};
-
 const submitReview = async (id: string) => {
-  if (!reviewText.value || selectedStar.value === 0) {
-    alert('Vui lòng nhập nhận xét và chọn số sao.');
-    return;
-  }
+    if (!reviewText.value || selectedStar.value === 0) {
+        Swal.fire(
+            "Thông báo!",
+            "Vui lòng chọn số sao và nhập đánh giá.",
+            "warning"
+        );
+        return;
+    }
 
-  const formData = new FormData();
-  formData.append('reviewText', reviewText.value);
-  formData.append('rating', selectedStar.value.toString());
+    try {
+        const customerData = Cookies.get("customer");
+        if (customerData) {
+            try {
+                const customer = JSON.parse(customerData);
+                await createRateBooking({
+                    booking_id: id,
+                    user_id: String(customer._id),
+                    quality: Number(selectedStar.value),
+                    text: String(reviewText.value),
+                });
+            } catch (error) {
+                console.error(
+                    "Failed to parse customer data from cookies:",
+                    error
+                );
+                Cookies.remove("customer");
+            }
+        } else {
+            router.push("/login");
+        }
 
-  if (uploadedImage.value) {
-    formData.append('image', uploadedImage.value);
-  }
-
-  try {
-      console.log(selectedStar.value);
-
-    alert('Đánh giá đã được gửi!');
-    reviewText.value = '';
-    selectedStar.value = 0;
-    uploadedImage.value = null;
-    previewImage.value = null;
-  } catch (error) {
-    console.error('Lỗi khi gửi đánh giá:', error);
-    alert('Có lỗi xảy ra. Vui lòng thử lại.');
-  }
+        Swal.fire("Đã huỷ!", "Bàn đã được huỷ thành công.", "success");
+        fetchData()
+    } catch (error) {
+        console.error("Lỗi khi gửi đánh giá:", error);
+        alert("Có lỗi xảy ra. Vui lòng thử lại.");
+    }
 };
 
 const fetchData = () => {
@@ -287,6 +323,14 @@ const fetchData = () => {
             })
         );
         detailBookingItems.value = listDetail.flat();
+
+        const timeRate = await Promise.all(
+            props.booking.map(async (value) => {
+                const data = await getRateBookingByIdBooking(String(value._id));
+                return data;
+            })
+        );
+        rateBooking.value = timeRate;
     }, 1000);
 };
 

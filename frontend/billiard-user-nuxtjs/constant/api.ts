@@ -54,6 +54,14 @@ export interface BookingItems {
     name?: string;
 }
 
+export interface RateBookings {
+    _id?: string;
+    booking_id: string;
+    user_id: string;
+    quality: number;
+    text: string;
+}
+
 export interface CategoryMenuItems {
     _id?: string;
     category_name: string;

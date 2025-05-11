@@ -80,6 +80,13 @@ class BookingItems(BaseModel):
     unit_price: int
     total_price: int
 
+class RateBookings(BaseModel):
+    id: Optional[str] = Field(None, alias="_id")  
+    booking_id: str
+    user_id:str
+    quality: int
+    text:str
+
 class TableTypes(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     table_type_name: str

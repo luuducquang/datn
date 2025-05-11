@@ -1032,25 +1032,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "getBookingbyUserID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/bookings/get-booking-by-userid/6804adfc832c1ccd40e7b73f",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"bookings",
-								"get-booking-by-userid",
-								"6804adfc832c1ccd40e7b73f"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -1162,6 +1143,167 @@
 								"bookingitems",
 								"get",
 								"6732cee552e9e56c542a2490"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RateBookings",
+			"item": [
+				{
+					"name": "addRateBooking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"booking_id\": \"681eb4b4e7084c21fc497234\",\r\n    \"user_id\": \"6804adfc832c1ccd40e7b73f\",\r\n    \"quality\": \"2\",\r\n    \"text\": \"Dịch vụ quá oki\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ratebookings/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ratebookings",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRateBooking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/ratebookings/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ratebookings",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editRateBooking",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":  \"66f7f0843bba28672d537138\",\r\n    \"table_type_name\": \"ban11\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ratebookings/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ratebookings",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteRateBooking",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/ratebookings/delete/66f7f0843bba28672d537138",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ratebookings",
+								"delete",
+								"66f7f0843bba28672d537138"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidRateBooking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/ratebookings/get/670f1e20d5439b57ae40f480",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ratebookings",
+								"get",
+								"670f1e20d5439b57ae40f480"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchRateBooking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ratebookings/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ratebookings",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidBôking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/ratebookings/booking/681eb4b4e7084c21fc497234",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ratebookings",
+								"booking",
+								"681eb4b4e7084c21fc497234"
 							]
 						}
 					},
