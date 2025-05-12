@@ -702,7 +702,7 @@ const submitBooking = async () => {
     const start = new Date(startTime.value);
     const fourHoursLater = new Date(now.getTime() + 4 * 60 * 60 * 1000);
 
-    if (start <= fourHoursLater) {
+    if (isStatusTable.value && start <= fourHoursLater ) {
         Swal.fire(
             "Lỗi",
             "Thời gian bắt đầu phải sau thời điểm hiện tại ít nhất 4 giờ!",

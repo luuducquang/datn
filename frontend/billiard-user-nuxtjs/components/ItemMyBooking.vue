@@ -94,23 +94,22 @@
 
                 <div class="text-center">
                     <h6 class="m-0 mt-3 mb-3">
-                        Lưu ý: bạn chỉ có thể huỷ bàn trước 2h khi bắt đầu và đã
-                        thanh toán <br />
+                        Lưu ý: bạn huỷ bàn trước 2h khi bắt đầu thì sẽ được hoàn
+                        trả tiền vào ví nếu sao thời gian đó tiền sẽ không được
+                        hoàn <br />
                         Và đánh giá dịch vụ sau khi đã chơi xong
                     </h6>
                     <button
                         v-if="
-                            new Date(now) <
-                                new Date(
-                                    new Date(value?.start_time).getTime() -
-                                        2 * 60 * 60 * 1000
-                                ) && value.status
+                            new Date(now) < new Date(value?.start_time) &&
+                            value.status
                         "
                         class="btn btn-danger mb-3"
                         @click="
                             handleCancelBooking(
                                 String(value?._id),
-                                Number(value?.money_paid)
+                                Number(value?.money_paid),
+                                value?.start_time
                             )
                         "
                     >
@@ -228,6 +227,7 @@ import {
     getRateBookingByIdBooking,
 } from "~/services/ratebooking.service";
 import { useRouter } from "vue-router";
+import { login } from "~/services/login.service";
 
 const props = defineProps<{
     booking: Bookings[];
@@ -242,15 +242,24 @@ const selectedStar = ref<number>(5);
 const router = useRouter();
 const rateBooking = ref<RateBookings[]>([]);
 
-function handleCancelBooking(bookingId: string, money_paid: number) {
+async function handleCancelBooking(
+    bookingId: string,
+    money_paid: number,
+    start_time: Date
+) {
+    const now = new Date();
+    const startTime = new Date(start_time);
+
+    const isBefore2Hours =
+        now.getTime() < startTime.getTime() - 2 * 60 * 60 * 1000;
+
     Swal.fire({
         title: "Bạn có chắc muốn huỷ đặt bàn?",
-        text:
-            money_paid > 0
-                ? `Số tiền đã thanh toán: ${money_paid.toLocaleString(
-                      "de-DE"
-                  )}đ sẽ được chuyển vào ví của bạn`
-                : "Đặt bàn chưa được thanh toán",
+        text: isBefore2Hours
+            ? `Số tiền đã thanh toán: ${money_paid.toLocaleString(
+                  "de-DE"
+              )}đ sẽ được chuyển vào ví của bạn`
+            : "Huỷ bàn sau 2 giờ trước giờ bắt đầu, tiền sẽ không được hoàn",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
@@ -263,23 +272,48 @@ function handleCancelBooking(bookingId: string, money_paid: number) {
             if (customerData) {
                 const customer = JSON.parse(customerData);
                 const dataUser = await getInformation(customer._id);
-                await updateInformation({
-                    _id: customer._id,
-                    username: customer.username,
-                    password: customer.password,
-                    fullname: customer.fullname,
-                    email: customer.email,
-                    phone: customer.phone,
-                    address: customer.address,
-                    avatar: dataUser.avatar,
-                    loyalty_points: dataUser.loyalty_points + money_paid * 0.2,
-                    wallet: Number(dataUser.wallet) + money_paid,
-                    role_name: customer.role_name,
+
+                if (isBefore2Hours && money_paid > 0) {
+                    await updateInformation({
+                        _id: customer._id,
+                        username: customer.username,
+                        password: customer.password,
+                        fullname: customer.fullname,
+                        email: customer.email,
+                        phone: customer.phone,
+                        address: customer.address,
+                        avatar: dataUser.avatar,
+                        loyalty_points:
+                            dataUser.loyalty_points + money_paid * 0.2,
+                        wallet: Number(dataUser.wallet) + money_paid,
+                        role_name: customer.role_name,
+                    });
+                } else {
+                    await updateInformation({
+                        _id: customer._id,
+                        username: customer.username,
+                        password: customer.password,
+                        fullname: customer.fullname,
+                        email: customer.email,
+                        phone: customer.phone,
+                        address: customer.address,
+                        avatar: dataUser.avatar,
+                        loyalty_points: Number(dataUser.loyalty_points),
+                        wallet: Number(dataUser.wallet),
+                        role_name: customer.role_name,
+                    });
+                }
+
+                const res = await login({
+                    email: String(dataUser.email),
+                    password: String(customer.password),
                 });
+                Cookies.set("customer", JSON.stringify(res), { expires: 1 });
+
                 await updateStatusBooking(bookingId);
                 emit("refreshBooking");
+                Swal.fire("Đã huỷ!", "Bàn đã được huỷ thành công.", "success");
             }
-            Swal.fire("Đã huỷ!", "Bàn đã được huỷ thành công.", "success");
         }
     });
 }

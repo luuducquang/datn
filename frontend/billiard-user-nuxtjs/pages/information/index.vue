@@ -262,7 +262,6 @@ const handleUpdateInformation = async () => {
             alertVisible.value = true;
             setTimeout(() => {
                 alertVisible.value = false;
-                window.location.reload();
             }, 2000);
         }
     } catch (error) {

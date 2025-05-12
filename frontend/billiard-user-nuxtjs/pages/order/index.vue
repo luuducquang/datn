@@ -357,6 +357,7 @@ import {
     getInformation,
     updateInformation,
 } from "~/services/information.service";
+import { login } from "~/services/login.service";
 import { sendOrder } from "~/services/order.service";
 import { getMembershipRank } from "~/store/getMemberShip";
 
@@ -515,16 +516,23 @@ const handleSuccess = async (result: any) => {
             address: customer.address,
             avatar: customer.avatar,
             loyalty_points:
-            dataUser.loyalty_points +
+                dataUser.loyalty_points +
                 (Number(totalPrice.value) *
                     (1 -
                         getMembershipRank(dataCustomer.value?.loyalty_points)
                             .voucher /
                             100) +
-                30000) * 0.2,
+                    30000) *
+                    0.2,
             wallet: Number(dataUser.wallet),
             role_name: customer.role_name,
         });
+
+        const res = await login({
+            email: String(dataUser.email),
+            password: String(customer.password),
+        });
+        Cookies.set("customer", JSON.stringify(res), { expires: 1 });
 
         setTimeout(() => {
             router.replace("/");
