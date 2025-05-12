@@ -99,8 +99,6 @@
             >
         </div>
     </div>
-
-    <alert-toast :visible="alertVisible" :message="titleAddItem" />
 </template>
 
 <script lang="ts" setup>
@@ -117,9 +115,8 @@ import {
 } from "~/services/cart.service";
 import axios from "axios";
 import { checkQuantityItems } from "~/services/home.service";
+import Swal from "sweetalert2";
 
-const alertVisible = ref(false);
-const titleAddItem = ref("");
 
 const router = useRouter();
 const props = defineProps<{
@@ -150,11 +147,7 @@ const buyNow = async () => {
         }
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            titleAddItem.value = `${error.response?.data?.detail?.insufficient_items.item_name} không đủ số lượng, trong kho chỉ còn ${error.response?.data?.detail?.insufficient_items?.quantity_available} sản phẩm`;
-            alertVisible.value = true;
-            setTimeout(() => {
-                alertVisible.value = false;
-            }, 3000);
+            Swal.fire("Lỗi", `${error.response?.data?.detail?.insufficient_items.item_name} không đủ số lượng, trong kho chỉ còn ${error.response?.data?.detail?.insufficient_items?.quantity_available} sản phẩm`, "error");
         }
     }
 };

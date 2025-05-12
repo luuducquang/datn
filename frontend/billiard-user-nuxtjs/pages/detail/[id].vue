@@ -268,7 +268,6 @@
                 </div>
             </div>
         </div>
-        <alert-toast :visible="alertVisible" :message="titleAddItem" />
     </div>
 </template>
 
@@ -288,6 +287,7 @@ import {
 import { useCartStore } from "~/store";
 import { checkQuantityItems } from "~/services/home.service";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const route = useRoute();
 const router = useRouter();
@@ -297,8 +297,6 @@ const id = route.params.id;
 const productDetail = ref<Product | null>(null);
 const productRecomend = ref<Product[]>([]);
 const amountProduct = ref(1);
-const alertVisible = ref(false);
-const titleAddItem = ref("");
 
 const fetchProductDetail = async () => {
     try {
@@ -369,8 +367,12 @@ const addCart = async () => {
                                 Number(isEmptyProduct.quantity),
                             status: isEmptyProduct.status,
                         });
-                        titleAddItem.value =
-                            "Sản phẩm tồn tại, đã tăng số lượng trong giỏ hàng!";
+
+                        Swal.fire(
+                            "Thông báo",
+                            "Sản phẩm tồn tại, đã tăng số lượng trong giỏ hàng!",
+                            "warning"
+                        );
                     } else {
                         await createCart({
                             item_id: String(id),
@@ -378,25 +380,25 @@ const addCart = async () => {
                             quantity: amountProduct.value,
                             status: false,
                         });
-                        titleAddItem.value =
-                            "Sản phẩm đã được thêm vào giỏ hàng!";
+
+                        Swal.fire(
+                            "Thành công",
+                            "Sản phẩm đã được thêm vào giỏ hàng!",
+                            "success"
+                        );
                         const cartOld = await getGioHangByIdTaiKhoan(
                             customer._id
                         );
                         store.setCart(cartOld);
                     }
-                    alertVisible.value = true;
-                    setTimeout(() => {
-                        alertVisible.value = false;
-                    }, 3000);
                 }
             } catch (error) {
                 if (axios.isAxiosError(error)) {
-                    titleAddItem.value = `${error.response?.data?.detail?.insufficient_items.item_name} không đủ số lượng, trong kho chỉ còn ${error.response?.data?.detail?.insufficient_items?.quantity_available} sản phẩm`;
-                    alertVisible.value = true;
-                    setTimeout(() => {
-                        alertVisible.value = false;
-                    }, 3000);
+                    Swal.fire(
+                        "Lỗi",
+                        `${error.response?.data?.detail?.insufficient_items.item_name} không đủ số lượng, trong kho chỉ còn ${error.response?.data?.detail?.insufficient_items?.quantity_available} sản phẩm`,
+                        "error"
+                    );
                 }
             }
         } catch (error) {
@@ -454,11 +456,11 @@ const buyNow = async () => {
                 }
             } catch (error) {
                 if (axios.isAxiosError(error)) {
-                    titleAddItem.value = `${error.response?.data?.detail?.insufficient_items.item_name} không đủ số lượng, trong kho chỉ còn ${error.response?.data?.detail?.insufficient_items?.quantity_available} sản phẩm`;
-                    alertVisible.value = true;
-                    setTimeout(() => {
-                        alertVisible.value = false;
-                    }, 3000);
+                    Swal.fire(
+                        "Lỗi",
+                        `${error.response?.data?.detail?.insufficient_items.item_name} không đủ số lượng, trong kho chỉ còn ${error.response?.data?.detail?.insufficient_items?.quantity_available} sản phẩm`,
+                        "error"
+                    );
                 }
             }
         } catch (error) {

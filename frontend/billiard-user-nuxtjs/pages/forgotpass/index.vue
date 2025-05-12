@@ -31,8 +31,6 @@
                         }}</span>
                     </button>
                 </form>
-
-                <alert-toast :visible="alertVisible" :message="message" />
             </div>
         </div>
     </div>
@@ -43,6 +41,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { sendForgotPasswordOtp } from "~/services/registry.service";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 definePageMeta({
     layout: "onlychildren",
@@ -50,8 +49,6 @@ definePageMeta({
 
 const email = ref("");
 const loading = ref(false);
-const alertVisible = ref(false);
-const message = ref("");
 const router = useRouter();
 
 const handleSubmit = async () => {
@@ -59,8 +56,7 @@ const handleSubmit = async () => {
     try {
         await sendForgotPasswordOtp({ email: email.value });
 
-        message.value = "Mã xác nhận đã được gửi tới email!";
-        alertVisible.value = true;
+        Swal.fire("Thành công", "Mã xác nhận đã được gửi tới email!", "success");
 
         const emailencode = btoa(email.value);
 
@@ -69,12 +65,8 @@ const handleSubmit = async () => {
         }, 1000);
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            alertVisible.value = true;
-            message.value = error.response?.data?.detail;
+            Swal.fire("Lỗi", error.response?.data.detail, "error");
 
-            setTimeout(() => {
-                alertVisible.value = false;
-            }, 2000);
         }
     } finally {
         loading.value = false;

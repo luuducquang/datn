@@ -55,11 +55,11 @@
                         }}</span>
                     </button>
 
-                    <div class="d-flex justify-content-between" >
+                    <div class="d-flex justify-content-between">
                         <NuxtLink class="createAccount" to="/forgotpass"
                             >Quên mật khẩu</NuxtLink
                         >
-    
+
                         <NuxtLink class="createAccount" to="/registry"
                             >Tạo tài khoản</NuxtLink
                         >
@@ -75,7 +75,6 @@
             </div>
         </div>
     </div>
-    <alert-toast :visible="alertVisible" :message="title" />
 </template>
 
 <script setup>
@@ -84,6 +83,7 @@ import { useRouter } from "vue-router";
 import { login } from "~/services/login.service";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 definePageMeta({
     layout: "onlychildren",
@@ -94,8 +94,6 @@ const password = ref("");
 const remember = ref(false);
 const loading = ref(false);
 const router = useRouter();
-const alertVisible = ref(false);
-const title = ref("");
 
 const onFinish = async () => {
     loading.value = true;
@@ -109,12 +107,15 @@ const onFinish = async () => {
         await loginSuccess(res);
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            alertVisible.value = true;
             const status = error.response?.status;
             title.value = error.response?.data.detail;
 
             if (status === 403) {
-                title.value = "Tài khoản chưa được xác thực.";
+                Swal.fire(
+                    "Thông báo",
+                    "Tài khoản chưa được xác thực.",
+                    "warning"
+                );
 
                 const encoded = email.value;
                 const emailencode = btoa(encoded);
@@ -122,14 +123,11 @@ const onFinish = async () => {
                 const passwordencode = btoa(password.value);
 
                 setTimeout(() => {
-                    router.push(`/verifyotp/${emailencode}-${passwordencode}-false`);
-                    alertVisible.value = false;
+                    router.push(
+                        `/verifyotp/${emailencode}-${passwordencode}-false`
+                    );
                 }, 2000);
             }
-
-            setTimeout(() => {
-                alertVisible.value = false;
-            }, 2000);
         }
     } finally {
         loading.value = false;
@@ -226,5 +224,4 @@ const loginSuccess = async (res) => {
     color: #c1c1c1;
     font-size: 14px;
 }
-
 </style>

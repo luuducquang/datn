@@ -49,17 +49,19 @@
                                 <tr>
                                     <td>Giảm giá:</td>
                                     <td>
-                                        <span>{{
-                                            (
-                                                (totalPrice *
-                                                    Number(
-                                                        getMembershipRank(
-                                                            dataCustomer?.loyalty_points
-                                                        ).voucher
-                                                    )) /
-                                                100
-                                            ).toLocaleString("DE-de")
-                                        }}</span>
+                                        <span
+                                            >-{{
+                                                (
+                                                    (totalPrice *
+                                                        Number(
+                                                            getMembershipRank(
+                                                                dataCustomer?.loyalty_points
+                                                            ).voucher
+                                                        )) /
+                                                    100
+                                                ).toLocaleString("DE-de")
+                                            }}</span
+                                        >
                                         <sup>đ</sup>
                                         <span
                                             >({{
@@ -69,6 +71,27 @@
                                                     ).voucher
                                                 )
                                             }}% hạng thành viên)</span
+                                        >
+                                    </td>
+                                </tr>
+                                <tr v-if="discountAmount">
+                                    <td></td>
+                                    <td>
+                                        <span
+                                            >-{{
+                                                (
+                                                    (totalPrice *
+                                                        Number(
+                                                            discountAmount
+                                                        )) /
+                                                    100
+                                                ).toLocaleString("DE-de")
+                                            }}</span
+                                        >
+                                        <sup>đ</sup>
+                                        <span
+                                            >({{ Number(discountAmount) }}%
+                                            voucher)</span
                                         >
                                     </td>
                                 </tr>
@@ -84,17 +107,9 @@
                                             "
                                         >
                                             {{
-                                                (
-                                                    totalPrice *
-                                                        (1 -
-                                                            Number(
-                                                                getMembershipRank(
-                                                                    dataCustomer?.loyalty_points
-                                                                ).voucher
-                                                            ) /
-                                                                100) +
-                                                    30000
-                                                ).toLocaleString("DE-de")
+                                                totalPricePaid.toLocaleString(
+                                                    "DE-de"
+                                                )
                                             }}
                                         </span>
                                         <sup>đ</sup>
@@ -108,6 +123,56 @@
             <div class="col-lg-8">
                 <div class="container">
                     <form @submit.prevent="handleSubmit">
+                        <div class="row mb-3 g-2">
+                            <p class="form-label">Mã giảm giá</p>
+                            <div class="col-md-4">
+                                <input
+                                    v-model="voucherCode"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Nhập mã giảm giá"
+                                    @input="handleVoucherChange"
+                                />
+                            </div>
+                            <div class="col-md-4">
+                                <select
+                                    v-model="voucherCode"
+                                    class="form-select"
+                                    @change="handleVoucherChange"
+                                >
+                                    <option value="" disabled>
+                                        -- Chọn mã giảm giá --
+                                    </option>
+                                    <option
+                                        v-for="voucher in dataVoucher"
+                                        :key="voucher._id"
+                                        :value="voucher.code"
+                                    >
+                                        Giảm
+                                        {{ voucher.discount_value }}% -
+                                        {{
+                                            Number(voucher.quantity) > 0 &&
+                                            voucher.status
+                                                ? "Đang hoạt động"
+                                                : "Đã hết hạn"
+                                        }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button
+                                    type="button"
+                                    class="btn btn-primary w-80"
+                                    @click="applyVoucher"
+                                >
+                                    Áp dụng
+                                </button>
+                            </div>
+                            <p class="mb-0">
+                                Lưu ý: bạn phải nhấn "Áp dụng" thì voucher mới
+                                có hiệu lực
+                            </p>
+                        </div>
                         <div class="mb-3">
                             <label for="hoTen" class="form-label">Họ tên</label>
                             <input
@@ -271,6 +336,7 @@
                                     type="radio"
                                     value="cod"
                                     v-model="paymentMethod"
+                                    @click="ChangeMethod"
                                 />
                                 <label class="form-check-label" for="cod">
                                     Thanh toán khi nhận hàng
@@ -282,6 +348,7 @@
                                     type="radio"
                                     value="paypal"
                                     v-model="paymentMethod"
+                                    @click="ChangeMethod"
                                 />
                                 <label class="form-check-label" for="paypal">
                                     Thanh toán bằng PayPal
@@ -296,27 +363,20 @@
                                     formData.diaChi != '' &&
                                     formData.province != '' &&
                                     formData.district != '' &&
-                                    formData.ward != ''
+                                    formData.ward != '' &&
+                                    isPaypal
                                 "
                                 class="mt-3 mb-3 d-flex justify-content-center"
                             >
                                 <PayPalButton
-                                    :amount="
-                                        Number(
-                                            Number(totalPrice) *
-                                                (1 -
-                                                    getMembershipRank(
-                                                        dataCustomer.value
-                                                            ?.loyalty_points
-                                                    ).voucher /
-                                                        100) +
-                                                30000
-                                        )
-                                    "
+                                    :amount="Number(totalPricePaid)"
                                     :onSuccess="handleSuccess"
                                 />
                             </div>
-                            <div class="d-flex justify-content-center">
+                            <div
+                                v-if="!isPaypal"
+                                class="d-flex justify-content-center"
+                            >
                                 <button
                                     type="submit"
                                     class="btn btn-primary btn-order me-2"
@@ -331,15 +391,15 @@
             </div>
         </div>
     </div>
-    <alert-toast :visible="alertVisible" :message="TitleToast" />
 </template>
 
 <script setup lang="ts">
 import axios from "axios";
 import Cookies from "js-cookie";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import { type Cart } from "~/constant/api";
+import Swal from "sweetalert2";
+import { type Discounts, type Cart } from "~/constant/api";
 import {
     getCountry,
     getDistrict,
@@ -349,6 +409,11 @@ import {
     deleteManyCarts,
     getGioHangByIdTaiKhoan,
 } from "~/services/cart.service";
+import {
+    getAllDiscount,
+    getDiscountByCode,
+    getDiscountUseCode,
+} from "~/services/discount.service";
 import {
     checkAndUpdateQuantityItems,
     checkQuantityItems,
@@ -366,11 +431,15 @@ const router = useRouter();
 const dataCart = ref<Cart[]>([]);
 const totalPrice = ref(0);
 
-const alertVisible = ref(false);
-const TitleToast = ref("");
+const isPaypal = ref(false);
 const paymentMethod = ref("cod");
 
 const dataCustomer = ref();
+
+const dataVoucher = ref<Discounts[]>([]);
+const voucherCode = ref("");
+const discountAmount = ref<number | null>(null);
+const voucherError = ref("");
 
 const formData = ref<Record<string, string>>({
     hoTen: "",
@@ -434,10 +503,48 @@ const handlerClickDistrict = async (event: Event) => {
         });
 };
 
+const totalPricePaid = computed(() => {
+    const membershipVoucher =
+        Number(
+            getMembershipRank(dataCustomer.value?.loyalty_points)?.voucher
+        ) || 0;
+    const discount = Number(discountAmount.value) || 0;
+    const totalDiscountPercent = membershipVoucher + discount;
+    const discountedPrice = totalPrice.value * (1 - totalDiscountPercent / 100);
+    const shippingFee = 30000;
+
+    return discountedPrice + shippingFee;
+});
+
 const getDefaultDateTime = () => {
     const now = new Date();
     const vietnamTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);
     return vietnamTime.toISOString().slice(0, 16);
+};
+
+const handleVoucherChange = () => {
+    discountAmount.value = null;
+};
+
+async function applyVoucher() {
+    voucherError.value = "";
+    discountAmount.value = null;
+
+    if (!voucherCode.value) {
+        voucherError.value = "Vui lòng nhập mã giảm giá.";
+        return;
+    }
+
+    try {
+        const valueDiscount = await getDiscountByCode(voucherCode.value);
+        discountAmount.value = valueDiscount;
+    } catch (error) {
+        voucherError.value = "Mã giảm giá không tồn tại hoặc đã hết hiệu lực.";
+    }
+}
+
+const ChangeMethod = () => {
+    isPaypal.value = false;
 };
 
 const handleSuccess = async (result: any) => {
@@ -487,8 +594,9 @@ const handleSuccess = async (result: any) => {
             total_price:
                 Number(totalPrice.value) *
                     (1 -
-                        getMembershipRank(dataCustomer.value?.loyalty_points)
-                            .voucher /
+                        (getMembershipRank(dataCustomer.value?.loyalty_points)
+                            .voucher +
+                            Number(discountAmount.value)) /
                             100) +
                 30000,
             name: formData.value.hoTen,
@@ -501,8 +609,7 @@ const handleSuccess = async (result: any) => {
             is_paid: true,
         });
         await deleteManyCarts(listIdDel);
-        alertVisible.value = true;
-        TitleToast.value = "Đặt hàng thành công!";
+        Swal.fire("Thành công", "Đặt hàng thành công!", "success");
 
         const dataUser = await getInformation(customer._id);
 
@@ -536,7 +643,6 @@ const handleSuccess = async (result: any) => {
 
         setTimeout(() => {
             router.replace("/");
-            alertVisible.value = false;
         }, 1500);
     }
 };
@@ -600,53 +706,76 @@ const handleSubmit = async () => {
                     const checkQuantity = await checkQuantityItems(listitems);
 
                     if (checkQuantity) {
-                        if (paymentMethod.value === "cod") {
-                            await checkAndUpdateQuantityItems(listitems);
-                            await sendOrder({
-                                status: "Đang xử lý",
-                                sell_date: getDefaultDateTime(),
-                                total_price:
-                                    Number(totalPrice.value) *
-                                        (1 -
-                                            getMembershipRank(
-                                                dataCustomer.value
-                                                    ?.loyalty_points
-                                            ).voucher /
-                                                100) +
-                                    30000,
-                                name: formData.value.hoTen,
-                                address: `${countryName.name}-${districtName.name}-${wardName.name}`,
-                                email: formData.value.email,
-                                phone: formData.value.soDienThoai,
-                                address_detail: formData.value.diaChi,
-                                user_id: customer._id,
-                                sell_items: listJsonBuy,
-                                is_paid: false,
-                            });
-                            await deleteManyCarts(listIdDel);
-                            TitleToast.value = "Đặt hàng thành công!";
-                            alertVisible.value = true;
+                        try {
+                            if (Number(discountAmount.value) > 0) {
+                                await getDiscountUseCode(voucherCode.value);
+                            }
+                            if (paymentMethod.value === "cod") {
+                                await checkAndUpdateQuantityItems(listitems);
+                                await sendOrder({
+                                    status: "Đang xử lý",
+                                    sell_date: getDefaultDateTime(),
+                                    total_price:
+                                        Number(totalPrice.value) *
+                                            (1 -
+                                                (getMembershipRank(
+                                                    dataCustomer.value
+                                                        ?.loyalty_points
+                                                ).voucher +
+                                                    Number(
+                                                        discountAmount.value
+                                                    )) /
+                                                    100) +
+                                        30000,
+                                    name: formData.value.hoTen,
+                                    address: `${countryName.name}-${districtName.name}-${wardName.name}`,
+                                    email: formData.value.email,
+                                    phone: formData.value.soDienThoai,
+                                    address_detail: formData.value.diaChi,
+                                    user_id: customer._id,
+                                    sell_items: listJsonBuy,
+                                    is_paid: false,
+                                });
+                                await deleteManyCarts(listIdDel);
 
-                            setTimeout(() => {
-                                router.replace("/");
-                                alertVisible.value = false;
-                            }, 1500);
-                        } else if (paymentMethod.value === "paypal") {
-                            TitleToast.value = `Vui lòng thanh toán qua PayPal, sau khi thanh toán đơn hàng sẽ được xử lý.`;
-                            alertVisible.value = true;
-                            setTimeout(() => {
-                                alertVisible.value = false;
-                            }, 3000);
+                                Swal.fire(
+                                    "Thành công",
+                                    "Đặt hàng thành công!",
+                                    "success"
+                                );
+
+                                setTimeout(() => {
+                                    router.replace("/");
+                                }, 1500);
+                            } else if (paymentMethod.value === "paypal") {
+                                isPaypal.value = true;
+
+                                Swal.fire(
+                                    "Thông báo",
+                                    "Vui lòng thanh toán qua PayPal, sau khi thanh toán đơn hàng sẽ được xử lý.",
+                                    "info"
+                                );
+                            }
+                        } catch (error) {
+                            if (axios.isAxiosError(error)) {
+                                Swal.fire(
+                                    "Lỗi",
+                                    error.response?.data.detail,
+                                    "error"
+                                );
+                                voucherCode.value = "";
+                                discountAmount.value = null;
+                            }
                         }
                     }
                 }
             } catch (error) {
                 if (axios.isAxiosError(error)) {
-                    TitleToast.value = `${error.response?.data?.detail?.insufficient_items.item_name} không đủ số lượng, trong kho chỉ còn ${error.response?.data?.detail?.insufficient_items?.quantity_available} sản phẩm`;
-                    alertVisible.value = true;
-                    setTimeout(() => {
-                        alertVisible.value = false;
-                    }, 3000);
+                    Swal.fire(
+                        "Lỗi",
+                        `${error.response?.data?.detail?.insufficient_items.item_name} không đủ số lượng, trong kho chỉ còn ${error.response?.data?.detail?.insufficient_items?.quantity_available} sản phẩm`,
+                        "error"
+                    );
                 }
             }
         } else {
@@ -684,6 +813,9 @@ const fetchDataCart = async () => {
                     console.error("Error fetching country data:", error);
                     return "";
                 });
+
+            const listVoucher = await getAllDiscount();
+            dataVoucher.value = listVoucher;
         } catch (error) {
             console.error("Failed to parse customer data from cookies:", error);
             Cookies.remove("customer");

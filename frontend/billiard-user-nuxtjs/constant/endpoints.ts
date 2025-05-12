@@ -13,3 +13,4 @@ export const BookingUrl = "/bookings";
 export const BookingItemUrl = "/bookingitems";
 export const MenuItemUrl = "/menuitems";
 export const RateBookingUrl = "/ratebookings";
+export const DiscountUrl = "/discounts";

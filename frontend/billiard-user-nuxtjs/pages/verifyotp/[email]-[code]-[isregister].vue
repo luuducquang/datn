@@ -54,8 +54,6 @@
                         </span>
                     </button>
                 </div>
-
-                <alert-toast :visible="alertVisible" :message="message" />
             </div>
         </div>
     </div>
@@ -69,6 +67,7 @@ import Cookies from "js-cookie";
 import { maskEmail } from "~/store/maskEmail";
 import { sentOtp, verifyOtp } from "~/services/registry.service";
 import { login } from "~/services/login.service";
+import Swal from "sweetalert2";
 
 definePageMeta({
     layout: "onlychildren",
@@ -79,8 +78,6 @@ const resending = ref(false);
 const route = useRoute();
 const router = useRouter();
 const loading = ref(false);
-const alertVisible = ref(false);
-const message = ref("");
 const email = ref("");
 const pass = ref("");
 
@@ -124,8 +121,7 @@ const handleVerify = async () => {
             email: email.value,
             otp: otp.value,
         });
-        message.value = "Xác thực thành công!";
-        alertVisible.value = true;
+        Swal.fire("Thành công", "Xác thực thành công!", "success");
 
         setTimeout(async () => {
             const res = await login({
@@ -137,8 +133,11 @@ const handleVerify = async () => {
         }, 1000);
     } catch (err) {
         if (axios.isAxiosError(err)) {
-            message.value = err.response?.data.detail || "Lỗi xác thực";
-            alertVisible.value = true;
+            Swal.fire(
+                "Lỗi",
+                err.response?.data.detail || "Lỗi xác thực",
+                "error"
+            );
         }
     } finally {
         loading.value = false;
@@ -149,15 +148,11 @@ const handleResendOtp = async () => {
     resending.value = true;
     try {
         await sentOtp({ email: email.value });
-        message.value = "Mã OTP đã được gửi lại!";
-        alertVisible.value = true;
+        Swal.fire("Thông báo", "Mã OTP đã được gửi lại!", "info");
         startCountdown();
-        setTimeout(() => {
-            alertVisible.value = false;
-        }, 2000);
+        
     } catch (err) {
-        message.value = "Gửi lại OTP thất bại!";
-        alertVisible.value = true;
+        Swal.fire("Thông báo", "Gửi lại OTP thất bại!", "warning");
     } finally {
         resending.value = false;
     }

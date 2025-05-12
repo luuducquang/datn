@@ -138,7 +138,7 @@
                                         Thêm dịch vụ
                                     </p>
                                     <div
-                                        class="row g-2 align-items-center mb-3"
+                                        class="row g-2 align-items-center mb-4"
                                     >
                                         <div class="col-md-6">
                                             <select
@@ -194,7 +194,7 @@
                                     </div>
 
                                     <table
-                                        class="table table-bordered mt-3"
+                                        class="table table-bordered mt-3 mb-4"
                                         v-if="addedServices.length"
                                     >
                                         <thead class="table-light">
@@ -305,6 +305,64 @@
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <div class="row mb-3 g-2">
+                                    <p class="form-label fw-bold">
+                                        Mã giảm giá
+                                    </p>
+                                    <div class="col-md-4">
+                                        <input
+                                            v-model="voucherCode"
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Nhập mã giảm giá"
+                                            @input="handleVoucherChange"
+                                        />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select
+                                            v-model="voucherCode"
+                                            class="form-select"
+                                            @change="handleVoucherChange"
+                                        >
+                                            <option value="" disabled>
+                                                -- Chọn mã giảm giá --
+                                            </option>
+                                            <option
+                                                v-for="voucher in dataVoucher"
+                                                :key="voucher._id"
+                                                :value="voucher.code"
+                                            >
+                                                Giảm
+                                                {{ voucher.discount_value }}% -
+                                                {{
+                                                    Number(voucher.quantity) >
+                                                        0 && voucher.status
+                                                        ? "Đang hoạt động"
+                                                        : "Đã hết hạn"
+                                                }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary w-80"
+                                            @click="applyVoucher"
+                                        >
+                                            Áp dụng
+                                        </button>
+                                    </div>
+                                    <p class="mb-0">
+                                        Lưu ý: bạn phải nhấn "Áp dụng" thì
+                                        voucher mới có hiệu lực
+                                    </p>
+                                </div>
+
+                                <p v-if="voucherError" class="text-danger">
+                                    {{ voucherError }}
+                                </p>
+
                                 <p
                                     class="form-label fw-bold mb-3"
                                     v-if="startTime && endTime"
@@ -367,11 +425,16 @@
                                     }}
                                 </p>
 
-                                <h4 class="form-label fw-bold mb-3">
-                                    Tổng thanh toán :
+                                <p
+                                    v-if="discountAmount !== null"
+                                    class="text-success"
+                                >
+                                    Đã áp dụng mã:
+                                    <strong>{{ voucherCode }}</strong> – Giảm
+                                    {{ discountAmount }}% =
                                     {{
                                         ConvertPrice(
-                                            Number(
+                                            (Number(
                                                 getTotalAmount() +
                                                     Number(
                                                         dataDetailTable
@@ -380,15 +443,15 @@
                                                     ) *
                                                         Number(duration / 3600)
                                             ) *
-                                                (1 -
-                                                    Number(
-                                                        getMembershipRank(
-                                                            dataCustomer?.loyalty_points
-                                                        ).voucher
-                                                    ) /
-                                                        100)
+                                                Number(discountAmount)) /
+                                                100
                                         )
                                     }}
+                                </p>
+
+                                <h4 class="form-label fw-bold mb-3">
+                                    Tổng thanh toán :
+                                    {{ ConvertPrice(totalPricePaid) }}
                                 </h4>
 
                                 <div class="text-center">
@@ -401,17 +464,7 @@
                                     </button>
                                     <PayPalButton
                                         v-show="idCreatedBooking"
-                                        :amount="
-                                            Number(
-                                                getTotalAmount() +
-                                                    Number(
-                                                        dataDetailTable
-                                                            ?.pricingrule
-                                                            ?.rate_per_hour
-                                                    ) *
-                                                        Number(duration / 3600)
-                                            )
-                                        "
+                                        :amount="totalPricePaid"
                                         :onSuccess="handleSuccess"
                                     />
                                 </div>
@@ -462,7 +515,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { io } from "socket.io-client";
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
@@ -481,6 +534,7 @@ import {
     type Bookings,
     type Tables,
     type BookingItems,
+    type Discounts,
 } from "~/constant/api";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -488,6 +542,11 @@ import ConvertPrice from "~/store/convertprice";
 import formatTime from "~/store/formatTime";
 import { apiImage } from "~/constant/request";
 import { getMembershipRank } from "~/store/getMemberShip";
+import {
+    getAllDiscount,
+    getDiscountByCode,
+    getDiscountUseCode,
+} from "~/services/discount.service";
 
 const getDefaultDateTime = () => {
     const now = new Date();
@@ -513,6 +572,10 @@ const selectedTableId = ref("");
 const isModalOpen = ref(false);
 const idCreatedBooking = ref("");
 const dataCustomer = ref();
+const dataVoucher = ref<Discounts[]>([]);
+const voucherCode = ref("");
+const discountAmount = ref<number | null>(null);
+const voucherError = ref("");
 
 const router = useRouter();
 
@@ -596,6 +659,42 @@ const closeModal = async () => {
     addedServices.value = [];
     idCreatedBooking.value = "";
 };
+
+const handleVoucherChange = () => {
+    discountAmount.value = null;
+};
+
+async function applyVoucher() {
+    voucherError.value = "";
+    discountAmount.value = null;
+
+    if (!voucherCode.value) {
+        voucherError.value = "Vui lòng nhập mã giảm giá.";
+        return;
+    }
+
+    try {
+        const valueDiscount = await getDiscountByCode(voucherCode.value);
+        discountAmount.value = valueDiscount;
+    } catch (error) {
+        voucherError.value = "Mã giảm giá không tồn tại hoặc đã hết hiệu lực.";
+    }
+}
+
+const totalPricePaid = computed(() => {
+    const serviceTotal = getTotalAmount();
+    const tableRate = Number(
+        dataDetailTable?.value?.pricingrule?.rate_per_hour || 0
+    );
+    const timeCost = tableRate * (duration.value / 3600);
+    const discountPercent =
+        (Number(
+            getMembershipRank(dataCustomer.value?.loyalty_points).voucher || 0
+        ) +
+            Number(discountAmount.value || 0)) /
+        100;
+    return (serviceTotal + timeCost) * (1 - discountPercent);
+});
 
 const addService = () => {
     if (!selectedItem.value || selectedQuantity.value <= 0) {
@@ -702,7 +801,7 @@ const submitBooking = async () => {
     const start = new Date(startTime.value);
     const fourHoursLater = new Date(now.getTime() + 4 * 60 * 60 * 1000);
 
-    if (isStatusTable.value && start <= fourHoursLater ) {
+    if (isStatusTable.value && start <= fourHoursLater) {
         Swal.fire(
             "Lỗi",
             "Thời gian bắt đầu phải sau thời điểm hiện tại ít nhất 4 giờ!",
@@ -720,9 +819,21 @@ const submitBooking = async () => {
             start_time: startTime.value,
             end_time: endTime.value,
             money_paid: Number(
-                getTotalAmount() +
-                    Number(dataDetailTable.value?.pricingrule?.rate_per_hour) *
-                        Number(duration.value / 3600)
+                Number(
+                    getTotalAmount() +
+                        Number(
+                            dataDetailTable.value?.pricingrule?.rate_per_hour
+                        ) *
+                            Number(duration.value / 3600) *
+                            (1 -
+                                (Number(discountAmount.value) +
+                                    Number(
+                                        getMembershipRank(
+                                            dataCustomer?.value?.loyalty_points
+                                        ).voucher
+                                    )) /
+                                    100)
+                )
             ),
             status: false,
         };
@@ -740,30 +851,44 @@ const submitBooking = async () => {
                 end_time: endTime.value,
             });
             if (ischeckBooking) {
-                const rescreateBooking = await createBooking(bookingData);
+                try {
+                    if (Number(discountAmount.value) > 0) {
+                        await getDiscountUseCode(voucherCode.value);
+                    }
+                    const rescreateBooking = await createBooking(bookingData);
 
-                idCreatedBooking.value = String(rescreateBooking?._id);
+                    idCreatedBooking.value = String(rescreateBooking?._id);
 
-                const listBookingItem = addedServices.value.map((service) => ({
-                    booking_id: idCreatedBooking.value,
-                    item_id: String(service.item_id),
-                    image: String(service.image),
-                    quantity: Number(service.quantity),
-                    unit_price: Number(service.unit_price),
-                    total_price:
-                        Number(service.unit_price) * Number(service.quantity),
-                    name: String(service.name),
-                }));
+                    const listBookingItem = addedServices.value.map(
+                        (service) => ({
+                            booking_id: idCreatedBooking.value,
+                            item_id: String(service.item_id),
+                            image: String(service.image),
+                            quantity: Number(service.quantity),
+                            unit_price: Number(service.unit_price),
+                            total_price:
+                                Number(service.unit_price) *
+                                Number(service.quantity),
+                            name: String(service.name),
+                        })
+                    );
 
-                for (const element of listBookingItem) {
-                    await createBookingItem(element);
+                    for (const element of listBookingItem) {
+                        await createBookingItem(element);
+                    }
+
+                    Swal.fire(
+                        "Thông Báo",
+                        "Vui lòng thanh toán để hoàn tất !",
+                        "info"
+                    );
+                } catch (error) {
+                    if (axios.isAxiosError(error)) {
+                        Swal.fire("Lỗi", error.response?.data.detail, "error");
+                        voucherCode.value = "";
+                        discountAmount.value = null;
+                    }
                 }
-
-                Swal.fire(
-                    "Thông Báo",
-                    "Vui lòng thanh toán để hoàn tất !",
-                    "info"
-                );
             } else {
                 Swal.fire(
                     "Thất bại",
@@ -836,6 +961,8 @@ onMounted(async () => {
                 closeModal();
             });
         }
+        const listVoucher = await getAllDiscount();
+        dataVoucher.value = listVoucher;
     } else {
         router.push("/login");
     }
@@ -964,5 +1091,24 @@ onMounted(async () => {
 .form-control:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     border-color: var(--color-primary);
+}
+
+.voucher-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.voucher-input {
+    width: 160px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.apply-button {
+    padding: 6px 14px;
+    font-size: 14px;
 }
 </style>

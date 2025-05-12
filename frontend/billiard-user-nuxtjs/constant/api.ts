@@ -29,6 +29,16 @@ export interface Tables {
     pricingrule?: PricingRules;
 }
 
+export interface Discounts {
+    _id?: string;
+    code: String;
+    discount_value: Number;
+    decription: String;
+    quantity: Number;
+    used_count: Number;
+    status: boolean;
+}
+
 export interface Bookings {
     _id?: string;
     table_id: string;

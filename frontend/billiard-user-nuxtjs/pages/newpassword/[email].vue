@@ -59,8 +59,6 @@
                         }}</span>
                     </button>
                 </form>
-
-                <alert-toast :visible="alertVisible" :message="message" />
             </div>
         </div>
     </div>
@@ -71,6 +69,7 @@ import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { resetPasswordWithOtp } from "~/services/registry.service";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 definePageMeta({
     layout: "onlychildren",
@@ -80,8 +79,6 @@ const otp = ref("");
 const password = ref("");
 const confirmPassword = ref("");
 const loading = ref(false);
-const alertVisible = ref(false);
-const message = ref("");
 const route = useRoute();
 const router = useRouter();
 
@@ -89,8 +86,7 @@ const email = ref("");
 
 const handleResetPassword = async () => {
     if (password.value !== confirmPassword.value) {
-        message.value = "Mật khẩu xác nhận không khớp!";
-        alertVisible.value = true;
+        Swal.fire("Thông báo", "Mật khẩu xác nhận không khớp!", "warning");
         return;
     }
 
@@ -104,20 +100,18 @@ const handleResetPassword = async () => {
             new_password: password.value,
         });
 
-        message.value = "Mật khẩu đã được cập nhật thành công!";
-        alertVisible.value = true;
+        Swal.fire(
+            "Thông báo",
+            "Mật khẩu đã được cập nhật thành công!",
+            "warning"
+        );
 
         setTimeout(() => {
             router.push("/login");
         }, 1500);
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            alertVisible.value = true;
-            message.value = error.response?.data?.detail;
-
-            setTimeout(() => {
-                alertVisible.value = false;
-            }, 2000);
+            Swal.fire("Lỗi", error.response?.data.detail, "error");
         }
     } finally {
         loading.value = false;

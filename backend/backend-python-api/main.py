@@ -29,6 +29,7 @@ from routes.carts import router as carts_router
 from routes.banners import router as banners_router
 from routes.billSells import router as billsell_router
 from routes.sellItems import router as sellitem_router
+from routes.discounts import router as discount_router
 from routes.statistic import router as statistic_router
 
 from socketio_server import sio_app
@@ -83,6 +84,7 @@ app.include_router(carts_router)
 app.include_router(banners_router)
 app.include_router(billsell_router)
 app.include_router(sellitem_router)
+app.include_router(discount_router)
 app.include_router(statistic_router)
 
 

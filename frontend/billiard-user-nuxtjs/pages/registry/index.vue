@@ -121,7 +121,6 @@
                 </div>
             </div>
         </div>
-        <alert-toast :visible="alertVisible" :message="title" />
     </div>
 </template>
 
@@ -130,6 +129,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { registryUser } from "~/services/registry.service";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 definePageMeta({
     layout: "onlychildren",
@@ -143,8 +143,6 @@ const confirmPassword = ref("");
 const acceptTerms = ref(false);
 const loading = ref(false);
 const router = useRouter();
-const alertVisible = ref(false);
-const title = ref("");
 
 const onFinish = async () => {
     loading.value = true;
@@ -160,21 +158,17 @@ const onFinish = async () => {
             wallet: 0,
             role_name: "USER",
         });
-        alertVisible.value = true;
-        title.value = "Đăng ký tài khoản thành công !";
+
+        Swal.fire("Thành công", "Đăng ký tài khoản thành công!", "success");
+
         setTimeout(() => {
             const emailencode = btoa(email.value);
             const passwordencode = btoa(password.value);
             router.push(`/verifyotp/${emailencode}-${passwordencode}-true`);
-            alertVisible.value = false;
         }, 1000);
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            alertVisible.value = true;
-            title.value = error.response?.data.detail;
-            setTimeout(() => {
-                alertVisible.value = false;
-            }, 2000);
+            Swal.fire("Lỗi", error.response?.data.detail, "error");
         }
     } finally {
         loading.value = false;

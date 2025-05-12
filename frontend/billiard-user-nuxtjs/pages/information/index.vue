@@ -112,7 +112,6 @@
             </button>
         </form>
     </div>
-    <alert-toast :visible="alertVisible" :message="TitleToast" />
 </template>
 
 <script setup lang="ts">
@@ -128,6 +127,7 @@ import { apiImage } from "~/constant/request";
 import { uploadImage } from "~/services/upload.service";
 import { login } from "~/services/login.service";
 import { getMembershipRank } from "~/store/getMemberShip";
+import Swal from "sweetalert2";
 
 interface FormData {
     hoTen: string;
@@ -141,8 +141,6 @@ interface FormData {
     file: File | null;
 }
 
-const alertVisible = ref(false);
-const TitleToast = ref("");
 
 const router = useRouter();
 const fileList = ref<{ url: string }[]>([]);
@@ -258,19 +256,11 @@ const handleUpdateInformation = async () => {
                 password: String(formData.matKhau),
             });
             Cookies.set("customer", JSON.stringify(res), { expires: 1 });
-            TitleToast.value = `Cập nhật thông tin thành công`;
-            alertVisible.value = true;
-            setTimeout(() => {
-                alertVisible.value = false;
-            }, 2000);
+            Swal.fire("Thành công", "Cập nhật thông tin thành công", "success");
         }
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            TitleToast.value = `${error.response?.data?.detail}`;
-            alertVisible.value = true;
-            setTimeout(() => {
-                alertVisible.value = false;
-            }, 3000);
+            Swal.fire("Lỗi", error.response?.data.detail, "error");
         }
     }
 };

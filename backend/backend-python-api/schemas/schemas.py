@@ -59,6 +59,15 @@ class News(BaseModel):
     view: Optional[int] = 0
     status: bool
 
+class Discounts(BaseModel):
+    id: Optional[str] = Field(None, alias="_id")  
+    code: str
+    discount_value: int
+    decription: str
+    quantity: Optional[int] = 0
+    used_count: Optional[int] = 0
+    status: bool
+
 
 class Bookings(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
