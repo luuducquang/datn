@@ -145,6 +145,24 @@ export interface MenuItems {
     categorymenuitem?: CategoryMenuItems;
 }
 
+export interface Discounts {
+    _id?: string;
+    code: String;
+    discount_value: Number;
+    decription: String;
+    quantity: Number;
+    used_count: Number;
+    status: boolean;
+}
+
+export interface RateBookings {
+    _id?: string;
+    booking_id: string;
+    user_id: string;
+    quality: number;
+    text: string;
+}
+
 export interface Rentals {
     _id?: string;
     user_id: string;

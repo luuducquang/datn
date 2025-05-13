@@ -101,9 +101,9 @@ const handleResetPassword = async () => {
         });
 
         Swal.fire(
-            "Thông báo",
+            "Thành công",
             "Mật khẩu đã được cập nhật thành công!",
-            "warning"
+            "success"
         );
 
         setTimeout(() => {

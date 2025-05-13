@@ -28,9 +28,6 @@ def ser_getbyid_bookingitem(booking_id: str):
 
     results = list(bookingitem_collection.find({"booking_id": booking_id}))
 
-    if not results:
-        raise HTTPException(status_code=404, detail="No booking items found with that booking_id")
-
     for item in results:
         item["_id"] = str(item["_id"])
 

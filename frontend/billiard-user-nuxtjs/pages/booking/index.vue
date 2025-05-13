@@ -837,65 +837,50 @@ const submitBooking = async () => {
             ),
             status: false,
         };
-        const TableInfo = await getTableById(selectedTableId.value);
-        if (TableInfo?.status === true) {
-            Swal.fire(
-                "Thất bại",
-                "Bàn này đã có người chơi, vui lòng đặt bàn khác!",
-                "warning"
-            );
-        } else {
-            const ischeckBooking = await checkBooking({
-                table_id: selectedTableId.value,
-                start_time: startTime.value,
-                end_time: endTime.value,
-            });
-            if (ischeckBooking) {
-                try {
-                    if (Number(discountAmount.value) > 0) {
-                        await getDiscountUseCode(voucherCode.value);
-                    }
-                    const rescreateBooking = await createBooking(bookingData);
 
-                    idCreatedBooking.value = String(rescreateBooking?._id);
-
-                    const listBookingItem = addedServices.value.map(
-                        (service) => ({
-                            booking_id: idCreatedBooking.value,
-                            item_id: String(service.item_id),
-                            image: String(service.image),
-                            quantity: Number(service.quantity),
-                            unit_price: Number(service.unit_price),
-                            total_price:
-                                Number(service.unit_price) *
-                                Number(service.quantity),
-                            name: String(service.name),
-                        })
-                    );
-
-                    for (const element of listBookingItem) {
-                        await createBookingItem(element);
-                    }
-
-                    Swal.fire(
-                        "Thông Báo",
-                        "Vui lòng thanh toán để hoàn tất !",
-                        "info"
-                    );
-                } catch (error) {
-                    if (axios.isAxiosError(error)) {
-                        Swal.fire("Lỗi", error.response?.data.detail, "error");
-                        voucherCode.value = "";
-                        discountAmount.value = null;
-                    }
+        const ischeckBooking = await checkBooking({
+            table_id: selectedTableId.value,
+            start_time: startTime.value,
+            end_time: endTime.value,
+        });
+        if (ischeckBooking) {
+            try {
+                if (Number(discountAmount.value) > 0) {
+                    await getDiscountUseCode(voucherCode.value);
                 }
-            } else {
+                const rescreateBooking = await createBooking(bookingData);
+
+                idCreatedBooking.value = String(rescreateBooking?._id);
+
+                const listBookingItem = addedServices.value.map((service) => ({
+                    booking_id: idCreatedBooking.value,
+                    item_id: String(service.item_id),
+                    image: String(service.image),
+                    quantity: Number(service.quantity),
+                    unit_price: Number(service.unit_price),
+                    total_price:
+                        Number(service.unit_price) * Number(service.quantity),
+                    name: String(service.name),
+                }));
+
+                for (const element of listBookingItem) {
+                    await createBookingItem(element);
+                }
+
                 Swal.fire(
-                    "Thất bại",
-                    "Thời gian này đã có khách đặt!",
-                    "warning"
+                    "Thông Báo",
+                    "Vui lòng thanh toán để hoàn tất !",
+                    "info"
                 );
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    Swal.fire("Lỗi", error.response?.data.detail, "error");
+                    voucherCode.value = "";
+                    discountAmount.value = null;
+                }
             }
+        } else {
+            Swal.fire("Thất bại", "Thời gian này đã có khách đặt!", "warning");
         }
     } catch (error) {
         if (axios.isAxiosError(error)) {
