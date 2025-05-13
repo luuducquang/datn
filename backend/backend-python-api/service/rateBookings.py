@@ -5,6 +5,9 @@ from schemas.schemas import Searchs, RateBookings
 from config.database import database
 
 ratebooking_collection: Collection = database['RateBookings']
+booking_collection: Collection = database['Bookings']
+user_collection: Collection = database['Users']
+table_collection: Collection = database['Tables']
 
 def ser_get_ratebooking():
     datas = []
@@ -45,7 +48,7 @@ def ser_getby_booking_id(booking_id: str):
 #     return ratebookings
 
 
-def ser_search_ratebooking(_data:Searchs):
+def ser_search_ratebooking(_data: Searchs):
     if _data.page <= 0 or _data.pageSize <= 0:
         raise HTTPException(status_code=400, detail="Page and pageSize must be greater than 0")
     
@@ -58,20 +61,43 @@ def ser_search_ratebooking(_data:Searchs):
         ]
 
     total_items = ratebooking_collection.count_documents(query)
-
     ratebookings = ratebooking_collection.find(query).skip(skip).limit(_data.pageSize)
 
     data = []
     for ratebooking in ratebookings:
         ratebooking["_id"] = str(ratebooking["_id"])
+
+        booking = booking_collection.find_one({"_id": ObjectId(ratebooking["booking_id"])})
+        if booking:
+            booking["_id"] = str(booking["_id"])
+
+            table = table_collection.find_one({"_id": ObjectId(booking["table_id"])})
+            if table:
+                table["_id"] = str(table["_id"])
+                booking["table"] = table
+            else:
+                booking["table"] = None
+
+            ratebooking["booking"] = booking
+        else:
+            ratebooking["booking"] = None
+
+        user = user_collection.find_one({"_id": ObjectId(ratebooking["user_id"])}, {"fullname": 1, "phone": 1})
+        if user:
+            user["_id"] = str(user["_id"])
+            ratebooking["user"] = user
+        else:
+            ratebooking["user"] = None
+
         data.append(ratebooking)
 
     return {
-        "page":_data.page,
-        "pageSize":_data.pageSize,
+        "page": _data.page,
+        "pageSize": _data.pageSize,
         "totalItems": total_items,
         "data": data,
     }
+
 
 def ser_insert_ratebooking(_data: RateBookings) -> str:
     result = ratebooking_collection.insert_one(_data.dict(exclude={"id"}))

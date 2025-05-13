@@ -87,6 +87,88 @@ const routes = [
                 ],
             },
             {
+                path: "discount",
+                name: "Discount",
+                component: LayoutView,
+                meta: {
+                    breadcrumbName: "Mã giảm giá",
+                    requiresAuth: true,
+                },
+                children: [
+                    {
+                        path: "",
+                        name: "ListDiscount",
+                        component: () =>
+                            import("~/components/Discount/ListDiscount.vue"),
+                        meta: {
+                            breadcrumbName: "Danh sách",
+                            requiresAuth: true,
+                        },
+                    },
+                    {
+                        path: "add",
+                        name: "AddDiscount",
+                        component: () =>
+                            import("~/components/Discount/AddorEditDiscount.vue"),
+                        meta: {
+                            breadcrumbName: "Thêm mã giảm giá",
+                            requiresAuth: true,
+                        },
+                    },
+                    {
+                        path: "edit/:id",
+                        name: "EditDiscount",
+                        component: () =>
+                            import("~/components/Discount/AddorEditDiscount.vue"),
+                        meta: {
+                            breadcrumbName: "Sửa mã giảm giá",
+                            requiresAuth: true,
+                        },
+                    },
+                ],
+            },
+            {
+                path: "ratebooking",
+                name: "RateBooking",
+                component: LayoutView,
+                meta: {
+                    breadcrumbName: "Đánh giá",
+                    requiresAuth: true,
+                },
+                children: [
+                    {
+                        path: "",
+                        name: "ListRateBooking",
+                        component: () =>
+                            import("~/components/RateBooking/ListRateBooking.vue"),
+                        meta: {
+                            breadcrumbName: "Danh sách",
+                            requiresAuth: true,
+                        },
+                    },
+                    {
+                        path: "add",
+                        name: "AddRateBooking",
+                        component: () =>
+                            import("~/components/RateBooking/AddorEditRateBooking.vue"),
+                        meta: {
+                            breadcrumbName: "Thêm đánh giá",
+                            requiresAuth: true,
+                        },
+                    },
+                    {
+                        path: "edit/:id",
+                        name: "EditRateBooking",
+                        component: () =>
+                            import("~/components/RateBooking/AddorEditRateBooking.vue"),
+                        meta: {
+                            breadcrumbName: "Sửa đánh giá",
+                            requiresAuth: true,
+                        },
+                    },
+                ],
+            },
+            {
                 path: "tabletype",
                 name: "TableType",
                 component: LayoutView,

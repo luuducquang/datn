@@ -161,6 +161,11 @@ export interface RateBookings {
     user_id: string;
     quality: number;
     text: string;
+    bookings?: Bookings;
+    user?: {
+        fullname: String;
+        phone: string;
+    };
 }
 
 export interface Rentals {

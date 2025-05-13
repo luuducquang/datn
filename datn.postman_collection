@@ -1296,14 +1296,224 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/ratebookings/booking/681eb4b4e7084c21fc497234",
+							"raw": "{{host}}/ratebookings/booking/682092ffd257998b3cad9a58",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"ratebookings",
 								"booking",
-								"681eb4b4e7084c21fc497234"
+								"682092ffd257998b3cad9a58"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Discounts",
+			"item": [
+				{
+					"name": "addDiscount",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"giamgia5\",\r\n    \"discount_value\": 5,\r\n    \"decription\": \"giảm giá 5 % nhé anh em\",\r\n    \"quantity\": 100,\r\n    \"used_count\": 0,\r\n    \"status\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/discounts/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"discounts",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDiscount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/discounts/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"discounts",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editDiscount",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":  \"68220e24a7f9489d81462aad\",\r\n    \"code\": \"giamgia10\",\r\n    \"discount_value\": 10,\r\n    \"decription\": \"giảm giá 10 % nhé anh em\",\r\n    \"quantity\": 100,\r\n    \"used_count\": 0,\r\n    \"status\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/discounts/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"discounts",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteDiscount",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/discounts/delete/68220e24a7f9489d81462aad",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"discounts",
+								"delete",
+								"68220e24a7f9489d81462aad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyidDiscount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/discounts/get/68220e24a7f9489d81462aad",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"discounts",
+								"get",
+								"68220e24a7f9489d81462aad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchDiscount",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/discounts/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"discounts",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDiscountByCode",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/discounts/code/giamgia10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"discounts",
+								"code",
+								"giamgia10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "useDiscount",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/discounts/use/giamgia10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"discounts",
+								"use",
+								"giamgia10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restoreDiscount",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/discounts/restore/giamgia10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"discounts",
+								"restore",
+								"giamgia10"
 							]
 						}
 					},

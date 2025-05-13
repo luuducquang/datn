@@ -23,3 +23,5 @@ export const ImportItemUrl = "/importitems";
 export const BannerUrl = "/banners";
 export const StatisticUrl = "/statistic";
 export const BookingUrl = "/bookings";
+export const DiscountUrl = "/discounts";
+export const RateBookingUrl = "/ratebookings";

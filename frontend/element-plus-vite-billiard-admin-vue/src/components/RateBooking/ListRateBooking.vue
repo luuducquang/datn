@@ -1,0 +1,242 @@
+<template>
+    <el-card class="card_content" v-loading="loading">
+        <!-- <div class="button_add">
+            <el-button @click="handlerAdd" type="primary"
+                ><el-icon><CirclePlus /></el-icon
+            ></el-button>
+        </div> -->
+        <el-table :data="tableData" class="table_content">
+            <el-table-column label="STT" align="center">
+                <template #default="scope">
+                    {{ (currentPage - 1) * currentPageSize + scope.$index + 1 }}
+                </template>
+            </el-table-column>
+            <el-table-column
+                label="Bàn số"
+                align="center"
+                prop="booking.table.table_number"
+            />
+            <el-table-column
+                label="Khách hàng"
+                align="center"
+                prop="booking.name"
+            />
+            <el-table-column label="Nội dung" align="center" prop="text" />
+
+            <el-table-column label="Mức độ" align="center" prop="quality">
+                <template #default="{ row }">
+                    <span
+                        :style="{
+                            color:
+                                row.quality <= 2
+                                    ? 'red'
+                                    : row.quality === 3
+                                      ? 'orange'
+                                      : 'green',
+                            fontWeight: 'bold',
+                        }"
+                    >
+                        {{ row.quality }} sao
+                    </span>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                label="Đặt bàn"
+                align="center"
+                prop="booking?.created_at"
+            >
+                <template #default="scope">
+                    <p>
+                        {{
+                            convertDate(String(scope.row?.booking?.created_at))
+                        }}
+                    </p>
+                </template>
+            </el-table-column>
+
+            <el-table-column label="Số điện thoại" align="center" prop="">
+                <template #default="{ row }">
+                    {{ row.booking?.phone }} |{{ row.user?.phone }}
+                </template>
+            </el-table-column>
+
+            <el-table-column align="right">
+                <template #header>
+                    <el-input
+                        v-model="search"
+                        size="small"
+                        placeholder="Nhập thông tin cần tìm"
+                    />
+                </template>
+                <template #default="scope">
+                    <el-button
+                        size="small"
+                        @click="handleEdit(scope.$index, scope.row)"
+                    >
+                        Edit
+                    </el-button>
+                    <!-- <el-popconfirm
+                        confirm-button-text="Yes"
+                        cancel-button-text="No"
+                        icon-color="#626AEF"
+                        title="Bạn có muốn xoá không?"
+                        @confirm="() => confirmEvent(scope.row._id)"
+                    >
+                        <template #reference>
+                            <el-button size="small" type="danger">
+                                Delete
+                            </el-button>
+                        </template>
+                    </el-popconfirm> -->
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="pagination_wrapper">
+            <el-pagination
+                background
+                layout="prev, pager, next"
+                v-model:current-page="currentPage"
+                :total="totalItemPage"
+                :page-size="currentPageSize"
+            />
+        </div>
+    </el-card>
+</template>
+
+<script lang="ts" setup>
+import { computed, onMounted, ref, watch } from "vue";
+import { CirclePlus, StarFilled } from "@element-plus/icons-vue";
+import debounce from "~/utils/debounce";
+import { RateBookings } from "~/constant/api";
+import {
+    deleteRateBooking,
+    searchRateBooking,
+} from "~/services/ratebooking.service";
+import router from "~/router";
+import { ElMessage } from "element-plus";
+import axios from "axios";
+import { convertDate } from "~/utils/convertDate";
+
+const search = ref("");
+const loading = ref(false);
+
+const tableData = ref<RateBookings[]>([]);
+
+const currentPage = ref(1);
+const currentPageSize = ref(10);
+const totalItemPage = ref(0);
+
+const Notification = (
+    message: string,
+    type: "success" | "warning" | "error"
+) => {
+    ElMessage({
+        message: message,
+        type: type,
+    });
+};
+
+watch(currentPage, (newPage: number, oldPage: number) => {
+    if (newPage !== oldPage) {
+        fetchData(search.value);
+    }
+});
+
+const handleEdit = (index: number, row: RateBookings) => {
+    router.push(`/ratebooking/edit/${row._id}`);
+};
+
+const confirmEvent = async (Id: string) => {
+    try {
+        await deleteRateBooking(Id);
+        Notification("Xoá thành công", "success");
+        fetchData(search.value);
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            Notification(error.response?.data.detail, "warning");
+        }
+    }
+};
+
+const fetchData = async (searchTerm = "") => {
+    loading.value = true;
+    try {
+        const payLoad = {
+            page: currentPage.value,
+            pageSize: currentPageSize.value,
+            search_term: searchTerm,
+        };
+        const res = await searchRateBooking(payLoad);
+        totalItemPage.value = res.totalItems;
+        tableData.value = res.data.reverse();
+        console.log(res.data);
+    } catch (error) {
+        console.error("Error fetching:", error);
+        tableData.value = [];
+    } finally {
+        loading.value = false;
+    }
+};
+
+const debouncedFetchData = debounce(fetchData, 300);
+
+watch(search, (newSearch) => {
+    debouncedFetchData(newSearch);
+});
+
+onMounted(() => {
+    fetchData(search.value);
+});
+
+const handlerAdd = () => {
+    router.push("/ratebooking/add");
+};
+</script>
+
+<style scoped>
+.card_content {
+    max-width: 100wh;
+}
+
+.button_add {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 0 10px 7px;
+}
+
+.table_content {
+    width: 100%;
+}
+
+.img_item {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+}
+.name_item {
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rate_product {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+.rate_product_star {
+    color: #ffcc00;
+    font-size: 20px;
+}
+
+.pagination_wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+</style>
