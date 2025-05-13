@@ -19,7 +19,6 @@
                         class="img_item"
                     /> </template
             ></el-table-column>
-            <el-table-column label="Tài khoản" align="center" prop="username" />
             <el-table-column label="Email" align="center" prop="email" />
 
             <el-table-column align="right">

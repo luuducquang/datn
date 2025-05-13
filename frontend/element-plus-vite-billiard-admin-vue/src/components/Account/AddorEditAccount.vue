@@ -22,11 +22,12 @@
                 </el-upload>
             </el-form-item>
 
-            <el-form-item label="Tên tài khoản" prop="username">
-                <el-input
-                    v-model="ruleForm.username"
-                    :disabled="Boolean(route.params.id)"
-                />
+            <el-form-item label="Email" prop="email">
+                <el-input v-model="ruleForm.email" />
+            </el-form-item>
+
+            <el-form-item label="Số điện thoại" prop="phone">
+                <el-input v-model="ruleForm.phone" />
             </el-form-item>
 
             <el-form-item label="Mật khẩu" prop="password">
@@ -39,14 +40,6 @@
 
             <el-form-item label="Địa chỉ" prop="address">
                 <el-input v-model="ruleForm.address" />
-            </el-form-item>
-
-            <el-form-item label="Email" prop="email">
-                <el-input v-model="ruleForm.email" />
-            </el-form-item>
-
-            <el-form-item label="Số điện thoại" prop="phone">
-                <el-input v-model="ruleForm.phone" />
             </el-form-item>
 
             <el-form-item label="Loại tài khoản" prop="role_name">
@@ -236,6 +229,7 @@ const fetchById = async (id: string) => {
     ruleForm.phone = resId?.phone || "";
     ruleForm.role_name = String(resId?.role_name || "");
     ruleForm.avatar = resId?.avatar || "";
+
 
     fileListImg.value = [
         {
