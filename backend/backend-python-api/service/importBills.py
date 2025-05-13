@@ -6,7 +6,7 @@ from config.database import database
 
 importbill_collection: Collection = database['ImportBills']
 importitem_collection: Collection = database['ImportItems']
-rentalitem_collection: Collection = database['RentalItems']
+product_collection: Collection = database['Products']
 menuitem_collection: Collection = database['MenuItems']
 user_collection: Collection = database['Users']
 supplier_collection: Collection = database['Suppliers']
@@ -23,7 +23,7 @@ def ser_get_import_item_by_import_id(import_id: str):
     for data in importitem_collection.find({"import_id": import_id}):
         data["_id"] = str(data["_id"])
 
-        rental_item_data = rentalitem_collection.find_one({"_id": ObjectId(data["item_id"])})
+        rental_item_data = product_collection.find_one({"_id": ObjectId(data["item_id"])})
         if rental_item_data:
             rental_item_data["_id"] = str(rental_item_data["_id"])
             data["item"] = rental_item_data
@@ -122,23 +122,24 @@ def ser_insert_importbill(_data: ImportBills) -> str:
     if _data.import_items:
         for item in _data.import_items:
             item.import_id = bill_id 
-            rental_item = rentalitem_collection.find_one({"_id": ObjectId(item.item_id)})
+            product = product_collection.find_one({"_id": ObjectId(item.item_id)})
             
-            if rental_item:
-                available_quantity = rental_item.get("quantity_available", 0)
+            if product:
+                available_quantity = product.get("quantity_available", 0)
                 calculated_price_reduction = int(item.unit_price + (item.unit_price * 0.2))
                 calculated_price = int(item.unit_price + (item.unit_price * 0.5))
-                update_result = rentalitem_collection.update_one(
+                update_result = product_collection.update_one(
                     {"_id": ObjectId(item.item_id)},
                     {"$set": {"quantity_available": available_quantity + item.quantity,
                               "price_reduction":calculated_price_reduction,
-                              "price":calculated_price}
+                              "price":calculated_price,
+                              "price_origin":item.unit_price}
                     }
                 )
                 if update_result.modified_count == 0:
                     raise HTTPException(
                         status_code=500,
-                        detail=f"Không thể cập nhật số lượng kho cho món hàng {item.item_id} trong RentalItems"
+                        detail=f"Không thể cập nhật số lượng kho cho món hàng {item.item_id} trong Products"
                     )
             else:
                 menu_item = menuitem_collection.find_one({"_id": ObjectId(item.item_id)})
@@ -148,7 +149,8 @@ def ser_insert_importbill(_data: ImportBills) -> str:
                     calculated_price = int(item.unit_price + (item.unit_price * 0.2))
                     update_result = menuitem_collection.update_one(
                         {"_id": ObjectId(item.item_id)},
-                        {"$set": {"stock_quantity": available_quantity + item.quantity,"price":calculated_price}}
+                        {"$set": {"stock_quantity": available_quantity + item.quantity,"price":calculated_price,
+                              "price_origin":item.unit_price}}
                     )
                     if update_result.modified_count == 0:
                         raise HTTPException(
@@ -158,7 +160,7 @@ def ser_insert_importbill(_data: ImportBills) -> str:
                 else:
                     raise HTTPException(
                         status_code=404,
-                        detail=f"Không tìm thấy món hàng với ID {item.item_id} trong cả RentalItems và MenuItems"
+                        detail=f"Không tìm thấy món hàng với ID {item.item_id} trong cả Products và MenuItems"
                     )
 
         import_items_data = [item.dict(exclude={"id"}) for item in _data.import_items]

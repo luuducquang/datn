@@ -577,9 +577,9 @@ const handleSuccess = async (result: any) => {
         return {
             item_id: value.item_id,
             quantity: value.quantity,
-            unit_price: value.rentalitem?.price_reduction || 0,
+            unit_price: value.product?.price_reduction || 0,
             total_price:
-                (Number(value.rentalitem?.price_reduction) || 0) *
+                (Number(value.product?.price_reduction) || 0) *
                 Number(value.quantity),
         };
     });
@@ -681,9 +681,9 @@ const handleSubmit = async () => {
             return {
                 item_id: value.item_id,
                 quantity: value.quantity,
-                unit_price: value.rentalitem?.price_reduction || 0,
+                unit_price: value.product?.price_reduction || 0,
                 total_price:
-                    (Number(value.rentalitem?.price_reduction) || 0) *
+                    (Number(value.product?.price_reduction) || 0) *
                     Number(value.quantity),
             };
         });
@@ -799,7 +799,7 @@ const fetchDataCart = async () => {
             const totalPriceBuy = dataBuy.reduce((total, item) => {
                 return (
                     total +
-                    Number(item?.rentalitem?.price_reduction) * item?.quantity
+                    Number(item?.product?.price_reduction) * item?.quantity
                 );
             }, 0);
             totalPrice.value = totalPriceBuy;

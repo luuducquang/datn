@@ -2,27 +2,25 @@
     <el-card class="card_content" v-loading="loading">
         <el-row :gutter="20">
             <el-col
+                class="container_col"
                 v-for="table in tableData"
                 :key="table._id"
                 :span="6"
                 @click="handleEdit(String(table._id))"
-                ><div class="grid-content ep-bg-purple">
-                    <h1>{{ table.table_number }}</h1>
-                    <p
-                        :class="
-                            table.status ? 'status-in-use' : 'status-available'
-                        "
-                        class="m-0"
-                    >
-                        {{
-                            table.status === true
-                                ? "Đang sử dụng"
-                                : "Đang trống"
-                        }}
-                    </p>
-                </div></el-col
             >
+                <div
+                    class="table-card mt-3"
+                    :class="table.status ? 'in-use' : 'available'"
+                >
+                    <h2>Bàn {{ table.table_number }}</h2>
+                    <p class="status-text">
+                        {{ table.status ? "Đang sử dụng" : "Đang trống" }}
+                    </p>
+                    <p>{{ table.description }}</p>
+                </div>
+            </el-col>
         </el-row>
+
         <el-row :gutter="20" class="booking-row">
             <el-col :span="24">
                 <el-card>
@@ -171,6 +169,7 @@ const fetchData = async () => {
     try {
         const res = await getAllTable();
         tableData.value = res;
+        console.log(res);
         const resBooking = await searchBooking({
             page: 1,
             pageSize: 100,
@@ -282,5 +281,58 @@ onMounted(() => {
     width: 100%;
     max-height: 700px;
     overflow-y: auto;
+}
+
+/*  */
+
+.container_col{
+    display: grid;
+}
+
+.table-card {
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+    text-align: center;
+    cursor: pointer;
+}
+
+.table-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.table-card h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #333;
+}
+
+.status-text {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.in-use {
+    background-color: #ffe5e5;
+    border-left: 6px solid #e74c3c;
+}
+
+.in-use .status-text {
+    color: #e74c3c;
+}
+
+.available {
+    background-color: #b5f3b5;
+    border-left: 6px solid #2ecc71;
+}
+
+.available .status-text {
+    color: #2ecc71;
 }
 </style>

@@ -9,18 +9,18 @@
             <el-table-column label="Nhà phân phối" align="center" prop="name">
                 <template #default="scope">
                     <span
-                        :title="scope.row?.supplier_info.name"
+                        :title="scope.row?.supplier_info?.name"
                         class="name_item"
-                        >{{ scope.row?.supplier_info.name }}</span
+                        >{{ scope.row?.supplier_info?.name }}</span
                     >
                 </template>
             </el-table-column>
             <el-table-column label="Người tạo" align="center" prop="fullname">
                 <template #default="scope">
                     <span
-                        :title="scope.row?.user_info.fullname"
+                        :title="scope.row?.user_info?.fullname"
                         class="name_item"
-                        >{{ scope.row?.user_info.fullname }}</span
+                        >{{ scope.row?.user_info?.fullname }}</span
                     >
                 </template></el-table-column
             >
@@ -32,7 +32,7 @@
                 <template #default="scope">
                     <span
                         >{{
-                            parseInt(scope.row.total_price).toLocaleString(
+                            parseInt(scope.row?.total_price).toLocaleString(
                                 "en-US"
                             )
                         }}
@@ -42,7 +42,7 @@
             </el-table-column>
             <el-table-column label="Ngày tạo" align="center" prop="import_date">
                 <template #default="scope">
-                    <span>{{ convertDate(scope.row.import_date) }}</span>
+                    <span>{{ convertDate(scope.row?.import_date) }}</span>
                 </template>
             </el-table-column>
             <el-table-column align="right">
@@ -149,7 +149,8 @@ const fetchData = async (searchTerm = "") => {
         };
         const res = await searchImportBill(payLoad);
         totalItemPage.value = res.totalItems;
-        tableData.value = res.data.reverse();
+        tableData.value = res.data;
+        console.log(tableData.value);
     } catch (error) {
         console.error("Error fetching:", error);
         tableData.value = [];

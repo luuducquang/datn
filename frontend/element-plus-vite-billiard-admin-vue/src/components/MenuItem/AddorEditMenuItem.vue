@@ -41,12 +41,26 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item label="Số lượng" prop="stock_quantity">
+            <el-form-item label="Loại sản phẩm" prop="is_rental">
+                <el-select
+                    v-model="ruleForm.is_rental"
+                    placeholder="Vui lòng chọn"
+                >
+                    <el-option label="Thuê" :value="true" />
+                    <el-option label="Bán" :value="false" />
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="Tồn kho" prop="stock_quantity">
                 <el-input v-model="ruleForm.stock_quantity" :disabled="true" />
             </el-form-item>
 
+            <el-form-item label="Giá gốc" prop="price_origin">
+                <el-input v-model="ruleForm.price_origin" :disabled="true" />
+            </el-form-item>
+
             <el-form-item label="Giá" prop="price">
-                <el-input v-model="ruleForm.price" :disabled="true" />
+                <el-input v-model="ruleForm.price" />
             </el-form-item>
 
             <el-form-item>
@@ -107,6 +121,8 @@ const ruleForm = reactive<MenuItems>({
     stock_quantity: 0,
     price: 0,
     category_id: "",
+    price_origin: 0,
+    is_rental: false,
 });
 
 const rules = reactive<FormRules>({
@@ -195,6 +211,8 @@ const fetchById = async (id: string) => {
     ruleForm.stock_quantity = resId?.stock_quantity;
     ruleForm.price = resId?.price;
     ruleForm.category_id = resId?.category_id;
+    ruleForm.price_origin = resId?.price_origin;
+    ruleForm.is_rental = resId?.is_rental;
 
     fileListImg.value = [
         {
@@ -226,6 +244,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         stock_quantity: ruleForm.stock_quantity,
                         price: ruleForm.price,
                         category_id: ruleForm.category_id,
+                        price_origin: ruleForm.price_origin,
+                        is_rental: ruleForm.is_rental,
                     });
                     Notification("Cập nhật thành công", "success");
                     router.push("/menuitem");
@@ -242,6 +262,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         stock_quantity: ruleForm.stock_quantity,
                         price: ruleForm.price,
                         category_id: ruleForm.category_id,
+                        price_origin: ruleForm.price_origin,
+                        is_rental: ruleForm.is_rental,
                     });
                     Notification("Thêm thành công", "success");
                     router.push("/menuitem");

@@ -1,7 +1,6 @@
-import { TableMenuItems, TableRentalItems, Tables } from "~/constant/api";
+import { TableMenuItems, Tables } from "~/constant/api";
 import {
     TableMenuItemUrl,
-    TableRentalItemUrl,
     TableUrl,
 } from "~/constant/endpoints";
 import { apiClient } from "~/constant/request";
@@ -23,24 +22,10 @@ export const getbyIdTableMenuItem = async (
     return res?.data;
 };
 
-export const getbyIdTableRentalItem = async (
-    table_id: string
-): Promise<TableRentalItems[]> => {
-    const res = await apiClient?.get(`${TableRentalItemUrl}/get/` + table_id);
-    return res?.data;
-};
-
 export const createTableMenuItem = async (
     data: Record<string, string | number | boolean>
 ): Promise<TableMenuItems> => {
     const res = await apiClient?.post(`${TableMenuItemUrl}/add`, data);
-    return res?.data;
-};
-
-export const createTableRentalItem = async (
-    data: Record<string, string | number | boolean>
-): Promise<TableRentalItems> => {
-    const res = await apiClient?.post(`${TableRentalItemUrl}/add`, data);
     return res?.data;
 };
 
@@ -58,28 +43,14 @@ export const updateTableMenuItem = async (
     return res?.data;
 };
 
-export const updateTableRentalItem = async (
-    data: Record<string, string | number | boolean>
-): Promise<TableRentalItems> => {
-    const res = await apiClient?.put(`${TableRentalItemUrl}/update`, data);
-    return res?.data;
-};
-
 export const deleteMenuItem = async (id: string): Promise<TableMenuItems> => {
     const res = await apiClient?.delete(`${TableMenuItemUrl}/deleteitem/${id}`);
     return res?.data;
 };
 
-export const deleteRentalItem = async (
+export const deleteMenuItembyTable = async (
     id: string
-): Promise<TableRentalItems> => {
-    const res = await apiClient?.delete(
-        `${TableRentalItemUrl}/deleteitem/${id}`
-    );
-    return res?.data;
-};
-
-export const deleteMenuItembyTable = async (id: string): Promise<TableMenuItems> => {
+): Promise<TableMenuItems> => {
     const res = await apiClient?.delete(`${TableMenuItemUrl}/deletes/${id}`);
     return res?.data;
 };

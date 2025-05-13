@@ -28,7 +28,9 @@
                                 ? value?.total_price.toLocaleString("DE-de")
                                 : 0
                         }đ | ${value?.address_detail} | ${value?.status} | ${
-                            value?.is_paid ? "Đã thanh toán" : "Thanh toán khi nhận hàng"
+                            value?.is_paid
+                                ? "Đã thanh toán"
+                                : "Thanh toán khi nhận hàng"
                         }`
                     }}
                 </button>
@@ -51,8 +53,8 @@
                     >
                         <img
                             :src="
-                                item.rentalitem
-                                    ? apiImage + item.rentalitem.image
+                                item.product
+                                    ? apiImage + item.product.image
                                     : ''
                             "
                             alt="image"
@@ -61,11 +63,7 @@
                         />
                         <div class="p-3">
                             <h5>
-                                {{
-                                    item.rentalitem
-                                        ? item.rentalitem.item_name
-                                        : ""
-                                }}
+                                {{ item.product ? item.product.item_name : "" }}
                             </h5>
                             <div>
                                 Số lượng:

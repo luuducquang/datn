@@ -62,6 +62,23 @@
                     </p>
                 </template>
             </el-table-column>
+
+            <el-table-column label="Thanh toán" align="center" prop="is_paid">
+                <template #default="scope">
+                    <p
+                        :style="{
+                            color: scope.row.is_paid ? '#33CC33' : '#CC3333',
+                        }"
+                    >
+                        {{
+                            scope.row.is_paid
+                                ? "Đã thanh toán"
+                                : "Chưa thanh toán"
+                        }}
+                    </p>
+                </template>
+            </el-table-column>
+
             <el-table-column align="right">
                 <template #header>
                     <el-input

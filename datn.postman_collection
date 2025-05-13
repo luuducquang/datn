@@ -2252,106 +2252,10 @@
 			]
 		},
 		{
-			"name": "Rentals",
+			"name": "Products",
 			"item": [
 				{
-					"name": "addRental",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"user_id\": \"6728dbaaca79a63e267e675e\",\r\n    \"item_id\": \"6728dbaaca79a63e267e675e\",\r\n    \"rental_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"return_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"price\": 100000,\r\n    \"status\": true\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/rentals/add",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"rentals",
-								"add"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getRental",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/rentals/get",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"rentals",
-								"get"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "editRental",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"_id\":\"66f7f3c461dc529cb839eef5\",\r\n    \"user_id\": \"12312gfdgdgdfg31\",\r\n    \"item_id\": \"12312gfdgdgdfg31\",\r\n    \"rental_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"return_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"quantity\": 111,\r\n    \"price\": 100000,\r\n    \"status\": true\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/rentals/update",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"rentals",
-								"update"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deleteRental",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/rentals/delete/6728db524bc4b114b1592245",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"rentals",
-								"delete",
-								"6728db524bc4b114b1592245"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "RentalItems",
-			"item": [
-				{
-					"name": "addRentalItem",
+					"name": "addProduct",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -2365,12 +2269,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/rentalitems/add",
+							"raw": "{{host}}/products/add",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"rentalitems",
+								"products",
 								"add"
 							]
 						}
@@ -2378,7 +2282,7 @@
 					"response": []
 				},
 				{
-					"name": "getRentalItem",
+					"name": "getProduct",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2396,7 +2300,7 @@
 					"response": []
 				},
 				{
-					"name": "editRentalItem",
+					"name": "editProduct",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -2423,7 +2327,7 @@
 					"response": []
 				},
 				{
-					"name": "deleteRentalItem",
+					"name": "deleteProduct",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -2469,7 +2373,7 @@
 					"response": []
 				},
 				{
-					"name": "getbyidRentalItem",
+					"name": "getbyidProduct",
 					"request": {
 						"method": "GET",
 						"header": [],

@@ -1,42 +1,42 @@
 from fastapi import APIRouter, HTTPException
 from pymongo.collection import Collection
 from config.database import database
-from schemas.schemas import RentalItems, Searchs, CheckorUpdateQuantityRequest
-from service.rentalItems import ser_check_and_update_quantities, ser_check_quantities, ser_getbyid_rentalitem,ser_search_rentalitem,ser_get_rentalitem,ser_delete_rentalitem, ser_insert_rentalitem, ser_update_rentalitem
+from schemas.schemas import Products, Searchs, CheckorUpdateQuantityRequest
+from service.products import ser_check_and_update_quantities, ser_check_quantities, ser_getbyid_product,ser_search_product,ser_get_product,ser_delete_product, ser_insert_product, ser_update_product
 
 
 router = APIRouter()
 
-rentalitem_collection: Collection = database['RentalItems']
+product_collection: Collection = database['Products']
 
-@router.get("/rentalitems/get")
-async def get_rentalitem():
-    return ser_get_rentalitem()
+@router.get("/products/get")
+async def get_product():
+    return ser_get_product()
 
-@router.get("/rentalitems/get/{rentalitem_id}")
-async def get_rentalitem_by_id(rentalitem_id: str):
-    return ser_getbyid_rentalitem(rentalitem_id)
+@router.get("/products/get/{product_id}")
+async def get_product_by_id(product_id: str):
+    return ser_getbyid_product(product_id)
 
-@router.post("/rentalitems/search")
-async def search_rentalitem(_data:Searchs):
-    return ser_search_rentalitem(_data)
+@router.post("/products/search")
+async def search_product(_data:Searchs):
+    return ser_search_product(_data)
 
-@router.post("/rentalitems/add")
-async def create_rentalitem(_data: RentalItems):
-    _id = ser_insert_rentalitem(_data)
+@router.post("/products/add")
+async def create_product(_data: Products):
+    _id = ser_insert_product(_data)
     return {"message": "Created successfully", "_id": _id}
 
-@router.put("/rentalitems/update")
-def edit_rentalitem(_data: RentalItems):
-    result = ser_update_rentalitem(_data, rentalitem_collection)
+@router.put("/products/update")
+def edit_product(_data: Products):
+    result = ser_update_product(_data, product_collection)
     return result
 
-@router.delete("/rentalitems/delete/{rentalitem_id}")
-def remove_rentalitem(rentalitem_id: str):
-    response = ser_delete_rentalitem(rentalitem_id, rentalitem_collection)
+@router.delete("/products/delete/{product_id}")
+def remove_product(product_id: str):
+    response = ser_delete_product(product_id, product_collection)
     return response
 
-@router.post("/rentalitems/check-quantities")
+@router.post("/products/check-quantities")
 async def check_and_update_quantities(data: CheckorUpdateQuantityRequest):
     if len(data.ids) != len(data.quantities):
         raise HTTPException(status_code=400, detail="List of IDs and quantities must have the same length")
@@ -54,7 +54,7 @@ async def check_and_update_quantities(data: CheckorUpdateQuantityRequest):
 
     return True
 
-@router.post("/rentalitems/check-and-update-quantities")
+@router.post("/products/check-and-update-quantities")
 async def check_and_update_quantities(data: CheckorUpdateQuantityRequest):
     if len(data.ids) != len(data.quantities):
         raise HTTPException(status_code=400, detail="List of IDs and quantities must have the same length")

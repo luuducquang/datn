@@ -24,15 +24,15 @@
                 >
                     <div class="info_item_cart">
                         <img
-                            :src="apiImage + value.rentalitem?.image"
+                            :src="apiImage + value.product?.image"
                             class="img-thumbnail"
                         />
                         <span class="item">
                             <NuxtLink
-                                :to="`/detail/${value.rentalitem?._id}`"
+                                :to="`/detail/${value.product?._id}`"
                                 class="text-decoration-none text-dark nameItem"
                             >
-                                {{ value.rentalitem?.item_name }}
+                                {{ value.product?.item_name }}
                             </NuxtLink>
                         </span>
                     </div>
@@ -46,9 +46,9 @@
                                 class="text-muted text-decoration-line-through"
                             >
                                 {{
-                                    Number(value?.rentalitem?.price) > 0
+                                    Number(value?.product?.price) > 0
                                         ? Number(
-                                              value?.rentalitem?.price
+                                              value?.product?.price
                                           ).toLocaleString("DE-de")
                                         : 0
                                 }}
@@ -57,9 +57,9 @@
                         </p>
                         <p>
                             <span class="text-dark">{{
-                                Number(value?.rentalitem?.price_reduction) > 0
+                                Number(value?.product?.price_reduction) > 0
                                     ? Number(
-                                          value?.rentalitem?.price_reduction
+                                          value?.product?.price_reduction
                                       ).toLocaleString("DE-de")
                                     : 0
                             }}</span>
@@ -117,7 +117,6 @@ import axios from "axios";
 import { checkQuantityItems } from "~/services/home.service";
 import Swal from "sweetalert2";
 
-
 const router = useRouter();
 const props = defineProps<{
     dataCart: Cart[];
@@ -147,7 +146,11 @@ const buyNow = async () => {
         }
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            Swal.fire("Lỗi", `${error.response?.data?.detail?.insufficient_items.item_name} không đủ số lượng, trong kho chỉ còn ${error.response?.data?.detail?.insufficient_items?.quantity_available} sản phẩm`, "error");
+            Swal.fire(
+                "Lỗi",
+                `${error.response?.data?.detail?.insufficient_items.item_name} không đủ số lượng, trong kho chỉ còn ${error.response?.data?.detail?.insufficient_items?.quantity_available} sản phẩm`,
+                "error"
+            );
         }
     }
 };
@@ -345,7 +348,7 @@ p {
     align-items: center;
     border-radius: 10px;
     cursor: pointer;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .pay a:hover {

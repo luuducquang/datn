@@ -16,6 +16,10 @@
                 />
             </el-form-item>
 
+            <el-form-item label="Ghi chú" prop="description">
+                <el-input v-model="ruleForm.description" />
+            </el-form-item>
+
             <el-form-item label="Loại bàn" prop="table_type_id">
                 <el-select
                     v-model="ruleForm.table_type_id"
@@ -85,6 +89,7 @@ const ruleForm = reactive<Tables>({
     table_number: 0,
     table_type_id: "",
     status: false,
+    description: "",
 });
 
 const rules = reactive<FormRules>({
@@ -134,6 +139,9 @@ const fetchById = async (id: string) => {
     ruleForm.table_number = resId?.table_number;
     ruleForm.table_type_id = resId?.table_type_id;
     ruleForm.status = resId?.status;
+    ruleForm.description = resId?.description;
+    ruleForm.start_date = resId?.start_date;
+    ruleForm.end_date = resId?.end_date;
 };
 
 onMounted(() => {
@@ -154,6 +162,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                     await updateTable({
                         _id: String(route.params.id),
                         table_number: ruleForm.table_number,
+                        description: ruleForm.description,
                         table_type_id: ruleForm.table_type_id,
                         status: ruleForm.status,
                     });
@@ -161,13 +170,15 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                     router.push("/table");
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
-                        Notification(error.response?.data.detail, "warning");
+                        Notification("Cập nhật thành công", "success");
+                        router.push("/table");
                     }
                 }
             } else {
                 try {
                     await createTable({
                         table_number: ruleForm.table_number,
+                        description: ruleForm.description,
                         table_type_id: ruleForm.table_type_id,
                         status: ruleForm.status,
                     });

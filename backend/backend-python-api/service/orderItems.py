@@ -1,10 +1,10 @@
 from bson import ObjectId
 from fastapi import HTTPException
 from pymongo.collection import Collection
-from schemas.schemas import FoodOrders
+from schemas.schemas import OrderItems
 from config.database import database
 
-foodorder_collection: Collection = database['FoodOrders']
+foodorder_collection: Collection = database['OrderItems']
 
 def ser_get_foodorder():
     datas = []
@@ -13,11 +13,11 @@ def ser_get_foodorder():
         datas.append(data)
     return datas
 
-def ser_insert_foodorder(_data: FoodOrders) -> str:
+def ser_insert_foodorder(_data: OrderItems) -> str:
     result = foodorder_collection.insert_one(_data.dict(exclude={"id"}))
     return str(result.inserted_id)
 
-def ser_update_foodorder(_data: FoodOrders, foodorder_collection: Collection):
+def ser_update_foodorder(_data: OrderItems, foodorder_collection: Collection):
     if not _data.id:
         raise HTTPException(status_code=400, detail="ID is required for update")
 

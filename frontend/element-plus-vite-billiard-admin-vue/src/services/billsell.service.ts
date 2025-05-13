@@ -1,21 +1,11 @@
-import {
-    BillSells,
-    RentalItems,
-    ResponseData,
-    SellItems,
-} from "~/constant/api";
-import { BillSellUrl, RentalItemUrl, SellItemUrl } from "~/constant/endpoints";
+import { BillSells, Products, ResponseData, SellItems } from "~/constant/api";
+import { BillSellUrl, ProductUrl, SellItemUrl } from "~/constant/endpoints";
 import { apiClient } from "~/constant/request";
 
 export const searchBillSell = async (
     data: Record<string, string | number>
 ): Promise<ResponseData<BillSells>> => {
     const res = await apiClient?.post(`${BillSellUrl}/search`, data);
-    return res?.data;
-};
-
-export const getAllProduct = async (): Promise<RentalItems[]> => {
-    const res = await apiClient?.get(`${RentalItemUrl}/get`);
     return res?.data;
 };
 

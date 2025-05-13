@@ -20,13 +20,24 @@
                 prop="categorymenuitem.category_name"
             />
             <el-table-column
-                label="Số lượng"
+                label="Tồn kho"
                 align="center"
                 prop="stock_quantity"
             >
                 <template #default="scope">
                     <span class="name_item">{{
                         scope.row.stock_quantity
+                    }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+                label="Loại"
+                align="center"
+                prop="is_rental"
+            >
+                <template #default="scope">
+                    <span class="name_item">{{
+                        scope.row.is_rental ? "Thuê" : "Bán"
                     }}</span>
                 </template>
             </el-table-column>

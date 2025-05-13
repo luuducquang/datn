@@ -13,8 +13,8 @@ def ser_get_sellitem():
         datas.append(data)
     return datas
 
-def ser_insert_sellitem(_data: SellItems, sellitem_collection: Collection, rentalitem_collection: Collection) -> str:
-    rental_item = rentalitem_collection.find_one({"_id": ObjectId(_data.item_id)})
+def ser_insert_sellitem(_data: SellItems, sellitem_collection: Collection, product_collection: Collection) -> str:
+    rental_item = product_collection.find_one({"_id": ObjectId(_data.item_id)})
     if not rental_item:
         raise HTTPException(status_code=404, detail="Rental item not found")
 
@@ -26,7 +26,7 @@ def ser_insert_sellitem(_data: SellItems, sellitem_collection: Collection, renta
         )
 
     updated_quantity_available = available_quantity - _data.quantity
-    update_result = rentalitem_collection.update_one(
+    update_result = product_collection.update_one(
         {"_id": ObjectId(_data.item_id)},
         {"$set": {"quantity_available": updated_quantity_available}}
     )
@@ -41,7 +41,7 @@ def ser_insert_sellitem(_data: SellItems, sellitem_collection: Collection, renta
     return str(result.inserted_id)
 
 
-def ser_update_sellitem(_data: SellItems, sellitem_collection: Collection, rentalitem_collection: Collection):
+def ser_update_sellitem(_data: SellItems, sellitem_collection: Collection, product_collection: Collection):
     if not _data.id:
         raise HTTPException(status_code=400, detail="ID is required for update")
 
@@ -54,7 +54,7 @@ def ser_update_sellitem(_data: SellItems, sellitem_collection: Collection, renta
     if not existing_sellitem:
         raise HTTPException(status_code=404, detail="Sell item not found")
 
-    rental_item = rentalitem_collection.find_one({"_id": ObjectId(_data.item_id)})
+    rental_item = product_collection.find_one({"_id": ObjectId(_data.item_id)})
     if not rental_item:
         raise HTTPException(status_code=404, detail="Rental item not found")
 
@@ -72,7 +72,7 @@ def ser_update_sellitem(_data: SellItems, sellitem_collection: Collection, renta
             detail=f"Số lượng không đủ, trong kho còn: {available_quantity} sản phẩm"
         )
 
-    rentalitem_collection.update_one(
+    product_collection.update_one(
         {"_id": ObjectId(_data.item_id)},
         {"$set": {"quantity_available": updated_quantity_available}}
     )
@@ -85,7 +85,7 @@ def ser_update_sellitem(_data: SellItems, sellitem_collection: Collection, renta
     return {"message": "Updated successfully"}
 
 
-def ser_delete_sellitem(sellitem_id: str, sellitem_collection: Collection, rentalitem_collection: Collection):
+def ser_delete_sellitem(sellitem_id: str, sellitem_collection: Collection, product_collection: Collection):
     if not ObjectId.is_valid(sellitem_id):
         raise HTTPException(status_code=400, detail="Invalid sellitem ID")
     
@@ -93,12 +93,12 @@ def ser_delete_sellitem(sellitem_id: str, sellitem_collection: Collection, renta
     if not sellitem:
         raise HTTPException(status_code=404, detail="SellItem not found")
     
-    rental_item = rentalitem_collection.find_one({"_id": ObjectId(sellitem["item_id"])})
+    rental_item = product_collection.find_one({"_id": ObjectId(sellitem["item_id"])})
     if not rental_item:
         raise HTTPException(status_code=404, detail="Related RentalItem not found")
 
     updated_quantity_available = rental_item.get("quantity_available", 0) + sellitem.get("quantity", 0)
-    update_result = rentalitem_collection.update_one(
+    update_result = product_collection.update_one(
         {"_id": ObjectId(sellitem["item_id"])},
         {"$set": {"quantity_available": updated_quantity_available}}
     )

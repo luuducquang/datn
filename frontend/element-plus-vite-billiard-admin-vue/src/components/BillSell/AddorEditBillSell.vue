@@ -52,6 +52,15 @@
                 </el-select>
             </el-form-item>
 
+            <el-form-item label="Thanh toán" prop="is_paid">
+                <el-tag
+                    :type="ruleForm.is_paid ? 'success' : 'danger'"
+                    effect="dark"
+                >
+                    {{ ruleForm.is_paid ? "Đã thanh toán" : "Chưa thanh toán" }}
+                </el-tag>
+            </el-form-item>
+
             <el-card>
                 <el-form-item label="Tên sản phẩm" prop="item_id">
                     <el-select
@@ -205,13 +214,12 @@ import { ElMessage } from "element-plus";
 import router from "~/router";
 import { useRoute } from "vue-router";
 import { useUserStore } from "~/store";
-import { BillSells, News, OptionSelect, TableBillSell } from "~/constant/api";
+import { OptionSelect, TableBillSell } from "~/constant/api";
 import { apiImage } from "~/constant/request";
 import {
     createBillSell,
     createSellItem,
     deleteSellItem,
-    getAllProduct,
     getDetailBillById,
     getDetailSellItemById,
     updateBillSell,
@@ -220,7 +228,7 @@ import {
 import { el } from "element-plus/es/locale";
 import { watch } from "vue";
 import { table } from "console";
-import { getAllRentalItem } from "~/services/rentalitem.service";
+import { getAllProduct } from "~/services/product.service";
 import { getCurrentDateTime } from "~/utils/getTimeCurrent";
 import axios from "axios";
 
@@ -250,6 +258,7 @@ const ruleForm = reactive<any>({
     quantity: 1,
     unit_price: 0,
     total_price_item: 0,
+    is_paid: false,
 });
 
 const rules = reactive<FormRules>({
@@ -328,8 +337,8 @@ const rules = reactive<FormRules>({
 const optionsProduct = ref<OptionSelect[]>();
 
 async function fetchProduct() {
-    const resListRentalItem = await getAllRentalItem();
-    const res = resListRentalItem?.filter(function (item) {
+    const resListProduct = await getAllProduct();
+    const res = resListProduct?.filter(function (item) {
         return item?.quantity_available > 0;
     });
     ruleForm.item_id = String(res[0]?._id);
@@ -373,13 +382,14 @@ const fetchById = async (id: string) => {
             (ruleForm.email = resBillSell[0]?.email),
             (ruleForm.address_detail = resBillSell[0]?.address_detail),
             (ruleForm.total_price = resBillSell[0]?.total_price),
+            (ruleForm.is_paid = resBillSell[0]?.is_paid),
             (ruleForm.status = resBillSell[0]?.status);
         const dataTempTable = resSellItem.map((value: any, index: number) => {
             return {
                 stt: index + 1,
                 maChiTietHoaDon: value._id,
                 maSanPham: String(value.item_id),
-                hinhAnh: String(value.rentalitem.image),
+                hinhAnh: String(value.product.image),
                 soLuong: Number(value.quantity),
                 donGia: Number(value.unit_price),
                 tongTien: Number(value.unit_price) * Number(value.quantity),
@@ -480,6 +490,7 @@ const handlerAddDetail = async () => {
                     address_detail: String(ruleForm.address_detail),
                     total_price: totalTongTien,
                     status: ruleForm.status,
+                    is_paid: ruleForm.is_paid,
                 });
 
                 fetchById(String(route.params.id));
@@ -547,6 +558,7 @@ const updateTotalPrice = async (row: TableBillSell) => {
                 address_detail: String(ruleForm.address_detail),
                 total_price: totalTongTien,
                 status: ruleForm.status,
+                is_paid: ruleForm.is_paid,
             });
 
             fetchById(String(route.params.id));
@@ -595,6 +607,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         address_detail: String(ruleForm.address_detail),
                         total_price: ruleForm.total_price,
                         status: "Huỷ đơn",
+                        is_paid: ruleForm.is_paid,
                     });
                     for (const item of listitemDeleted) {
                         if (item) {
@@ -614,6 +627,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         address_detail: String(ruleForm.address_detail),
                         total_price: ruleForm.total_price,
                         status: ruleForm.status,
+                        is_paid: ruleForm.is_paid,
                     });
                     Notification("Cập nhật thành công", "success");
                 }
@@ -642,6 +656,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                             total_price: ruleForm.total_price,
                             status: "Đang xử lý",
                             sell_items: listDataProduct,
+                            is_paid: ruleForm.is_paid,
                         });
                         Notification("Thêm thành công", "success");
                         router.push("/billsell");

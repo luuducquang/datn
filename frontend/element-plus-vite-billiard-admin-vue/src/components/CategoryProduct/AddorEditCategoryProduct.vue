@@ -30,12 +30,12 @@ import { Plus } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import router from "~/router";
 import { useRoute } from "vue-router";
-import { CategoryRentalItems } from "~/constant/api";
+import { CategoryProducts } from "~/constant/api";
 import {
-    createCategoryRentalItem,
-    getbyIdCategoryRentalItem,
-    updateCategoryRentalItem,
-} from "~/services/categoryrentalitem.service";
+    createCategoryProduct,
+    getbyIdCategoryProduct,
+    updateCategoryProduct,
+} from "~/services/categoryproduct.service";
 import axios from "axios";
 
 const formSize = ref<ComponentSize>("default");
@@ -52,7 +52,7 @@ const Notification = (
     });
 };
 
-const ruleForm = reactive<CategoryRentalItems>({
+const ruleForm = reactive<CategoryProducts>({
     category_name: "",
 });
 
@@ -67,7 +67,7 @@ const rules = reactive<FormRules>({
 });
 
 const fetchById = async (id: string) => {
-    const resId = await getbyIdCategoryRentalItem(id);
+    const resId = await getbyIdCategoryProduct(id);
     ruleForm.category_name = resId?.category_name;
 };
 
@@ -85,12 +85,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         if (valid) {
             if (route.params.id) {
                 try {
-                    await updateCategoryRentalItem({
+                    await updateCategoryProduct({
                         _id: String(route.params.id),
                         category_name: ruleForm.category_name,
                     });
                     Notification("Cập nhật thành công", "success");
-                    router.push("/categoryrentalitem");
+                    router.push("/categoryproduct");
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
                         Notification(error.response?.data.detail, "warning");
@@ -98,11 +98,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 }
             } else {
                 try {
-                    await createCategoryRentalItem({
+                    await createCategoryProduct({
                         category_name: ruleForm.category_name,
                     });
                     Notification("Thêm thành công", "success");
-                    router.push("/categoryrentalitem");
+                    router.push("/categoryproduct");
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
                         Notification(error.response?.data.detail, "warning");

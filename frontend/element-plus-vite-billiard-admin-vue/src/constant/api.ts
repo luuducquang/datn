@@ -44,13 +44,24 @@ export interface TableTypes {
 
 export interface Tables {
     _id?: string;
+    description: string
     table_number: number;
     table_type_id: string;
     status: boolean;
-    start_date?: Date | string;
-    end_date?: Date | string;
+    start_date?: Date | string |null;
+    end_date?: Date | string |null;
     tabletype?: TableTypes;
     pricingrule?: PricingRules;
+}
+
+export interface Discounts {
+    _id?: string;
+    code: String;
+    discount_value: Number;
+    decription: String;
+    quantity: Number;
+    used_count: Number;
+    status: boolean;
 }
 
 export interface TableMenuItems {
@@ -61,15 +72,6 @@ export interface TableMenuItems {
     unit_price: number;
     total_price: number;
     menuitem?: MenuItems;
-}
-
-export interface TableRentalItems {
-    _id?: string;
-    table_id: string;
-    item_id: string;
-    unit_price: number;
-    rentalitem?: RentalItems;
-    start_time: Date | string;
 }
 
 export interface News {
@@ -88,7 +90,7 @@ export interface CategoryMenuItems {
     category_name: string;
 }
 
-export interface CategoryRentalItems {
+export interface CategoryProducts {
     _id?: string;
     category_name: string;
 }
@@ -137,11 +139,13 @@ export interface PricingRules {
 
 export interface MenuItems {
     _id?: string;
+    category_id: string;
     name: string;
     image: string;
     stock_quantity: number;
+    price_origin: number;
     price: number;
-    category_id: string;
+    is_rental: boolean;
     categorymenuitem?: CategoryMenuItems;
 }
 
@@ -168,17 +172,7 @@ export interface RateBookings {
     };
 }
 
-export interface Rentals {
-    _id?: string;
-    user_id: string;
-    item_id: string;
-    rental_date: Date | string;
-    return_date: Date | string;
-    price: number;
-    status: boolean;
-}
-
-export interface FoodOrders {
+export interface OrderItems {
     _id?: string;
     user_id: string;
     table_id: string;
@@ -197,7 +191,7 @@ export interface TimeSessions {
     price: number;
 }
 
-export interface RentalItems {
+export interface Products {
     _id?: string;
     manufactor_id: string;
     category_id: string;
@@ -205,15 +199,14 @@ export interface RentalItems {
     image: string;
     price: number;
     price_reduction: number;
-    rental_price_day: number;
-    rental_price_hours: number;
+    price_origin: number;
     quantity_available: number;
     view?: number;
     sales?: number;
     origin: string;
     description: string;
     description_detail: string;
-    categoryrentalitem?: CategoryRentalItems;
+    categoryproduct?: CategoryProducts;
     manufactor?: Manufactors;
 }
 
@@ -224,7 +217,7 @@ export interface SellItems {
     quantity: number;
     unit_price: number;
     total_price: number;
-    rentalitem?: RentalItems[];
+    product?: Products[];
 }
 
 export interface BillSells {
@@ -238,6 +231,7 @@ export interface BillSells {
     address_detail: string;
     total_price: number;
     status: string;
+    is_paid: boolean;
     sell_items?: SellItems[];
     user_info?: Users[];
 }

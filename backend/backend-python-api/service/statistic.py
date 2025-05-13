@@ -10,9 +10,9 @@ tables_collection: Collection = database['Tables']
 bookings_collection: Collection = database['Bookings']
 billsells_collection: Collection = database['BillSells']
 importbills_collection: Collection = database['ImportBills']
-rentalitems_collection: Collection = database['RentalItems']
+products_collection: Collection = database['Products']
 rentals_collection: Collection = database['Rentals']
-foodorders_collection: Collection = database['FoodOrders']
+foodorders_collection: Collection = database['OrderItems']
 timesessions_collection: Collection = database['TimeSessions']
 
 
@@ -73,13 +73,13 @@ def ser_get_info_overview():
     shipping_orders = billsells_collection.count_documents({"status": "Đang giao hàng"})
 
     
-    completed_orders = billsells_collection.count_documents({"status": {"$in": ["Đã giao hàng", "Hoàn tấ"]}})
+    completed_orders = billsells_collection.count_documents({"status": {"$in": ["Đã giao hàng", "Hoàn tất"]}})
 
     
     returned_orders = billsells_collection.count_documents({"status": {"$in": ["Đổi hàng", "Trả hàng"]}})
 
     
-    total_product_views = list(rentalitems_collection.aggregate([{"$group": {"_id": None, "total_views": {"$sum": "$view"}}}]))
+    total_product_views = list(products_collection.aggregate([{"$group": {"_id": None, "total_views": {"$sum": "$view"}}}]))
     total_product_views = total_product_views[0]["total_views"] if total_product_views else 0
 
     

@@ -39,11 +39,11 @@
 </template>
 
 <script lang="ts" setup>
-import { type Product } from "~/constant/api";
+import { type Products } from "~/constant/api";
 import { apiImage } from "~/constant/request";
 
 const props = defineProps<{
-    product: Product;
+    product: Products;
     isSale: boolean;
 }>();
 </script>

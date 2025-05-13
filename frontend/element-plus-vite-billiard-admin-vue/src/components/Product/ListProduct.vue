@@ -28,9 +28,9 @@
             >
                 <template #default="scope">
                     <span
-                        :title="scope.row.categoryrentalitem.category_name"
+                        :title="scope.row.categoryproduct.category_name"
                         class="name_item"
-                        >{{ scope.row.categoryrentalitem.category_name }}</span
+                        >{{ scope.row.categoryproduct.category_name }}</span
                     >
                 </template>
             </el-table-column>
@@ -57,33 +57,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                label="Giá 1h"
-                align="center"
-                prop="rental_price_hours"
-            >
-                <template #default="scope">
-                    <span
-                        :title="ConvertPrice(scope.row.rental_price_hours)"
-                        class="name_item"
-                        >{{ ConvertPrice(scope.row.rental_price_hours) }}</span
-                    >
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="Giá 1d"
-                align="center"
-                prop="rental_price_day"
-            >
-                <template #default="scope">
-                    <span
-                        :title="ConvertPrice(scope.row.rental_price_day)"
-                        class="name_item"
-                        >{{ ConvertPrice(scope.row.rental_price_day) }}</span
-                    >
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="Số lượng"
+                label="Tồn kho"
                 align="center"
                 prop="quantity_available"
             >
@@ -156,11 +130,8 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { CirclePlus, StarFilled } from "@element-plus/icons-vue";
 import debounce from "~/utils/debounce";
-import { RentalItems } from "~/constant/api";
-import {
-    deleteRentalItem,
-    searchRentalItem,
-} from "~/services/rentalitem.service";
+import { Products } from "~/constant/api";
+import { deleteProduct, searchProduct } from "~/services/product.service";
 import { apiImage } from "~/constant/request";
 import router from "~/router";
 import { ElMessage } from "element-plus";
@@ -169,7 +140,7 @@ import ConvertPrice from "~/utils/convertprice";
 const search = ref("");
 const loading = ref(false);
 
-const tableData = ref<RentalItems[]>([]);
+const tableData = ref<Products[]>([]);
 
 const currentPage = ref(1);
 const currentPageSize = ref(10);
@@ -191,13 +162,13 @@ watch(currentPage, (newPage: number, oldPage: number) => {
     }
 });
 
-const handleEdit = (index: number, row: RentalItems) => {
-    router.push(`/rentalitem/edit/${row._id}`);
+const handleEdit = (index: number, row: Products) => {
+    router.push(`/product/edit/${row._id}`);
 };
 
 const confirmEvent = async (Id: string) => {
     try {
-        await deleteRentalItem(Id);
+        await deleteProduct(Id);
         Notification("Xoá thành công", "success");
         fetchData(search.value);
     } catch (error) {
@@ -214,9 +185,10 @@ const fetchData = async (searchTerm = "") => {
             pageSize: currentPageSize.value,
             search_term: searchTerm,
         };
-        const res = await searchRentalItem(payLoad);
+        const res = await searchProduct(payLoad);
         totalItemPage.value = res.totalItems;
         tableData.value = res.data;
+        console.log(tableData.value);
     } catch (error) {
         console.error("Error fetching:", error);
         tableData.value = [];
@@ -236,7 +208,7 @@ onMounted(() => {
 });
 
 const handlerAdd = () => {
-    router.push("/rentalitem/add");
+    router.push("/product/add");
 };
 </script>
 

@@ -8,7 +8,7 @@ from config.database import database
 
 billsell_collection: Collection = database['BillSells']
 sellitem_collection: Collection = database['SellItems']
-rentalitem_collection: Collection = database['RentalItems']
+product_collection: Collection = database['Products']
 user_collection: Collection = database['Users']
 
 def ser_get_billsell():
@@ -29,12 +29,12 @@ def ser_get_billsell_by_sell_id(sell_id: str):
     datas = []
     for data in sellitem_collection.find({"sell_id": sell_id}):
         data["_id"] = str(data["_id"])
-        rental_item_data = rentalitem_collection.find_one({"_id": ObjectId(data["item_id"])})
+        rental_item_data = product_collection.find_one({"_id": ObjectId(data["item_id"])})
         if rental_item_data:
             rental_item_data["_id"] = str(rental_item_data["_id"])  
-            data["rentalitem"] = rental_item_data  
+            data["product"] = rental_item_data  
         else:
-            data["rentalitem"] = None  
+            data["product"] = None  
         datas.append(data)
     return datas
 
@@ -104,7 +104,7 @@ def ser_search_billsell(_data: Searchs) -> dict:
 def ser_insert_billsell(_data: BillSells) -> str:
     if _data.sell_items:
         for item in _data.sell_items:
-            rental_item = rentalitem_collection.find_one({"_id": ObjectId(item.item_id)})
+            rental_item = product_collection.find_one({"_id": ObjectId(item.item_id)})
             if not rental_item:
                 raise HTTPException(status_code=404, detail=f"Không tìm thấy món hàng với ID {item.item_id}")
 
@@ -135,10 +135,10 @@ def ser_insert_billsell(_data: BillSells) -> str:
     if _data.sell_items:
         for item in _data.sell_items:
             item.sell_id = bill_id  
-            rental_item = rentalitem_collection.find_one({"_id": ObjectId(item.item_id)})
+            rental_item = product_collection.find_one({"_id": ObjectId(item.item_id)})
             available_quantity = rental_item.get("quantity_available", 0)
 
-            update_result = rentalitem_collection.update_one(
+            update_result = product_collection.update_one(
                 {"_id": ObjectId(item.item_id)},
                 {"$set": {"quantity_available": available_quantity - item.quantity}}
             )

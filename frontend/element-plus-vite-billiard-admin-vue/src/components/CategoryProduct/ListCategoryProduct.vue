@@ -63,11 +63,11 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { CirclePlus, StarFilled } from "@element-plus/icons-vue";
 import debounce from "~/utils/debounce";
-import { CategoryRentalItems } from "~/constant/api";
+import { CategoryProducts } from "~/constant/api";
 import {
-    deleteCategoryRentalItem,
-    searchCategoryRentalItem,
-} from "~/services/categoryrentalitem.service";
+    deleteCategoryProduct,
+    searchCategoryProduct,
+} from "~/services/categoryproduct.service";
 import router from "~/router";
 import { ElMessage } from "element-plus";
 import axios from "axios";
@@ -75,7 +75,7 @@ import axios from "axios";
 const search = ref("");
 const loading = ref(false);
 
-const tableData = ref<CategoryRentalItems[]>([]);
+const tableData = ref<CategoryProducts[]>([]);
 
 const currentPage = ref(1);
 const currentPageSize = ref(10);
@@ -97,13 +97,13 @@ watch(currentPage, (newPage: number, oldPage: number) => {
     }
 });
 
-const handleEdit = (index: number, row: CategoryRentalItems) => {
-    router.push(`/categoryrentalitem/edit/${row._id}`);
+const handleEdit = (index: number, row: CategoryProducts) => {
+    router.push(`/categoryproduct/edit/${row._id}`);
 };
 
 const confirmEvent = async (Id: string) => {
     try {
-        await deleteCategoryRentalItem(Id);
+        await deleteCategoryProduct(Id);
         Notification("Xoá thành công", "success");
         fetchData(search.value);
     } catch (error) {
@@ -121,7 +121,7 @@ const fetchData = async (searchTerm = "") => {
             pageSize: currentPageSize.value,
             search_term: searchTerm,
         };
-        const res = await searchCategoryRentalItem(payLoad);
+        const res = await searchCategoryProduct(payLoad);
         totalItemPage.value = res.totalItems;
         tableData.value = res.data;
     } catch (error) {
@@ -143,7 +143,7 @@ onMounted(() => {
 });
 
 const handlerAdd = () => {
-    router.push("/categoryrentalitem/add");
+    router.push("/categoryproduct/add");
 };
 </script>
 

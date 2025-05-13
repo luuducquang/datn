@@ -60,24 +60,23 @@
                 </el-select>
             </el-form-item>
 
+            <el-form-item label="Giá gốc" prop="price_origin">
+                <el-input v-model="ruleForm.price_origin" :disabled="true" />
+            </el-form-item>
+
             <el-form-item label="Giá" prop="price">
-                <el-input v-model="ruleForm.price" :disabled="true"/>
+                <el-input v-model="ruleForm.price" />
             </el-form-item>
 
             <el-form-item label="Giá Giảm" prop="price_reduction">
-                <el-input v-model="ruleForm.price_reduction"  :disabled="true"/>
+                <el-input v-model="ruleForm.price_reduction" />
             </el-form-item>
 
-            <el-form-item label="Giá 1 giờ" prop="rental_price_hours">
-                <el-input v-model="ruleForm.rental_price_hours" />
-            </el-form-item>
-
-            <el-form-item label="Giá 1 ngày" prop="rental_price_day">
-                <el-input v-model="ruleForm.rental_price_day" />
-            </el-form-item>
-
-            <el-form-item label="Số lượng" prop="quantity_available">
-                <el-input v-model="ruleForm.quantity_available" :disabled="true" />
+            <el-form-item label="Tồn kho" prop="quantity_available">
+                <el-input
+                    v-model="ruleForm.quantity_available"
+                    :disabled="true"
+                />
             </el-form-item>
 
             <el-form-item label="Xuất xứ" prop="origin">
@@ -125,15 +124,15 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { ElMessage } from "element-plus";
 import router from "~/router";
 import { useRoute } from "vue-router";
-import { RentalItems, OptionSelect } from "~/constant/api";
+import { Products, OptionSelect } from "~/constant/api";
 import { apiImage } from "~/constant/request";
 import {
-    createRentalItem,
-    getbyIdRentalItems,
-    updateRentalItem,
-} from "~/services/rentalitem.service";
+    createProduct,
+    getbyIdProducts,
+    updateProduct,
+} from "~/services/product.service";
 import axios from "axios";
-import { getAllCategoryRentalItem } from "~/services/categoryrentalitem.service";
+import { getAllCategoryProduct } from "~/services/categoryproduct.service";
 import { getAllManufactor } from "~/services/manufactor.service";
 
 const formSize = ref<ComponentSize>("default");
@@ -154,15 +153,14 @@ const Notification = (
     });
 };
 
-const ruleForm = reactive<RentalItems>({
+const ruleForm = reactive<Products>({
     manufactor_id: "",
     category_id: "",
     item_name: "",
     image: "",
+    price_origin: 0,
     price: 0,
     price_reduction: 0,
-    rental_price_day: 0,
-    rental_price_hours: 0,
     quantity_available: 0,
     view: 0,
     origin: "",
@@ -199,6 +197,18 @@ const rules = reactive<FormRules>({
             trigger: "blur",
         },
     ],
+    price_origin: [
+        {
+            required: true,
+            message: "Vui lòng nhập số giá gốc",
+            trigger: "blur",
+        },
+        {
+            pattern: /^[0-9]+$/,
+            message: "Vui lòng nhập số tự nhiên",
+            trigger: "blur",
+        },
+    ],
     price: [
         {
             required: true,
@@ -215,30 +225,6 @@ const rules = reactive<FormRules>({
         {
             required: true,
             message: "Vui lòng nhập giá giảm",
-            trigger: "blur",
-        },
-        {
-            pattern: /^[0-9]+$/,
-            message: "Vui lòng nhập số tự nhiên",
-            trigger: "blur",
-        },
-    ],
-    rental_price_day: [
-        {
-            required: true,
-            message: "Vui lòng nhập giá thuê theo ngày",
-            trigger: "blur",
-        },
-        {
-            pattern: /^[0-9]+$/,
-            message: "Vui lòng nhập số tự nhiên",
-            trigger: "blur",
-        },
-    ],
-    rental_price_hours: [
-        {
-            required: true,
-            message: "Vui lòng nhập giá thuê theo giờ",
             trigger: "blur",
         },
         {
@@ -303,7 +289,7 @@ const handleRemoveImg: UploadProps["onRemove"] = (uploadFile, uploadFiles) => {
 const optionsCategory = ref<OptionSelect[]>();
 
 async function fetchCategory() {
-    const res = await getAllCategoryRentalItem();
+    const res = await getAllCategoryProduct();
     ruleForm.category_id = String(res[0]._id);
     optionsCategory.value = res?.map(function ({ _id, category_name }) {
         return {
@@ -327,19 +313,20 @@ async function fetchManufactor() {
 }
 
 const fetchById = async (id: string) => {
-    const resId = await getbyIdRentalItems(id);
+    const resId = await getbyIdProducts(id);
     ruleForm.manufactor_id = resId?.manufactor_id;
     ruleForm.category_id = resId?.category_id;
     ruleForm.item_name = resId?.item_name;
+    ruleForm.price_origin = resId?.price_origin;
     ruleForm.price = resId?.price;
     ruleForm.price_reduction = resId?.price_reduction;
-    ruleForm.rental_price_day = resId?.rental_price_day;
-    ruleForm.rental_price_hours = resId?.rental_price_hours;
     ruleForm.image = resId?.image;
     ruleForm.quantity_available = resId?.quantity_available;
     ruleForm.origin = resId?.origin;
     ruleForm.description = resId?.description;
     ruleForm.description_detail = resId?.description_detail;
+    ruleForm.view = resId?.view;
+    ruleForm.sales = resId?.sales;
 
     fileListImg.value = [
         {
@@ -365,23 +352,24 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         if (valid) {
             if (route.params.id) {
                 try {
-                    await updateRentalItem({
+                    await updateProduct({
                         _id: String(route.params.id),
                         manufactor_id: ruleForm.manufactor_id,
                         category_id: ruleForm.category_id,
                         item_name: ruleForm.item_name,
                         image: ruleForm.image,
+                        price_origin: ruleForm.price_origin,
                         price: ruleForm.price,
                         price_reduction: ruleForm.price_reduction,
-                        rental_price_day: ruleForm.rental_price_day,
-                        rental_price_hours: ruleForm.rental_price_hours,
                         quantity_available: ruleForm.quantity_available,
                         origin: ruleForm.origin,
                         description: ruleForm.description,
                         description_detail: ruleForm.description_detail,
+                        view: Number(ruleForm.view),
+                        sales: Number(ruleForm.sales),
                     });
                     Notification("Cập nhật thành công", "success");
-                    router.push("/rentalitem");
+                    router.push("/product");
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
                         Notification(error.response?.data.detail, "warning");
@@ -389,22 +377,23 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 }
             } else {
                 try {
-                    await createRentalItem({
+                    await createProduct({
                         manufactor_id: ruleForm.manufactor_id,
                         category_id: ruleForm.category_id,
                         item_name: ruleForm.item_name,
                         image: ruleForm.image,
+                        price_origin: ruleForm.price_origin,
                         price: ruleForm.price,
                         price_reduction: ruleForm.price_reduction,
-                        rental_price_day: ruleForm.rental_price_day,
-                        rental_price_hours: ruleForm.rental_price_hours,
                         quantity_available: ruleForm.quantity_available,
                         origin: ruleForm.origin,
                         description: ruleForm.description,
                         description_detail: ruleForm.description_detail,
+                        view: Number(ruleForm.view),
+                        sales: Number(ruleForm.sales),
                     });
                     Notification("Thêm thành công", "success");
-                    router.push("/rentalitem");
+                    router.push("/product");
                 } catch (error) {
                     if (axios.isAxiosError(error)) {
                         Notification(error.response?.data.detail, "warning");

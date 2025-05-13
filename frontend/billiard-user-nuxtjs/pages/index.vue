@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { type Product } from "~/constant/api";
+import { type Products } from "~/constant/api";
 import { getProductHome } from "~/services/home.service";
 import { onMounted, ref } from "vue";
 import Cookies from "js-cookie";
@@ -62,9 +62,9 @@ import { useCartStore } from "~/store";
 //     title: "Trang chủ",
 // });
 
-const productNew = ref<Product[]>([]);
-const productCoBan = ref<Product[]>([]);
-const productCoPha = ref<Product[]>([]);
+const productNew = ref<Products[]>([]);
+const productCoBan = ref<Products[]>([]);
+const productCoPha = ref<Products[]>([]);
 const store = useCartStore();
 
 const fetchProducts = async () => {

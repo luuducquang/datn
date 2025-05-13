@@ -20,6 +20,7 @@ export interface TableTypes {
 
 export interface Tables {
     _id?: string;
+    description: string;
     table_number: number;
     table_type_id: string;
     status: boolean;
@@ -95,23 +96,22 @@ export interface PricingRules {
     tabletype?: TableTypes;
 }
 
-export interface Product {
+export interface Products {
     _id?: string;
     manufactor_id: string;
     category_id: string;
     item_name: string;
     image: string;
+    price_origin: number;
     price: number;
     price_reduction: number;
-    rental_price_day: number;
-    rental_price_hours: number;
     quantity_available: number;
     view?: number;
     sales?: number;
     origin: string;
     description: string;
     description_detail: string;
-    categoryrentalitem?: CategoryRentalItems;
+    categoryproduct?: CategoryProducts;
     manufactor?: Manufactors;
 }
 
@@ -120,7 +120,7 @@ export interface CheckorUpdateQuantityRequest {
     quantities: number[];
 }
 
-export interface CategoryRentalItems {
+export interface CategoryProducts {
     _id?: string;
     category_name: string;
 }
@@ -177,7 +177,7 @@ export interface SellItems {
     quantity: number;
     unit_price: number;
     total_price: number;
-    rentalitem?: Product;
+    product?: Products;
 }
 
 export interface News {
@@ -230,5 +230,5 @@ export interface Cart {
     item_id: string;
     quantity: number;
     status: boolean;
-    rentalitem?: Product;
+    product?: Products;
 }

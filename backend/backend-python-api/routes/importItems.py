@@ -8,7 +8,7 @@ from service.importItems import ser_get_importitem,ser_delete_importitem, ser_in
 router = APIRouter()
 
 importitem_collection: Collection = database['ImportItems']
-rentalitem_collection: Collection = database['RentalItems']
+product_collection: Collection = database['Products']
 menuitem_collection: Collection = database['MenuItems']
 
 @router.get("/importitems/get")
@@ -30,7 +30,7 @@ def remove_importitem(importitem_id: str):
     response = ser_delete_importitem(
         importitem_id, 
         importitem_collection, 
-        rentalitem_collection, 
+        product_collection, 
         menuitem_collection
     )
     return response

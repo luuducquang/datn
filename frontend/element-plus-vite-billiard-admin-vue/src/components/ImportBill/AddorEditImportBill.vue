@@ -190,17 +190,11 @@ import {
     MenuItems,
     News,
     OptionSelect,
-    RentalItems,
+    Products,
     TableBillSell,
     TableImportBill,
 } from "~/constant/api";
 import { apiImage } from "~/constant/request";
-import {
-    createBillSell,
-    getAllProduct,
-    getDetailBillById,
-    updateBillSell,
-} from "~/services/billsell.service";
 import { el } from "element-plus/es/locale";
 import { watch } from "vue";
 import {
@@ -216,6 +210,7 @@ import {
 import { getAllMenuItem } from "~/services/menuitem.service";
 import { getCurrentDateTime } from "~/utils/getTimeCurrent";
 import axios from "axios";
+import { getAllProduct } from "~/services/product.service";
 
 const formSize = ref<ComponentSize>("default");
 const ruleFormRef = ref<FormInstance>();
@@ -305,10 +300,10 @@ onMounted(() => {
 const optionsProduct = ref<OptionSelect[]>();
 
 async function fetchProduct() {
-    const resRentalItem = await getAllProduct();
+    const resProduct = await getAllProduct();
     const resMenuItem = await getAllMenuItem();
 
-    const filterResRentalItem = resRentalItem.map((value: RentalItems) => {
+    const filterResProduct = resProduct.map((value: Products) => {
         return {
             id: value._id,
             name: value.item_name,
@@ -326,7 +321,7 @@ async function fetchProduct() {
         };
     });
 
-    const res = [...filterResRentalItem, ...filterResMenuItem];
+    const res = [...filterResProduct, ...filterResMenuItem];
     ruleForm.item_id = String(res[0]?.id);
     ruleForm.unit_price = Number(res[0]?.price);
     ruleForm.total_price_item = Number(res[0]?.price);

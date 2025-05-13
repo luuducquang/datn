@@ -60,10 +60,10 @@
                 <span>Sản phẩm</span>
             </template>
             <router-link to="/menuitem">
-                <el-menu-item index="10">Đồ ăn</el-menu-item>
+                <el-menu-item index="10">Sản phẩm thuê</el-menu-item>
             </router-link>
-            <router-link to="/rentalitem">
-                <el-menu-item index="11">Đồ thuê</el-menu-item>
+            <router-link to="/product">
+                <el-menu-item index="11">Sản phẩm bán</el-menu-item>
             </router-link>
         </el-sub-menu>
 
@@ -87,10 +87,10 @@
                 <span>Danh mục</span>
             </template>
             <router-link to="/categorymenuitem">
-                <el-menu-item index="14">Danh mục đồ ăn</el-menu-item>
+                <el-menu-item index="14">Danh mục dịch vụ</el-menu-item>
             </router-link>
-            <router-link to="/categoryrentalitem">
-                <el-menu-item index="15">Danh mục thuê</el-menu-item>
+            <router-link to="/categoryproduct">
+                <el-menu-item index="15">Danh mục sản phẩm</el-menu-item>
             </router-link>
         </el-sub-menu>
 
@@ -162,11 +162,11 @@ const activeIndex = computed(() => {
     if (path.startsWith("/billsell")) return "8";
     if (path.startsWith("/importbill")) return "9";
     if (path.startsWith("/menuitem")) return "10";
-    if (path.startsWith("/rentalitem")) return "11";
+    if (path.startsWith("/product")) return "11";
     if (path.startsWith("/news")) return "12";
     if (path.startsWith("/banner")) return "13";
     if (path.startsWith("/categorymenuitem")) return "14";
-    if (path.startsWith("/categoryrentalitem")) return "15";
+    if (path.startsWith("/categoryproduct")) return "15";
     if (path.startsWith("/manufactor")) return "16";
     if (path.startsWith("/supplier")) return "17";
     if (path.startsWith("/typeaccount")) return "18";

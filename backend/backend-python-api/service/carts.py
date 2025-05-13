@@ -6,7 +6,7 @@ from schemas.schemas import Carts
 from config.database import database
 
 cart_collection: Collection = database['Carts']
-rentalitem_collection: Collection = database['RentalItems']
+product_collection: Collection = database['Products']
 
 def ser_get_cart():
     datas = []
@@ -28,12 +28,12 @@ def ser_get_cart_by_user_id(user_id:str):
     for item in cart_data:
         item["_id"] = str(item["_id"])
 
-        data_rentalitem = rentalitem_collection.find_one({"_id": ObjectId(item["item_id"])})
-        if data_rentalitem:
-            data_rentalitem["_id"] = str(data_rentalitem["_id"])
-            item["rentalitem"] = data_rentalitem
+        data_product = product_collection.find_one({"_id": ObjectId(item["item_id"])})
+        if data_product:
+            data_product["_id"] = str(data_product["_id"])
+            item["product"] = data_product
         else:
-            item["rentalitem"] = None
+            item["product"] = None
 
         result.append(item)
 

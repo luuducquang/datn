@@ -68,7 +68,6 @@ class Discounts(BaseModel):
     used_count: Optional[int] = 0
     status: bool
 
-
 class Bookings(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     table_id: str
@@ -103,6 +102,7 @@ class TableTypes(BaseModel):
 
 class Tables(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
+    description: str
     table_number: int
     table_type_id: str
     status: Optional[bool]
@@ -117,13 +117,6 @@ class TableMenuItems(BaseModel):
     unit_price: int
     total_price: int
 
-class TableRentalItems(BaseModel):
-    id: Optional[str] = Field(None, alias="_id")  
-    table_id:str
-    item_id: str
-    unit_price: int
-    start_time:datetime
-
 class Suppliers(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     name: str
@@ -136,20 +129,11 @@ class Manufactors(BaseModel):
     phone:str
     address: str
 
-class CategoryRentalItems(BaseModel):
+class CategoryProducts(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     category_name: str
 
-class Rentals(BaseModel):
-    id: Optional[str] = Field(None, alias="_id")  
-    user_id: str
-    item_id: str
-    rental_date: Optional[datetime]
-    return_date: Optional[datetime]
-    price: Optional[int]
-    status: Optional[bool]
-
-class RentalItems (BaseModel):
+class Products (BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     manufactor_id: str
     category_id: str
@@ -157,8 +141,7 @@ class RentalItems (BaseModel):
     image: str
     price: int
     price_reduction: int
-    rental_price_day: int
-    rental_price_hours: int
+    price_origin: int
     quantity_available: int = Field(default=0)
     view: int = Field(default=0)
     sales: int = Field(default=0)
@@ -170,7 +153,7 @@ class CheckorUpdateQuantityRequest(BaseModel):
     ids: List[str]
     quantities: List[int]
 
-class FoodOrders(BaseModel):
+class OrderItems(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     user_id: str
     table_id: str
@@ -186,11 +169,13 @@ class CategoryMenuItems(BaseModel):
 
 class MenuItems(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
+    category_id: Optional[str]
     name: str
     image:str
     stock_quantity: int
+    price_origin: Optional[int]
     price: Optional[int]
-    category_id: Optional[str]
+    is_rental: bool
 
 class TimeSessions(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  

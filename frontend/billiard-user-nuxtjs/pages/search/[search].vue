@@ -63,7 +63,7 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
 import { ref } from "vue";
-import { type Product } from "~/constant/api";
+import { type Products } from "~/constant/api";
 import { getProductCategory } from "~/services/category.service";
 
 const route = useRoute();
@@ -73,7 +73,7 @@ const currentPage = ref(1);
 const totalPages = ref(1);
 const itemFit = ref(0);
 
-const products = ref<Product[]>([]);
+const products = ref<Products[]>([]);
 
 const fetchProducts = async (page: number) => {
     try {

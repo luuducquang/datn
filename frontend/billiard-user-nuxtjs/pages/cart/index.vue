@@ -45,14 +45,14 @@
 import Cookies from "js-cookie";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { type Product, type Cart } from "~/constant/api";
+import { type Products, type Cart } from "~/constant/api";
 import { getGioHangByIdTaiKhoan } from "~/services/cart.service";
 import { getProductRecomend } from "~/services/detail.service";
 
 const router = useRouter();
 
 const dataCart = ref<Cart[]>([]);
-const productRecomend = ref<Product[]>([]);
+const productRecomend = ref<Products[]>([]);
 const totalPrice = ref(0);
 
 const fetchDataCart = async () => {
@@ -67,7 +67,7 @@ const fetchDataCart = async () => {
             const total = dataBuy.reduce((total, item) => {
                 return (
                     total +
-                    Number(item?.rentalitem?.price_reduction) *
+                    Number(item?.product?.price_reduction) *
                         Number(item?.quantity)
                 );
             }, 0);

@@ -1,177 +1,176 @@
 <template>
-    <el-card class="card-container">
-        <el-row :gutter="20">
-            <el-col :span="8">
-                <h1 class="m-0">Bàn số: {{ dataDetailTable?.table_number }}</h1>
-                <p>Thời gian sử dụng: {{ formatTime(timeElapsed) }}</p>
-                <p>
-                    Giá 1h:
-                    {{
-                        ConvertPrice(
-                            Number(dataDetailTable?.pricingrule?.rate_per_hour)
-                        ) || "Chưa có dữ liệu"
-                    }}
-                </p>
-                <p>Tạm tính: {{ ConvertPrice(Number(totalPrice)) }}</p>
-                <p>Tiền dịch vụ: {{ ConvertPrice(Number(service_price)) }}</p>
-                <h2>
-                    Tổng tiền:
-                    {{
-                        ConvertPrice(Number(service_price) + Number(totalPrice))
-                    }}
-                </h2>
+    <el-card class="card-container modern-layout" shadow="always">
+        <el-row :gutter="30">
+            <!-- Left Column: Info Card -->
+            <el-col :span="10">
+                <el-card shadow="hover" class="table-info-card modern-card">
+                    <el-descriptions
+                        title="🎱 Thông tin khách và bàn"
+                        :column="1"
+                        border
+                        size="large"
+                        class="mb-3"
+                    >
+                        <!-- Customer Info -->
+                        <el-descriptions-item label="👤 Tên khách hàng">
+                            <el-input
+                                v-model="customerForm.fullname"
+                                placeholder="Nhập tên khách hàng"
+                                clearable
+                                size="large"
+                            />
+                        </el-descriptions-item>
+                        <el-descriptions-item label="📞 Số điện thoại">
+                            <el-input
+                                v-model="customerForm.phone"
+                                placeholder="Nhập số điện thoại"
+                                clearable
+                                size="large"
+                            />
+                        </el-descriptions-item>
 
-                <div class="button-container" style="margin-top: 20px">
-                    <div v-if="dataDetailTable?.status === true">
-                        <el-button
-                            type="primary"
-                            @click="StartAndPay"
-                            style="
-                                width: 100%;
-                                padding: 12px;
-                                background-color: #4caf50;
-                                border-color: #4caf50;
-                            "
+                        <!-- Table Info -->
+                        <el-descriptions-item label="Bàn số">
+                            {{ dataDetailTable?.table_number || "--" }}
+                        </el-descriptions-item>
+                        <el-descriptions-item label="⏱️ Thời gian sử dụng">
+                            {{ formatTime(timeElapsed) }}
+                        </el-descriptions-item>
+                        <el-descriptions-item label="💸 Giá 1h">
+                            {{
+                                ConvertPrice(
+                                    Number(dataDetailTable?.pricingrule?.rate_per_hour) || 0
+                                )
+                            }}
+                        </el-descriptions-item>
+                        <el-descriptions-item label="💰 Tạm tính">
+                            {{ ConvertPrice(Number(totalPrice)) }}
+                        </el-descriptions-item>
+                        <el-descriptions-item label="🧾 Tiền dịch vụ">
+                            {{ ConvertPrice(Number(service_price)) }}
+                        </el-descriptions-item>
+                        <el-descriptions-item
+                            label="🧮 Tổng tiền"
+                            label-class-name="total-label"
+                            content-class-name="total-value"
                         >
-                            Thanh Toán
-                        </el-button>
-                    </div>
+                            {{
+                                ConvertPrice(Number(service_price) + Number(totalPrice))
+                            }}
+                        </el-descriptions-item>
+                    </el-descriptions>
+
+                    <el-button
+                        v-if="dataDetailTable?.status === true"
+                        type="success"
+                        @click="StartAndPay"
+                        size="large"
+                        plain
+                        class="full-width mt-3"
+                    >
+                        💳 Thanh Toán
+                    </el-button>
 
                     <el-button
                         v-else
-                        type="primary"
+                        type="warning"
                         @click="toggleTimer"
-                        style="
-                            width: 100%;
-                            padding: 12px;
-                            background-color: #ffa500;
-                            border-color: #ffa500;
-                        "
+                        size="large"
+                        plain
+                        class="full-width mt-3"
                     >
-                        Bắt đầu
+                        ▶️ Bắt đầu
                     </el-button>
-                </div>
+                </el-card>
             </el-col>
 
-            <el-col
-                v-show="dataDetailTable?.status === true"
-                :span="16"
-                style="padding: 20px"
-            >
-                <div
-                    class="button_add"
-                    style="
-                        display: flex;
-                        justify-content: space-between;
-                        margin-bottom: 20px;
-                    "
+            <!-- Right Column -->
+            <el-col :span="14">
+                <!-- Voucher Section -->
+                <el-row :gutter="10" class="mb-3">
+                    <el-col :span="16">
+                        <el-select
+                            v-model="voucherCode"
+                            placeholder="-- Chọn mã giảm giá --"
+                            @change="handleVoucherChange"
+                            size="large"
+                            class="w-100"
+                        >
+                            <el-option
+                                v-for="voucher in dataVoucher"
+                                :key="voucher._id"
+                                :label="`Giảm ${voucher.discount_value}% - ${voucher.quantity > 0 && voucher.status ? 'Đang hoạt động' : 'Hết hạn'}`"
+                                :value="voucher.code"
+                            />
+                        </el-select>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-button type="primary" @click="applyVoucher" class="w-100" size="large">
+                            Áp dụng
+                        </el-button>
+                    </el-col>
+                </el-row>
+
+                <el-alert
+                    v-if="voucherError"
+                    type="error"
+                    :closable="false"
+                    show-icon
+                    class="mb-2"
                 >
-                    <el-button
-                        type="success"
-                        @click="
-                            () => {
-                                dialogFormMenuItemVisible = true;
-                                resetForm(ruleFormRef);
-                            }
-                        "
-                        style="
-                            flex: 1;
-                            padding: 12px;
-                            margin-right: 10px;
-                            background-color: #8bc34a;
-                            border-color: #8bc34a;
-                        "
-                    >
-                        Đồ ăn
-                    </el-button>
-                    <el-button
-                        type="info"
-                        @click="
-                            () => {
-                                dialogFormRentalItemVisible = true;
-                                resetForm(ruleFormRef);
-                            }
-                        "
-                        style="
-                            flex: 1;
-                            padding: 12px;
-                            background-color: #2196f3;
-                            border-color: #2196f3;
-                        "
-                    >
-                        Thuê gậy
+                    {{ voucherError }}
+                </el-alert>
+
+                <el-alert
+                    v-if="discountAmount !== null"
+                    type="success"
+                    :closable="false"
+                    show-icon
+                    class="mb-2"
+                >
+                    Đã áp dụng mã: <strong>{{ voucherCode }}</strong> – Giảm {{ discountAmount }}%
+                </el-alert>
+
+                <!-- Service List -->
+                <div class="mb-3 text-right">
+                    <el-button type="success" @click="() => { dialogFormMenuItemVisible = true; resetForm(); }">
+                       Thêm dịch vụ
                     </el-button>
                 </div>
 
                 <el-table
                     :data="tableDataMenuItem"
-                    class="table_content"
                     v-show="tableDataMenuItem.length > 0"
-                    style="
-                        margin-bottom: 20px;
-                        border-radius: 10px;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    "
+                    class="table-menu-item"
                 >
-                    <el-table-column
-                        label="Sản phẩm"
-                        align="center"
-                        prop="menuitem.image"
-                    >
+                    <el-table-column label="Sản phẩm" align="center" prop="menuitem.image">
                         <template #default="scope">
                             <img
                                 :src="apiImage + scope.row.menuitem.image"
                                 alt="Hình ảnh sản phẩm"
-                                class="img_item"
-                                style="
-                                    width: 60px;
-                                    height: 60px;
-                                    object-fit: cover;
-                                "
+                                class="img-item"
                             />
                         </template>
                     </el-table-column>
-                    <el-table-column
-                        label="Số lượng"
-                        align="center"
-                        prop="quantity"
-                    >
+                    <el-table-column label="Số lượng" align="center" prop="quantity">
                         <template #default="scope">
                             <el-input-number
                                 v-model="scope.row.quantity"
                                 :min="1"
                                 :max="100"
-                                @change="
-                                    (value) =>
-                                        handleQuantityMenuItemChangeApi(
-                                            value,
-                                            scope.row
-                                        )
-                                "
-                                style="width: 100px"
+                                @change="(value) => handleQuantityMenuItemChangeApi(value, scope.row)"
+                                class="quantity-input"
                             />
                         </template>
                     </el-table-column>
-                    <el-table-column
-                        label="Giá"
-                        align="center"
-                        prop="unit_price"
-                    >
+                    <el-table-column label="Giá" align="center" prop="unit_price">
                         <template #default="scope">
-                            <span>{{
-                                ConvertPrice(scope.row.unit_price)
-                            }}</span>
+                            <span>{{ ConvertPrice(scope.row.unit_price) }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column
-                        label="Tổng giá"
-                        align="center"
-                        prop="total_price"
-                    >
+                    <el-table-column label="Tổng giá" align="center" prop="total_price">
                         <template #default="scope">
-                            <span>{{
-                                ConvertPrice(scope.row.total_price)
-                            }}</span>
+                            <span>{{ ConvertPrice(scope.row.total_price) }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column align="right">
@@ -181,86 +180,10 @@
                                 cancel-button-text="No"
                                 icon-color="#626AEF"
                                 title="Bạn có muốn xoá không?"
-                                @confirm="
-                                    () => confirmEventMenuItem(scope.row._id)
-                                "
+                                @confirm="() => confirmEventMenuItem(scope.row._id)"
                             >
                                 <template #reference>
-                                    <el-button size="small" type="danger">
-                                        Delete
-                                    </el-button>
-                                </template>
-                            </el-popconfirm>
-                        </template>
-                    </el-table-column>
-                </el-table>
-
-                <el-table
-                    :data="tableDataRentalItem"
-                    class="table_content"
-                    v-show="tableDataRentalItem.length > 0"
-                    style="
-                        border-radius: 10px;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    "
-                >
-                    <el-table-column align="center" prop="rentalitem.image">
-                        <template #default="scope">
-                            <img
-                                :src="apiImage + scope.row.rentalitem.image"
-                                alt="Hình ảnh sản phẩm"
-                                class="img_item"
-                                style="
-                                    width: 60px;
-                                    height: 60px;
-                                    object-fit: cover;
-                                "
-                            />
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" prop="start_time">
-                        <template #default="scope">
-                            <span>{{
-                                formatTime(checkSeconds(scope.row.start_time))
-                            }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" prop="unit_price">
-                        <template #default="scope">
-                            <span
-                                >{{
-                                    ConvertPrice(scope.row.unit_price)
-                                }}/h</span
-                            >
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center">
-                        <template #default="scope">
-                            <span>
-                                {{
-                                    ConvertPrice(
-                                        (scope.row.unit_price / 60 / 60) *
-                                            checkSeconds(scope.row.start_time)
-                                    )
-                                }}
-                            </span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="right">
-                        <template #default="scope">
-                            <el-popconfirm
-                                confirm-button-text="Yes"
-                                cancel-button-text="No"
-                                icon-color="#626AEF"
-                                title="Bạn có muốn xoá không?"
-                                @confirm="
-                                    () => confirmEventRentalItem(scope.row._id)
-                                "
-                            >
-                                <template #reference>
-                                    <el-button size="small" type="danger">
-                                        Delete
-                                    </el-button>
+                                    <el-button size="small" type="danger">Xoá</el-button>
                                 </template>
                             </el-popconfirm>
                         </template>
@@ -272,7 +195,7 @@
 
     <el-dialog
         v-model="dialogFormMenuItemVisible"
-        title="Thêm đồ ăn"
+        title="Thêm dịch vụ"
         width="500"
     >
         <el-form :model="form" :rules="rules" ref="ruleFormRef">
@@ -345,68 +268,6 @@
         </el-form>
     </el-dialog>
     <el-dialog
-        v-model="dialogFormRentalItemVisible"
-        title="Thuê gậy"
-        width="500"
-    >
-        <el-form :model="form" :rules="rules" ref="ruleFormRef">
-            <el-form-item
-                label="Sản phẩm"
-                :label-width="formLabelWidth"
-                prop="item_id"
-            >
-                <el-select
-                    v-model="form.item_id"
-                    filterable
-                    placeholder="Vui lòng chọn"
-                    @change="handleRentalItemChange"
-                >
-                    <el-option
-                        v-for="item in optionListRenTalItems"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                    />
-                </el-select>
-            </el-form-item>
-            <el-form-item
-                label="Giá thuê/1h"
-                :label-width="formLabelWidth"
-                prop="unit_price"
-            >
-                <el-input
-                    v-model="form.unit_price"
-                    autocomplete="off"
-                    disabled
-                />
-            </el-form-item>
-            <el-form-item
-                label="Tổng giá"
-                :label-width="formLabelWidth"
-                prop="total_price"
-            >
-                <el-input
-                    v-model="form.total_price"
-                    autocomplete="off"
-                    disabled
-                />
-            </el-form-item>
-            <el-form-item>
-                <div class="button_item">
-                    <el-button @click="dialogFormRentalItemVisible = false"
-                        >Cancel</el-button
-                    >
-                    <el-button
-                        type="primary"
-                        @click="submitFormRentalItem(ruleFormRef)"
-                    >
-                        Thêm
-                    </el-button>
-                </div>
-            </el-form-item>
-        </el-form>
-    </el-dialog>
-    <el-dialog
         v-model="dialogVisiblePay"
         title="Hoá đơn thanh toán"
         width="500"
@@ -445,21 +306,6 @@
                                 ConvertPrice(
                                     Number(menu?.unit_price) *
                                         Number(menu?.quantity)
-                                )
-                            }}
-                        </td>
-                    </tr>
-                    <tr v-for="rental in tableDataRentalItem">
-                        <td>{{ rental?.rentalitem?.item_name }}</td>
-                        <td>
-                            {{ formatTime(checkSeconds(rental?.start_time)) }}
-                        </td>
-                        <td>{{ ConvertPrice(rental?.unit_price) }}/h</td>
-                        <td>
-                            {{
-                                ConvertPrice(
-                                    (rental?.unit_price / 60 / 60) *
-                                        checkSeconds(rental?.start_time)
                                 )
                             }}
                         </td>
@@ -516,33 +362,29 @@ import { nextTick, onMounted, onUnmounted } from "vue";
 import { ref, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import {
+    Discounts,
     OptionSelect,
-    Rentals,
     TableMenuItems,
-    TableRentalItems,
     Tables,
 } from "~/constant/api";
 import {
     createTableMenuItem,
-    createTableRentalItem,
     deleteMenuItem,
     deleteMenuItembyTable,
-    deleteRentalItem,
     getbyIdTable,
     getbyIdTableMenuItem,
-    getbyIdTableRentalItem,
     updateTable,
     updateTableMenuItem,
 } from "~/services/home.service";
 import { getAllMenuItem } from "~/services/menuitem.service";
 import ConvertPrice from "~/utils/convertprice";
 import { apiImage } from "~/constant/request";
-import { getAllRentalItem } from "~/services/rentalitem.service";
+import { getAllProduct } from "~/services/product.service";
 import { useUserStore } from "~/store";
-import { createRental } from "~/services/rental.service";
-import { createFoodOrder } from "~/services/foodorder.service";
+import { createOrderItem } from "~/services/foodorder.service";
 import { createTimeSession } from "~/services/timesession.service";
 import router from "~/router";
+import { getAllDiscount, getDiscountByCode } from "~/services/discount.service";
 
 const route = useRoute();
 const dataDetailTable = ref<Tables | null>(null);
@@ -557,15 +399,22 @@ const isPrepareBill = ref(true);
 const ruleFormRef = ref<FormInstance>();
 
 const optionListMenuItems = ref<OptionSelect[]>();
-const optionListRenTalItems = ref<OptionSelect[]>();
 
 const dialogFormMenuItemVisible = ref(false);
-const dialogFormRentalItemVisible = ref(false);
 const dialogVisiblePay = ref(false);
 const formLabelWidth = "140px";
 
 const tableDataMenuItem = ref<TableMenuItems[]>([]);
-const tableDataRentalItem = ref<TableRentalItems[]>([]);
+
+const customerForm = reactive({
+    fullname: "",
+    phone: "",
+});
+
+const dataVoucher = ref<Discounts[]>([]);
+const voucherCode = ref("");
+const discountAmount = ref<number | null>(null);
+const voucherError = ref("");
 
 const Notification = (
     message: string,
@@ -620,34 +469,31 @@ const rules = reactive<FormRules>({
     ],
 });
 
+const handleVoucherChange = () => {
+    discountAmount.value = null;
+};
+
+async function applyVoucher() {
+    voucherError.value = "";
+    discountAmount.value = null;
+
+    if (!voucherCode.value) {
+        voucherError.value = "Vui lòng chọn mã giảm giá.";
+        return;
+    }
+
+    try {
+        const valueDiscount = await getDiscountByCode(voucherCode.value);
+        discountAmount.value = valueDiscount;
+    } catch (error) {
+        voucherError.value = "Mã giảm giá không tồn tại hoặc đã hết hiệu lực.";
+    }
+}
+
 const PayAndPrintInvoice = async () => {
     const resIdTable = await getbyIdTable(String(route.params.id));
     if (resIdTable.status === true) {
-        const listRentalItem = tableDataRentalItem.value.map(
-            (value: TableRentalItems) => {
-                return {
-                    user_id: String(userStore?.user?._id),
-                    item_id: String(value?.item_id),
-                    rental_date: String(value?.start_time),
-                    return_date: String(getLocalISOString()),
-                    price: Number(
-                        (
-                            (value?.unit_price / 60 / 60) *
-                            checkSeconds(value?.start_time)
-                        ).toFixed(0)
-                    ),
-                    status: true,
-                };
-            }
-        );
-
-        const listIdRentalItem = tableDataRentalItem.value.map(
-            (value: TableRentalItems) => {
-                return value?._id;
-            }
-        );
-
-        const listFoodOrderItem = tableDataMenuItem.value.map(
+        const listOrderItem = tableDataMenuItem.value.map(
             (value: TableMenuItems) => {
                 return {
                     user_id: String(userStore?.user?._id),
@@ -677,25 +523,15 @@ const PayAndPrintInvoice = async () => {
             end_date: String(startTime.value),
         });
 
-        if (listRentalItem.length > 0) {
-            await createRental(listRentalItem);
-        }
-
-        for (const idRental of listIdRentalItem) {
-            if (idRental) {
-                await deleteRentalItem(String(idRental));
-            }
-        }
-
-        for (const item of listFoodOrderItem) {
+        for (const item of listOrderItem) {
             if (item) {
-                await createFoodOrder(item);
+                await createOrderItem(item);
             }
         }
 
         await fetchById(String(route.params.id));
 
-        if (listFoodOrderItem.length > 0) {
+        if (listOrderItem.length > 0) {
             await deleteMenuItembyTable(String(route.params.id));
         }
 
@@ -717,21 +553,6 @@ const PayAndPrintInvoice = async () => {
 const handleMenuItemChange = (value: string) => {
     if (optionListMenuItems.value) {
         const selectedProduct = optionListMenuItems.value.find(
-            (item: OptionSelect) => item.value === value
-        );
-
-        if (selectedProduct) {
-            form.unit_price = Number(selectedProduct.price);
-        }
-        if (form.item_id !== "") {
-            form.total_price = Number(form.quantity) * Number(form.unit_price);
-        }
-    }
-};
-
-const handleRentalItemChange = (value: string) => {
-    if (optionListRenTalItems.value) {
-        const selectedProduct = optionListRenTalItems.value.find(
             (item: OptionSelect) => item.value === value
         );
 
@@ -786,17 +607,6 @@ const confirmEventMenuItem = async (Id: string) => {
     }
 };
 
-const confirmEventRentalItem = async (Id: string) => {
-    try {
-        await deleteRentalItem(Id);
-        Notification("Xoá thành công", "success");
-        fetchById(String(route.params.id));
-    } catch (error) {
-        console.error("Error deleting =:", error);
-        Notification("Lỗi khi xoá =", "error");
-    }
-};
-
 const submitFormMenuItem = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
 
@@ -814,37 +624,6 @@ const submitFormMenuItem = async (formEl: FormInstance | undefined) => {
                 });
                 Notification("Thêm thành công", "success");
                 dialogFormMenuItemVisible.value = false;
-                fetchById(String(route.params.id));
-            } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    Notification(error.response?.data.detail, "warning");
-                }
-            }
-        } else {
-            Notification("Bạn cần điền đủ thông tin", "warning");
-            console.log("error submit!");
-        }
-    } catch (fields) {
-        Notification("Bạn cần điền đủ thông tin", "warning");
-        console.log("error submit!", fields);
-    }
-};
-
-const submitFormRentalItem = async (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
-
-    try {
-        const valid = await formEl.validate();
-        if (valid) {
-            try {
-                await createTableRentalItem({
-                    table_id: String(route.params.id),
-                    item_id: form.item_id,
-                    unit_price: form.unit_price,
-                    start_time: getLocalISOString(),
-                });
-                Notification("Thêm thành công", "success");
-                dialogFormRentalItemVisible.value = false;
                 fetchById(String(route.params.id));
             } catch (error) {
                 if (axios.isAxiosError(error)) {
@@ -917,24 +696,6 @@ function updateElapsed() {
     }
 }
 
-function checkSeconds(time: string | Date): number {
-    let dateTime: Date;
-
-    if (typeof time === "string") {
-        dateTime = new Date(time);
-    } else if (time instanceof Date) {
-        dateTime = time;
-    } else {
-        throw new Error("Invalid input: time must be a string or Date object.");
-    }
-
-    if (isNaN(dateTime.getTime())) {
-        throw new Error("Invalid input: time is not a valid date.");
-    }
-
-    return Math.floor((Date.now() - dateTime.getTime()) / 1000);
-}
-
 const formatTime = (s: number): string => {
     const hours = Math.floor(s / 3600);
     const minutes = Math.floor((s % 3600) / 60);
@@ -964,6 +725,9 @@ const fetchById = async (id: string) => {
     const resIdTable = await getbyIdTable(id);
     dataDetailTable.value = resIdTable;
 
+    const listVoucher = await getAllDiscount();
+    dataVoucher.value = listVoucher;
+
     const resTableMenuItem = await getbyIdTableMenuItem(id);
     tableDataMenuItem.value = resTableMenuItem;
 
@@ -972,8 +736,6 @@ const fetchById = async (id: string) => {
         if (isPrepareBill.value) {
             timer = setInterval(async () => {
                 updateElapsed();
-                const resTableRentalItem = await getbyIdTableRentalItem(id);
-                tableDataRentalItem.value = resTableRentalItem;
             }, 1000);
         } else {
             if (timer) {
@@ -981,8 +743,6 @@ const fetchById = async (id: string) => {
                 timer = null;
             }
             updateElapsed();
-            const resTableRentalItem = await getbyIdTableRentalItem(id);
-            tableDataRentalItem.value = resTableRentalItem;
         }
     }
     const resListMenuItem = await getAllMenuItem();
@@ -995,19 +755,6 @@ const fetchById = async (id: string) => {
                 value: _id || 0,
                 label: name || "",
                 price: price || 0,
-            };
-        });
-
-    const resListRentalItem = await getAllRentalItem();
-    optionListRenTalItems.value = resListRentalItem
-        ?.filter(function (item) {
-            return item?.quantity_available > 0;
-        })
-        ?.map(function ({ _id, item_name, rental_price_hours }) {
-            return {
-                value: _id || 0,
-                label: item_name || "",
-                price: rental_price_hours || 0,
             };
         });
 };
@@ -1023,13 +770,7 @@ const service_price = computed(() => {
         return total + item.quantity * item.unit_price;
     }, 0);
 
-    const rentalItemTotal = tableDataRentalItem.value.reduce((total, item) => {
-        return (
-            total + checkSeconds(item.start_time) * (item.unit_price / 60 / 60)
-        );
-    }, 0);
-
-    return menuItemTotal + rentalItemTotal;
+    return menuItemTotal;
 });
 
 const StartAndPay = async () => {
@@ -1138,4 +879,53 @@ table th {
     font-size: 1.2em;
     font-weight: bold;
 }
+
+.card-container {
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+}
+
+.modern-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.img-item {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.table-menu-item {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quantity-input {
+    width: 100px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.total-label {
+    font-weight: bold;
+    color: #409EFF;
+}
+
+.total-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #E74C3C;
+}
+
 </style>

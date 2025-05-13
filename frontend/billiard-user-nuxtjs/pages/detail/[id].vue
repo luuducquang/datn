@@ -4,10 +4,8 @@
             <NuxtLink to="/">TRANG CHỦ</NuxtLink>
             <i class="fa-solid fa-arrow-right"></i>
             <NuxtLink
-                :to="`/category/${productDetail?.categoryrentalitem?.category_name}`"
-                >{{
-                    productDetail?.categoryrentalitem?.category_name
-                }}</NuxtLink
+                :to="`/category/${productDetail?.categoryproduct?.category_name}`"
+                >{{ productDetail?.categoryproduct?.category_name }}</NuxtLink
             >
             <i class="fa-solid fa-arrow-right"></i>
             <NuxtLink :to="`/detail/${productDetail?._id}`">{{
@@ -275,7 +273,7 @@
 import { useRoute, useRouter } from "vue-router";
 import Cookies from "js-cookie";
 import { ref, onMounted } from "vue";
-import { type Product } from "~/constant/api";
+import { type Products } from "~/constant/api";
 import { getProductById, getProductRecomend } from "~/services/detail.service";
 import { apiImage } from "~/constant/request";
 import {
@@ -294,8 +292,8 @@ const router = useRouter();
 const store = useCartStore();
 const id = route.params.id;
 
-const productDetail = ref<Product | null>(null);
-const productRecomend = ref<Product[]>([]);
+const productDetail = ref<Products | null>(null);
+const productRecomend = ref<Products[]>([]);
 const amountProduct = ref(1);
 
 const fetchProductDetail = async () => {
@@ -313,7 +311,7 @@ const fetchProductRecomend = async () => {
             page: 1,
             pageSize: 6,
             category_name: String(
-                productDetail.value?.categoryrentalitem?.category_name
+                productDetail.value?.categoryproduct?.category_name
             ),
         });
         productRecomend.value = res?.data ?? [];

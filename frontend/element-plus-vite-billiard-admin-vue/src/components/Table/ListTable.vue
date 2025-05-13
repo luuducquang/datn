@@ -12,6 +12,12 @@
                 </template>
             </el-table-column>
             <el-table-column
+                label="Ghi chú"
+                align="center"
+                prop="description"
+            />
+
+            <el-table-column
                 label="Số hiệu bàn"
                 align="center"
                 prop="table_number"

@@ -37,3 +37,13 @@ export const getbyIdDiscount = async (id: string): Promise<Discounts> => {
     const res = await apiClient?.get(`${DiscountUrl}/get/` + id);
     return res?.data;
 };
+
+export const getDiscountByCode = async (id: string): Promise<number> => {
+    const res = await apiClient?.get(`${DiscountUrl}/code/` + id);
+    return res?.data;
+};
+
+export const getDiscountUseCode = async (id: string): Promise<number> => {
+    const res = await apiClient?.post(`${DiscountUrl}/use/` + id);
+    return res?.data;
+};
