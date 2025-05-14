@@ -2314,12 +2314,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/rentalitems/update",
+							"raw": "{{host}}/products/update",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"rentalitems",
+								"products",
 								"update"
 							]
 						}
@@ -2332,12 +2332,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/rentalitems/delete/66f7f6bedb74a5ef99e88b38",
+							"raw": "{{host}}/products/delete/66f7f6bedb74a5ef99e88b38",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"rentalitems",
+								"products",
 								"delete",
 								"66f7f6bedb74a5ef99e88b38"
 							]
@@ -2406,12 +2406,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/rentalitems/check-quantities",
+							"raw": "{{host}}/products/check-quantities",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"rentalitems",
+								"products",
 								"check-quantities"
 							]
 						}
@@ -2421,7 +2421,7 @@
 			]
 		},
 		{
-			"name": "FoodOrders",
+			"name": "OrderItems",
 			"item": [
 				{
 					"name": "addFoodOrder",
@@ -2430,7 +2430,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"user_id\": \"12312gfdgdgdfg31\",\r\n    \"order_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"status\": \"da dat hang\",\r\n    \"total_price\": 10000\r\n}",
+							"raw": "{\r\n    \"table_id\": \"6732ceea52e9e56c542a2492\",\r\n    \"user_id\": \"670f17f5279b5da63b9bdc7a\",\r\n    \"order_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"total_price\": 10000,\r\n    \"menu_items\": {\r\n        \"item_id\": \"67643c354d902420a592af6f\",\r\n        \"quantity\": \"8\",\r\n        \"total_price\": \"120000\",\r\n        \"unit_price\": \"15000\"\r\n    }\r\n\r\n    \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2793,6 +2793,33 @@
 							"path": [
 								"menuitems",
 								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "increaseQuantityItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  { \"item_id\": \"68234e636dc7d770a0509bf2\", \"quantity\": 2 },\r\n  { \"item_id\": \"68234e496dc7d770a0509bf1\", \"quantity\": 2 }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/menuitems/increase-stock",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"menuitems",
+								"increase-stock"
 							]
 						}
 					},

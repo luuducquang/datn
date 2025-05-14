@@ -12,7 +12,7 @@ billsells_collection: Collection = database['BillSells']
 importbills_collection: Collection = database['ImportBills']
 products_collection: Collection = database['Products']
 rentals_collection: Collection = database['Rentals']
-foodorders_collection: Collection = database['OrderItems']
+orderitems_collection: Collection = database['OrderItems']
 timesessions_collection: Collection = database['TimeSessions']
 
 
@@ -99,10 +99,10 @@ def ser_get_info_overview():
     ]))
     total_revenue += revenue_from_rentals[0]["total_price"] if revenue_from_rentals else 0
 
-    revenue_from_foodorders = list(foodorders_collection.aggregate([
+    revenue_from_orderitems = list(orderitems_collection.aggregate([
         {"$group": {"_id": None, "total_price": {"$sum": "$total_price"}}}
     ]))
-    total_revenue += revenue_from_foodorders[0]["total_price"] if revenue_from_foodorders else 0
+    total_revenue += revenue_from_orderitems[0]["total_price"] if revenue_from_orderitems else 0
 
     revenue_from_timesessions = list(timesessions_collection.aggregate([
         {"$group": {"_id": None, "total_price": {"$sum": "$price"}}}
@@ -157,7 +157,7 @@ def generate_revenue_data() -> List[Dict]:
         
         rentals_total = rentals_revenue[0]['total_revenue'] if rentals_revenue else 0
         
-        food_orders_revenue = list(foodorders_collection.aggregate([
+        food_orders_revenue = list(orderitems_collection.aggregate([
             {"$match": {"pay_date": {"$eq": date}}},
             {"$group": {"_id": None, "total_revenue": {"$sum": "$total_price"}}}
         ]))

@@ -1,4 +1,4 @@
-import { MenuItems, ResponseData } from "~/constant/api";
+import { MenuItems, ResponseData, StockUpdateItem } from "~/constant/api";
 import { MenuItemUrl } from "~/constant/endpoints";
 import { apiClient } from "~/constant/request";
 
@@ -11,6 +11,13 @@ export const searchMenuItem = async (
     data: Record<string, string | number>
 ): Promise<ResponseData<MenuItems>> => {
     const res = await apiClient?.post(`${MenuItemUrl}/search`, data);
+    return res?.data;
+};
+
+export const increaseQuantityItem = async (
+    data: StockUpdateItem[]
+): Promise<MenuItems> => {
+    const res = await apiClient?.post(`${MenuItemUrl}/increase-stock`, data);
     return res?.data;
 };
 

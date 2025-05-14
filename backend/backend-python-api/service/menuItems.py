@@ -1,7 +1,7 @@
 from bson import ObjectId
 from fastapi import HTTPException
 from pymongo.collection import Collection
-from schemas.schemas import MenuItems, Searchs
+from schemas.schemas import MenuItems, Searchs, StockUpdateItem
 from config.database import database
 
 menuitem_collection: Collection = database['MenuItems']
@@ -66,6 +66,32 @@ def ser_search_menuitem(_data:Searchs):
         "pageSize":_data.pageSize,
         "totalItems": total_items,
         "data": data,
+    }
+
+
+def increase_stock_quantities(items: list[StockUpdateItem]):
+    updated_items = []
+
+    for item in items:
+        if not ObjectId.is_valid(item.item_id):
+            raise HTTPException(status_code=400, detail=f"Invalid ID: {item.item_id}")
+
+        result = menuitem_collection.update_one(
+            {"_id": ObjectId(item.item_id)},
+            {"$inc": {"stock_quantity": item.quantity}}
+        )
+
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail=f"Menuitem not found: {item.item_id}")
+
+        updated_items.append({
+            "item_id": item.item_id,
+            "quantity_increased": item.quantity
+        })
+
+    return {
+        "message": "Stock quantities updated successfully.",
+        "updated_items": updated_items
     }
 
 def ser_insert_menuitem(_data: MenuItems) -> str:

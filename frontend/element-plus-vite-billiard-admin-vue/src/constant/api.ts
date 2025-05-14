@@ -11,6 +11,12 @@ export interface Banner {
     image: string;
 }
 
+export interface StockUpdateItem{
+    item_id: string
+    quantity: number
+
+}
+
 export interface Bookings {
     _id?: string;
     table_id: string;
@@ -44,12 +50,12 @@ export interface TableTypes {
 
 export interface Tables {
     _id?: string;
-    description: string
+    description: string;
     table_number: number;
     table_type_id: string;
     status: boolean;
-    start_date?: Date | string |null;
-    end_date?: Date | string |null;
+    start_date?: Date | string | null;
+    end_date?: Date | string | null;
     tabletype?: TableTypes;
     pricingrule?: PricingRules;
 }
@@ -172,15 +178,22 @@ export interface RateBookings {
     };
 }
 
+export interface OrderMenuItems {
+    _id?: string;
+    order_id?: string;
+    item_id: string;
+    quantity: number;
+    unit_price: number;
+    total_price: number;
+}
+
 export interface OrderItems {
     _id?: string;
     user_id: string;
     table_id: string;
-    item_id: string;
-    pay_date: Date | string;
-    quantity: number;
-    unit_price: number;
-    total_price: number;
+    pay_date?: Date | string;
+    total_price?: number;
+    menu_items?: OrderMenuItems[];
 }
 
 export interface TimeSessions {

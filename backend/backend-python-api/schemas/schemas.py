@@ -34,6 +34,10 @@ class Roles(BaseModel):
     role_name: str
     role_description: Optional[str] = None
 
+class StockUpdateItem(BaseModel):
+    item_id: str
+    quantity: int
+
 class Users(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     email: EmailStr
@@ -153,15 +157,21 @@ class CheckorUpdateQuantityRequest(BaseModel):
     ids: List[str]
     quantities: List[int]
 
+class OrderMenuItems(BaseModel):
+    id: Optional[str] = Field(None, alias="_id")  
+    order_id: str = None
+    item_id: str
+    quantity: int
+    unit_price: int
+    total_price: Optional[int]
+
 class OrderItems(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     user_id: str
     table_id: str
-    item_id: str
-    pay_date: datetime
-    quantity: int
-    unit_price: int
+    pay_date: datetime = None
     total_price: Optional[int]
+    menu_items: Optional[List[OrderMenuItems]] = None
 
 class CategoryMenuItems(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  

@@ -1,61 +1,70 @@
 <template>
     <el-card class="card-container modern-layout" shadow="always">
         <el-row :gutter="30">
-            <!-- Left Column: Info Card -->
             <el-col :span="10">
                 <el-card shadow="hover" class="table-info-card modern-card">
                     <el-descriptions
-                        title="🎱 Thông tin khách và bàn"
+                        title="Thông tin khách và bàn"
                         :column="1"
                         border
                         size="large"
                         class="mb-3"
                     >
-                        <!-- Customer Info -->
-                        <el-descriptions-item label="👤 Tên khách hàng">
+                        <el-descriptions-item label="Tên khách hàng">
                             <el-input
                                 v-model="customerForm.fullname"
                                 placeholder="Nhập tên khách hàng"
-                                clearable
                                 size="large"
                             />
                         </el-descriptions-item>
-                        <el-descriptions-item label="📞 Số điện thoại">
+                        <el-descriptions-item label="Số điện thoại">
                             <el-input
                                 v-model="customerForm.phone"
                                 placeholder="Nhập số điện thoại"
-                                clearable
                                 size="large"
                             />
                         </el-descriptions-item>
 
-                        <!-- Table Info -->
                         <el-descriptions-item label="Bàn số">
                             {{ dataDetailTable?.table_number || "--" }}
                         </el-descriptions-item>
-                        <el-descriptions-item label="⏱️ Thời gian sử dụng">
+                        <el-descriptions-item label="Thời gian sử dụng">
                             {{ formatTime(timeElapsed) }}
                         </el-descriptions-item>
-                        <el-descriptions-item label="💸 Giá 1h">
+                        <el-descriptions-item label="Giá 1h">
                             {{
                                 ConvertPrice(
-                                    Number(dataDetailTable?.pricingrule?.rate_per_hour) || 0
+                                    Number(
+                                        dataDetailTable?.pricingrule
+                                            ?.rate_per_hour
+                                    ) || 0
                                 )
                             }}
                         </el-descriptions-item>
-                        <el-descriptions-item label="💰 Tạm tính">
-                            {{ ConvertPrice(Number(totalPrice)) }}
+                        <el-descriptions-item label="Tạm tính">
+                            {{ ConvertPriceToK(Number(totalPrice)) }}
                         </el-descriptions-item>
-                        <el-descriptions-item label="🧾 Tiền dịch vụ">
+                        <el-descriptions-item label="Tiền dịch vụ">
                             {{ ConvertPrice(Number(service_price)) }}
                         </el-descriptions-item>
                         <el-descriptions-item
-                            label="🧮 Tổng tiền"
+                            v-if="voucherCode && Number(discountAmount) > 0"
+                            label="Giảm giá"
+                        >
+                            {{ ConvertPriceToK(Number(discountPrice)) }}
+                        </el-descriptions-item>
+
+                        <el-descriptions-item
+                            label="Tổng tiền"
                             label-class-name="total-label"
                             content-class-name="total-value"
                         >
                             {{
-                                ConvertPrice(Number(service_price) + Number(totalPrice))
+                                ConvertPriceToK(
+                                    Number(service_price) +
+                                        Number(totalPrice) -
+                                        Number(discountPrice)
+                                )
                             }}
                         </el-descriptions-item>
                     </el-descriptions>
@@ -68,7 +77,7 @@
                         plain
                         class="full-width mt-3"
                     >
-                        💳 Thanh Toán
+                        Thanh Toán
                     </el-button>
 
                     <el-button
@@ -79,116 +88,168 @@
                         plain
                         class="full-width mt-3"
                     >
-                        ▶️ Bắt đầu
+                        Bắt đầu
                     </el-button>
                 </el-card>
             </el-col>
 
-            <!-- Right Column -->
             <el-col :span="14">
-                <!-- Voucher Section -->
-                <el-row :gutter="10" class="mb-3">
-                    <el-col :span="16">
-                        <el-select
-                            v-model="voucherCode"
-                            placeholder="-- Chọn mã giảm giá --"
-                            @change="handleVoucherChange"
-                            size="large"
-                            class="w-100"
-                        >
-                            <el-option
-                                v-for="voucher in dataVoucher"
-                                :key="voucher._id"
-                                :label="`Giảm ${voucher.discount_value}% - ${voucher.quantity > 0 && voucher.status ? 'Đang hoạt động' : 'Hết hạn'}`"
-                                :value="voucher.code"
-                            />
-                        </el-select>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-button type="primary" @click="applyVoucher" class="w-100" size="large">
-                            Áp dụng
-                        </el-button>
-                    </el-col>
-                </el-row>
-
-                <el-alert
-                    v-if="voucherError"
-                    type="error"
-                    :closable="false"
-                    show-icon
-                    class="mb-2"
-                >
-                    {{ voucherError }}
-                </el-alert>
-
-                <el-alert
-                    v-if="discountAmount !== null"
-                    type="success"
-                    :closable="false"
-                    show-icon
-                    class="mb-2"
-                >
-                    Đã áp dụng mã: <strong>{{ voucherCode }}</strong> – Giảm {{ discountAmount }}%
-                </el-alert>
-
-                <!-- Service List -->
-                <div class="mb-3 text-right">
-                    <el-button type="success" @click="() => { dialogFormMenuItemVisible = true; resetForm(); }">
-                       Thêm dịch vụ
-                    </el-button>
-                </div>
-
-                <el-table
-                    :data="tableDataMenuItem"
-                    v-show="tableDataMenuItem.length > 0"
-                    class="table-menu-item"
-                >
-                    <el-table-column label="Sản phẩm" align="center" prop="menuitem.image">
-                        <template #default="scope">
-                            <img
-                                :src="apiImage + scope.row.menuitem.image"
-                                alt="Hình ảnh sản phẩm"
-                                class="img-item"
-                            />
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="Số lượng" align="center" prop="quantity">
-                        <template #default="scope">
-                            <el-input-number
-                                v-model="scope.row.quantity"
-                                :min="1"
-                                :max="100"
-                                @change="(value) => handleQuantityMenuItemChangeApi(value, scope.row)"
-                                class="quantity-input"
-                            />
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="Giá" align="center" prop="unit_price">
-                        <template #default="scope">
-                            <span>{{ ConvertPrice(scope.row.unit_price) }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="Tổng giá" align="center" prop="total_price">
-                        <template #default="scope">
-                            <span>{{ ConvertPrice(scope.row.total_price) }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="right">
-                        <template #default="scope">
-                            <el-popconfirm
-                                confirm-button-text="Yes"
-                                cancel-button-text="No"
-                                icon-color="#626AEF"
-                                title="Bạn có muốn xoá không?"
-                                @confirm="() => confirmEventMenuItem(scope.row._id)"
+                <el-card>
+                    <el-row class="voucher-row" :gutter="10">
+                        <el-col :span="17">
+                            <el-select
+                                v-model="voucherCode"
+                                placeholder="-- Chọn mã giảm giá --"
+                                @change="handleVoucherChange"
+                                size="large"
+                                class="full-width"
                             >
-                                <template #reference>
-                                    <el-button size="small" type="danger">Xoá</el-button>
-                                </template>
-                            </el-popconfirm>
-                        </template>
-                    </el-table-column>
-                </el-table>
+                                <el-option
+                                    v-for="voucher in dataVoucher"
+                                    :key="voucher._id"
+                                    :label="`Giảm ${voucher.discount_value}% - ${Number(voucher.quantity) > 0 && voucher.status ? 'Đang hoạt động' : 'Hết hạn'}`"
+                                    :value="voucher.code"
+                                />
+                            </el-select>
+                        </el-col>
+                        <el-col :span="7">
+                            <el-button
+                                type="primary"
+                                @click="applyVoucher"
+                                size="large"
+                                class="full-width"
+                            >
+                                Áp dụng
+                            </el-button>
+                        </el-col>
+                    </el-row>
+
+                    <el-alert
+                        v-if="voucherError"
+                        type="error"
+                        :closable="false"
+                        show-icon
+                        class="mb-2"
+                    >
+                        {{ voucherError }}
+                    </el-alert>
+
+                    <el-alert
+                        v-if="discountAmount !== null"
+                        type="success"
+                        :closable="false"
+                        show-icon
+                        class="mb-2"
+                    >
+                        Đã áp dụng mã: <strong>{{ voucherCode }}</strong> – Giảm
+                        {{ discountAmount }}%
+                    </el-alert>
+
+                    <div class="mb-3 text-right">
+                        <el-button
+                            type="success"
+                            @click="
+                                () => {
+                                    dialogFormMenuItemVisible = true;
+                                }
+                            "
+                        >
+                            Thêm dịch vụ
+                        </el-button>
+                    </div>
+
+                    <el-table
+                        :data="tableDataMenuItem"
+                        v-show="tableDataMenuItem.length > 0"
+                        class="table-menu-item"
+                    >
+                        <el-table-column
+                            label="Hình ảnh"
+                            align="center"
+                            prop="menuitem.image"
+                        >
+                            <template #default="scope">
+                                <img
+                                    :src="apiImage + scope.row.menuitem.image"
+                                    alt="Hình ảnh sản phẩm"
+                                    class="img-item"
+                                />
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            label="Sản phẩm"
+                            align="center"
+                            prop="unit_price"
+                        >
+                            <template #default="scope">
+                                <span>{{ scope.row.menuitem.name }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            label="Số lượng"
+                            align="center"
+                            prop="quantity"
+                        >
+                            <template #default="scope">
+                                <el-input-number
+                                    v-model="scope.row.quantity"
+                                    :min="1"
+                                    :max="100"
+                                    @change="
+                                        (value) =>
+                                            handleQuantityMenuItemChangeApi(
+                                                value,
+                                                scope.row
+                                            )
+                                    "
+                                    class="quantity-input"
+                                />
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            label="Giá"
+                            align="center"
+                            prop="unit_price"
+                        >
+                            <template #default="scope">
+                                <span>{{
+                                    ConvertPrice(scope.row.unit_price)
+                                }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            label="Tổng giá"
+                            align="center"
+                            prop="total_price"
+                        >
+                            <template #default="scope">
+                                <span>{{
+                                    ConvertPrice(scope.row.total_price)
+                                }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column align="right">
+                            <template #default="scope">
+                                <el-popconfirm
+                                    confirm-button-text="Yes"
+                                    cancel-button-text="No"
+                                    icon-color="#626AEF"
+                                    title="Bạn có muốn xoá không?"
+                                    @confirm="
+                                        () =>
+                                            confirmEventMenuItem(scope.row._id)
+                                    "
+                                >
+                                    <template #reference>
+                                        <el-button size="small" type="danger"
+                                            >Xoá</el-button
+                                        >
+                                    </template>
+                                </el-popconfirm>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-card>
             </el-col>
         </el-row>
     </el-card>
@@ -284,6 +345,12 @@
             <p>Giờ bắt đầu: {{ convertDate(dataDetailTable?.start_date) }}</p>
             <p>Giờ kết thúc: {{ convertDate(getLocalISOString()) }}</p>
             <p>Thời gian sử dụng: {{ formatTime(timeElapsed) }}</p>
+            <p v-if="customerForm.fullname">
+                Khách hàng: {{ customerForm.fullname }}
+            </p>
+            <p v-if="customerForm.phone">
+                Số điện thoại: {{ customerForm.phone }}
+            </p>
 
             <table>
                 <thead>
@@ -316,12 +383,21 @@
             <div class="summary">
                 <p>Tổng dịch vụ: {{ ConvertPrice(Number(service_price)) }}</p>
                 <p>
-                    Tổng tiền giờ chơi: {{ ConvertPrice(Number(totalPrice)) }}
+                    Tổng tiền giờ chơi:
+                    {{ ConvertPriceToK(Number(totalPrice)) }}
+                </p>
+                <p v-if="voucherCode && Number(discountAmount) > 0">
+                    Giảm giá {{ discountAmount }}%:
+                    {{ ConvertPriceToK(Number(discountPrice)) }}
                 </p>
                 <p class="total">
                     Thanh toán:
                     {{
-                        ConvertPrice(Number(totalPrice) + Number(service_price))
+                        ConvertPriceToK(
+                            Number(totalPrice) +
+                                Number(service_price) -
+                                Number(discountPrice)
+                        )
                     }}
                 </p>
                 <p>
@@ -364,6 +440,7 @@ import { useRoute } from "vue-router";
 import {
     Discounts,
     OptionSelect,
+    StockUpdateItem,
     TableMenuItems,
     Tables,
 } from "~/constant/api";
@@ -376,12 +453,16 @@ import {
     updateTable,
     updateTableMenuItem,
 } from "~/services/home.service";
-import { getAllMenuItem } from "~/services/menuitem.service";
+import {
+    getAllMenuItem,
+    increaseQuantityItem,
+} from "~/services/menuitem.service";
+import ConvertPriceToK from "~/utils/convertpricetoK";
 import ConvertPrice from "~/utils/convertprice";
 import { apiImage } from "~/constant/request";
 import { getAllProduct } from "~/services/product.service";
 import { useUserStore } from "~/store";
-import { createOrderItem } from "~/services/foodorder.service";
+import { createOrderItem } from "~/services/orderitem.service";
 import { createTimeSession } from "~/services/timesession.service";
 import router from "~/router";
 import { getAllDiscount, getDiscountByCode } from "~/services/discount.service";
@@ -493,19 +574,25 @@ async function applyVoucher() {
 const PayAndPrintInvoice = async () => {
     const resIdTable = await getbyIdTable(String(route.params.id));
     if (resIdTable.status === true) {
-        const listOrderItem = tableDataMenuItem.value.map(
+        const listOrderMenuItem = tableDataMenuItem.value.map(
             (value: TableMenuItems) => {
                 return {
-                    user_id: String(userStore?.user?._id),
-                    table_id: String(route.params.id),
                     item_id: value?.item_id,
-                    pay_date: String(getLocalISOString()),
                     quantity: value.quantity,
                     unit_price: value.unit_price,
                     total_price: value.total_price,
                 };
             }
         );
+
+        const getRentalItemIds: StockUpdateItem[] = tableDataMenuItem.value
+            .filter((item) => item?.menuitem?.is_rental)
+            .map((item) => ({
+                item_id: String(item.item_id),
+                quantity: Number(item.quantity),
+            }));
+
+        await increaseQuantityItem(getRentalItemIds);
 
         await createTimeSession({
             table_id: String(route.params.id),
@@ -521,17 +608,19 @@ const PayAndPrintInvoice = async () => {
             status: Boolean(!dataDetailTable.value?.status),
             start_date: String(startTime.value),
             end_date: String(startTime.value),
+            description: String(dataDetailTable?.value?.description),
         });
 
-        for (const item of listOrderItem) {
-            if (item) {
-                await createOrderItem(item);
-            }
-        }
+        await createOrderItem({
+            user_id: String(userStore?.user?._id),
+            table_id: String(route.params.id),
+            total_price: Number(service_price.value),
+            menu_items: listOrderMenuItem,
+        });
 
         await fetchById(String(route.params.id));
 
-        if (listOrderItem.length > 0) {
+        if (listOrderMenuItem.length > 0) {
             await deleteMenuItembyTable(String(route.params.id));
         }
 
@@ -623,7 +712,6 @@ const submitFormMenuItem = async (formEl: FormInstance | undefined) => {
                         Number(form.quantity) * Number(form.unit_price),
                 });
                 Notification("Thêm thành công", "success");
-                dialogFormMenuItemVisible.value = false;
                 fetchById(String(route.params.id));
             } catch (error) {
                 if (axios.isAxiosError(error)) {
@@ -677,6 +765,7 @@ async function toggleTimer() {
                 status: !dataDetailTable.value?.status,
                 start_date: String(startTime.value),
                 end_date: String(getLocalISOString()),
+                description: String(dataDetailTable?.value?.description),
             });
 
             await fetchById(String(route.params.id));
@@ -771,6 +860,12 @@ const service_price = computed(() => {
     }, 0);
 
     return menuItemTotal;
+});
+
+const discountPrice = computed(() => {
+    const price =
+        Number(service_price.value || 0) + Number(totalPrice.value || 0);
+    return price * (Number(discountAmount.value || 0) / 100);
 });
 
 const StartAndPay = async () => {
@@ -919,13 +1014,20 @@ table th {
 
 .total-label {
     font-weight: bold;
-    color: #409EFF;
+    color: #409eff;
 }
 
 .total-value {
     font-size: 18px;
     font-weight: bold;
-    color: #E74C3C;
+    color: #e74c3c;
+}
+.full-width {
+    width: 100%;
 }
 
+.voucher-row {
+    margin-bottom: 12px;
+    align-items: center;
+}
 </style>

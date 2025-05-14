@@ -1,8 +1,9 @@
+from typing  import List
 from fastapi import APIRouter
 from pymongo.collection import Collection
 from config.database import database
-from schemas.schemas import MenuItems, Searchs
-from service.menuItems import ser_getbyid_menuitem,ser_search_menuitem,ser_get_menuitem,ser_delete_menuitem, ser_insert_menuitem, ser_update_menuitem
+from schemas.schemas import MenuItems, Searchs, StockUpdateItem
+from service.menuItems import increase_stock_quantities,ser_getbyid_menuitem,ser_search_menuitem,ser_get_menuitem,ser_delete_menuitem, ser_insert_menuitem, ser_update_menuitem
 
 
 router = APIRouter()
@@ -20,6 +21,10 @@ async def get_menuitem_by_id(menuitem_id: str):
 @router.post("/menuitems/search")
 async def search_menuitem(_data:Searchs):
     return ser_search_menuitem(_data)
+
+@router.post("/menuitems/increase-stock")
+async def increase_stock(items: List[StockUpdateItem]):
+    return increase_stock_quantities(items)
 
 @router.post("/menuitems/add")
 async def create_menuitem(_data: MenuItems):
