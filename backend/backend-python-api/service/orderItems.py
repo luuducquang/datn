@@ -2,11 +2,12 @@ from datetime import datetime
 from bson import ObjectId
 from fastapi import HTTPException
 from pymongo.collection import Collection
-from schemas.schemas import OrderItems
+from schemas.schemas import OrderItems, Searchs
 from config.database import database
 
 orderitem_collection: Collection = database['OrderItems']
 ordermenuitem_collection: Collection = database['OrderMenuItems']
+timesession_collection: Collection = database['TimeSessions']
 
 def ser_get_orderitem():
     datas = []
@@ -19,6 +20,7 @@ def ser_insert_orderitem(_data: OrderItems) -> str:
     order_data = {
         "user_id": _data.user_id,
         "table_id": _data.table_id,
+        "timesession_id": _data.timesession_id,
         "pay_date": datetime.now(),
         "total_price": _data.total_price,
     }
@@ -34,6 +36,47 @@ def ser_insert_orderitem(_data: OrderItems) -> str:
         )
 
     return order_id
+
+def ser_search_orderitems(_data: Searchs):
+    if _data.page <= 0 or _data.pageSize <= 0:
+        raise HTTPException(status_code=400, detail="Page and pageSize must be greater than 0")
+
+    skip = (_data.page - 1) * _data.pageSize
+
+    query = {}
+    if _data.search_term:
+        query["$or"] = [
+            {"user_id": {"$regex": _data.search_term, "$options": "i"}},
+            {"table_id": {"$regex": _data.search_term, "$options": "i"}},
+            {"total_price": {"$regex": _data.search_term, "$options": "i"}},
+        ]
+
+    total_items = orderitem_collection.count_documents(query)
+    items_cursor = orderitem_collection.find(query).skip(skip).limit(_data.pageSize)
+
+    data = []
+    for item in items_cursor:
+        item["_id"] = str(item["_id"])
+
+        if "timesession_id" in item and item["timesession_id"]:
+            session = timesession_collection.find_one({"_id": ObjectId(item["timesession_id"])})
+            if session:
+                session["_id"] = str(session["_id"])
+                item["timesession"] = session
+            else:
+                item["timesession"] = None
+        else:
+            item["timesession"] = None
+
+        data.append(item)
+
+    return {
+        "page": _data.page,
+        "pageSize": _data.pageSize,
+        "totalItems": total_items,
+        "data": data,
+    }
+
 
 
 def ser_update_orderitem(_data: OrderItems, orderitem_collection: Collection):

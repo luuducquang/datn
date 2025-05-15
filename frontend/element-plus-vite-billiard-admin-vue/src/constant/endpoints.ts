@@ -13,6 +13,7 @@ export const PricingRuleUrl = "/pricingrules";
 export const MenuItemUrl = "/menuitems";
 export const RentalUrl = "/rentals";
 export const OrderItemUrl = "/orderitems";
+export const OrderMenuItemUrl = "/ordermenuitems";
 export const ProductUrl = "/products";
 export const TimeSessionUrl = "/timesessions";
 export const BillSellUrl = "/billsells";

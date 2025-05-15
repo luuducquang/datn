@@ -111,6 +111,7 @@ declare module 'vue' {
     ListMenuItem: typeof import('./components/MenuItem/ListMenuItem.vue')['default']
     ListNew: (typeof import("./components/News/ListNew.vue"))["default"]
     ListNews: typeof import('./components/News/ListNews.vue')['default']
+    ListPay: typeof import('./components/Pay/ListPay.vue')['default']
     ListPricingRule: typeof import('./components/PricingRule/ListPricingRule.vue')['default']
     ListProduct: typeof import('./components/Product/ListProduct.vue')['default']
     ListRate: (typeof import("./components/Rate/ListRate.vue"))["default"]

@@ -26,7 +26,9 @@
                         </el-descriptions-item>
 
                         <el-descriptions-item label="Bàn số">
-                            {{ dataDetailTable?.table_number || "--" }}
+                            <span class="fw-bold">{{
+                                dataDetailTable?.table_number || "--"
+                            }}</span>
                         </el-descriptions-item>
                         <el-descriptions-item label="Thời gian sử dụng">
                             {{ formatTime(timeElapsed) }}
@@ -41,7 +43,7 @@
                                 )
                             }}
                         </el-descriptions-item>
-                        <el-descriptions-item label="Tạm tính">
+                        <el-descriptions-item label="Tiền giờ chơi">
                             {{ ConvertPriceToK(Number(totalPrice)) }}
                         </el-descriptions-item>
                         <el-descriptions-item label="Tiền dịch vụ">
@@ -51,21 +53,31 @@
                             v-if="voucherCode && Number(discountAmount) > 0"
                             label="Giảm giá"
                         >
-                            {{ ConvertPriceToK(Number(discountPrice)) }}
+                            -{{ ConvertPriceToK(Number(discountPrice)) }}
                         </el-descriptions-item>
 
                         <el-descriptions-item
-                            label="Tổng tiền"
+                            v-if="moneyPaid > 0"
+                            label="Tiền đặt bàn"
+                        >
+                            -{{ ConvertPriceToK(Number(moneyPaid)) }}
+                        </el-descriptions-item>
+
+                        <el-descriptions-item
+                            label="Cần thanh toán"
                             label-class-name="total-label"
                             content-class-name="total-value"
                         >
-                            {{
-                                ConvertPriceToK(
-                                    Number(service_price) +
-                                        Number(totalPrice) -
-                                        Number(discountPrice)
-                                )
-                            }}
+                            <h3>
+                                {{
+                                    ConvertPriceToK(
+                                        Number(service_price) +
+                                            Number(totalPrice) -
+                                            Number(discountPrice) -
+                                            Number(moneyPaid)
+                                    )
+                                }}
+                            </h3>
                         </el-descriptions-item>
                     </el-descriptions>
 
@@ -104,6 +116,11 @@
                                 size="large"
                                 class="full-width"
                             >
+                                <el-option
+                                    :key="'none'"
+                                    label="-- Không chọn voucher --"
+                                    :value="''"
+                                />
                                 <el-option
                                     v-for="voucher in dataVoucher"
                                     :key="voucher._id"
@@ -144,6 +161,30 @@
                         Đã áp dụng mã: <strong>{{ voucherCode }}</strong> – Giảm
                         {{ discountAmount }}%
                     </el-alert>
+
+                    <el-row class="booking-row mt-3 mb-2" :gutter="10">
+                        <el-col :span="24">
+                            <el-select
+                                v-model="selectedBookingId"
+                                placeholder="-- Chọn bàn đã đặt --"
+                                @change="handleBookingChange"
+                                size="large"
+                                class="full-width"
+                            >
+                                <el-option
+                                    :key="'none'"
+                                    label="-- Không chọn bàn đã đặt --"
+                                    :value="''"
+                                />
+                                <el-option
+                                    v-for="booking in dataBookings"
+                                    :key="booking._id"
+                                    :label="`${formatDate(booking.start_time)} - ${formatDate(booking.end_time)} - ${booking.name} (${booking.phone}) - ${ConvertPrice(Number(booking?.money_paid))} `"
+                                    :value="String(booking._id)"
+                                />
+                            </el-select>
+                        </el-col>
+                    </el-row>
 
                     <div class="mb-3 text-right">
                         <el-button
@@ -390,13 +431,17 @@
                     Giảm giá {{ discountAmount }}%:
                     {{ ConvertPriceToK(Number(discountPrice)) }}
                 </p>
+                <p v-if="moneyPaid > 0">
+                    Đã thanh toán khi đặt bàn: {{ ConvertPriceToK(moneyPaid) }}
+                </p>
                 <p class="total">
                     Thanh toán:
                     {{
                         ConvertPriceToK(
                             Number(totalPrice) +
                                 Number(service_price) -
-                                Number(discountPrice)
+                                Number(discountPrice) -
+                                Number(moneyPaid)
                         )
                     }}
                 </p>
@@ -438,6 +483,7 @@ import { nextTick, onMounted, onUnmounted } from "vue";
 import { ref, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import {
+    Bookings,
     Discounts,
     OptionSelect,
     StockUpdateItem,
@@ -466,6 +512,10 @@ import { createOrderItem } from "~/services/orderitem.service";
 import { createTimeSession } from "~/services/timesession.service";
 import router from "~/router";
 import { getAllDiscount, getDiscountByCode } from "~/services/discount.service";
+import {
+    getBookingByIDBooking,
+    getBookingByIDTable,
+} from "~/services/booking.service";
 
 const route = useRoute();
 const dataDetailTable = ref<Tables | null>(null);
@@ -496,6 +546,10 @@ const dataVoucher = ref<Discounts[]>([]);
 const voucherCode = ref("");
 const discountAmount = ref<number | null>(null);
 const voucherError = ref("");
+
+const dataBookings = ref<Bookings[]>([]);
+const selectedBookingId = ref("");
+const moneyPaid = ref(0);
 
 const Notification = (
     message: string,
@@ -550,6 +604,35 @@ const rules = reactive<FormRules>({
     ],
 });
 
+const handleBookingChange = async (id: string) => {
+    const selected = dataBookings.value.find((b) => b._id === id);
+    await updateTable({
+        _id: String(route.params.id),
+        table_number: Number(dataDetailTable.value?.table_number),
+        table_type_id: String(dataDetailTable.value?.table_type_id),
+        status: Boolean(dataDetailTable.value?.status),
+        start_date: String(dataDetailTable?.value?.start_date),
+        end_date: String(dataDetailTable.value?.start_date),
+        description: String(dataDetailTable?.value?.description),
+        booking_id: selected?._id ? String(selected._id) : "",
+    });
+    fetchById(String(route.params.id));
+    if (selectedBookingId.value === "") {
+        moneyPaid.value = 0;
+    }
+};
+
+const formatDate = (date: Date | string): string => {
+    const d = new Date(date);
+    return d.toLocaleString("vi-VN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+    });
+};
+
 const handleVoucherChange = () => {
     discountAmount.value = null;
 };
@@ -594,11 +677,28 @@ const PayAndPrintInvoice = async () => {
 
         await increaseQuantityItem(getRentalItemIds);
 
-        await createTimeSession({
+        const idTimesession = await createTimeSession({
             table_id: String(route.params.id),
             start_time: String(dataDetailTable.value?.start_date),
             end_time: getLocalISOString(),
             price: Number(Number(totalPrice.value).toFixed(0)),
+            price_paid: Number(
+                Number(
+                    Number(totalPrice.value) +
+                        Number(service_price.value) -
+                        Number(discountPrice.value) -
+                        Number(moneyPaid.value)
+                ).toFixed(0)
+            ),
+        });
+
+        
+        await createOrderItem({
+            user_id: String(userStore?.user?._id),
+            table_id: String(route.params.id),
+            timesession_id: String(idTimesession),
+            total_price: Number(service_price.value),
+            menu_items: listOrderMenuItem,
         });
 
         await updateTable({
@@ -609,13 +709,7 @@ const PayAndPrintInvoice = async () => {
             start_date: String(startTime.value),
             end_date: String(startTime.value),
             description: String(dataDetailTable?.value?.description),
-        });
-
-        await createOrderItem({
-            user_id: String(userStore?.user?._id),
-            table_id: String(route.params.id),
-            total_price: Number(service_price.value),
-            menu_items: listOrderMenuItem,
+            booking_id: "",
         });
 
         await fetchById(String(route.params.id));
@@ -624,7 +718,7 @@ const PayAndPrintInvoice = async () => {
             await deleteMenuItembyTable(String(route.params.id));
         }
 
-        const printContent = document.getElementById("print-section");
+        const printContent: any = document.getElementById("print-section");
         const originalContent = document.body.innerHTML;
 
         document.body.innerHTML = printContent.outerHTML;
@@ -766,8 +860,8 @@ async function toggleTimer() {
                 start_date: String(startTime.value),
                 end_date: String(getLocalISOString()),
                 description: String(dataDetailTable?.value?.description),
+                booking_id: "",
             });
-
             await fetchById(String(route.params.id));
         } else {
             Notification("Bàn này đã được dùng", "warning");
@@ -814,11 +908,22 @@ const fetchById = async (id: string) => {
     const resIdTable = await getbyIdTable(id);
     dataDetailTable.value = resIdTable;
 
+    selectedBookingId.value = String(dataDetailTable?.value?.booking_id);
+
+    if (dataDetailTable.value?.booking_id != "" && dataDetailTable.value?.booking_id != null) {
+        const dataBooking = await getBookingByIDBooking(
+            String(dataDetailTable.value?.booking_id)
+        );
+        moneyPaid.value = Number(dataBooking?.money_paid);
+    }
+
     const listVoucher = await getAllDiscount();
     dataVoucher.value = listVoucher;
 
     const resTableMenuItem = await getbyIdTableMenuItem(id);
     tableDataMenuItem.value = resTableMenuItem;
+
+    dataBookings.value = await getBookingByIDTable(id);
 
     if (dataDetailTable.value?.status === true) {
         startTime.value = String(dataDetailTable.value?.start_date);
@@ -927,9 +1032,6 @@ onUnmounted(() => {
 
 .ep-button + .ep-button {
     margin-left: 0px;
-}
-.ep-button {
-    margin: 2px;
 }
 
 /* Billllllllllllllllllllllllllllll */

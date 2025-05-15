@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from pymongo.collection import Collection
 from config.database import database
-from schemas.schemas import OrderItems
-from service.orderItems import ser_get_orderitem,ser_delete_orderitem, ser_insert_orderitem, ser_update_orderitem
+from schemas.schemas import OrderItems, Searchs
+from service.orderItems import ser_search_orderitems,ser_get_orderitem,ser_delete_orderitem, ser_insert_orderitem, ser_update_orderitem
 
 
 router = APIRouter()
@@ -17,6 +17,10 @@ async def get_orderitem():
 async def create_orderitem(_data: OrderItems):
     _id = ser_insert_orderitem(_data)
     return {"message": "Created successfully", "_id": _id}
+
+@router.post("/orderitems/search")
+async def search_orderitems(_data: Searchs):
+    return ser_search_orderitems(_data)
 
 @router.put("/orderitems/update")
 def edit_orderitem(_data: OrderItems):

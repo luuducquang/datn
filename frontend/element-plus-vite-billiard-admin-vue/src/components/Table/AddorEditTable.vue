@@ -90,6 +90,9 @@ const ruleForm = reactive<Tables>({
     table_type_id: "",
     status: false,
     description: "",
+    booking_id: "",
+    start_date: null,
+    end_date: null,
 });
 
 const rules = reactive<FormRules>({
@@ -142,6 +145,7 @@ const fetchById = async (id: string) => {
     ruleForm.description = resId?.description;
     ruleForm.start_date = resId?.start_date;
     ruleForm.end_date = resId?.end_date;
+    ruleForm.booking_id = resId?.booking_id;
 };
 
 onMounted(() => {
@@ -165,6 +169,9 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         description: ruleForm.description,
                         table_type_id: ruleForm.table_type_id,
                         status: ruleForm.status,
+                        booking_id: String(ruleForm.booking_id),
+                        start_date: ruleForm.start_date ?? null,
+                        end_date: ruleForm.end_date ?? null,
                     });
                     Notification("Cập nhật thành công", "success");
                     router.push("/table");

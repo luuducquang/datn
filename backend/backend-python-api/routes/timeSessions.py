@@ -16,7 +16,7 @@ async def get_timesession():
 @router.post("/timesessions/add")
 async def create_timesession(_data: TimeSessions):
     _id = ser_insert_timesession(_data)
-    return {"message": "Created successfully", "_id": _id}
+    return  _id
 
 @router.put("/timesessions/update")
 def edit_timesession(_data: TimeSessions):

@@ -10,7 +10,8 @@ from routes.rateBookings import router as rateBookings_router
 from routes.tableTypes import router as tableTypes_router
 from routes.tables import router as tables_router
 from routes.products import router as rentalItems_router
-from routes.orderItems import router as foodOrders_routers
+from routes.orderItems import router as OrderItems_routers
+from routes.orderMenuItems import router as OrderMenuItems_routers
 from routes.categoryMenuItems import router as categorys_router
 from routes.menuItems import router as menuItems_router
 from routes.timeSessions import router as timeSessions_router
@@ -63,7 +64,8 @@ app.include_router(rateBookings_router)
 app.include_router(tableTypes_router)
 app.include_router(tables_router)
 app.include_router(rentalItems_router)
-app.include_router(foodOrders_routers)
+app.include_router(OrderItems_routers)
+app.include_router(OrderMenuItems_routers)
 app.include_router(categorys_router)
 app.include_router(menuItems_router)
 app.include_router(timeSessions_router)

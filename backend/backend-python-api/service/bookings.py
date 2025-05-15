@@ -15,13 +15,23 @@ def ser_get_booking():
         datas.append(data)
     return datas
 
+def ser_get_booking_by_id(booking_id: str):
+    try:
+        data = booking_collection.find_one({"_id": ObjectId(booking_id)})
+        if not data:
+            raise HTTPException(status_code=404, detail="Không tìm thấy booking")
+        data["_id"] = str(data["_id"])
+        return data
+    except Exception:
+        raise HTTPException(status_code=400, detail="ID không hợp lệ")
+
 def ser_get_booking_by_table(table_id: str):
     datas = []
     now = datetime.now()
     query = {
         "table_id": table_id,
         "status": True,
-        "start_time": {"$gte": now}
+        "end_time": {"$gte": now}
     }
     for data in booking_collection.find(query):
         data["_id"] = str(data["_id"])

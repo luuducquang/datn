@@ -4,7 +4,7 @@ import { apiClient } from "~/constant/request";
 
 export const createTimeSession = async (
     data: TimeSessions
-): Promise<TimeSessions> => {
+): Promise<string> => {
     const res = await apiClient?.post(`${TimeSessionUrl}/add`, data);
     return res?.data;
 };

@@ -179,6 +179,119 @@ const routes = [
                 ],
             },
             {
+                path: "pay",
+                name: "Pay",
+                component: LayoutView,
+                meta: {
+                    breadcrumbName: "Thanh toán",
+                    requiresAuth: true,
+                },
+                children: [
+                    {
+                        path: "",
+                        name: "ListPay",
+                        component: () =>
+                            import("~/components/Pay/ListPay.vue"),
+                        meta: {
+                            breadcrumbName: "Danh sách",
+                            requiresAuth: true,
+                        },
+                    },
+                ],
+            },
+            {
+                path: "billsell",
+                name: "BillSell",
+                component: LayoutView,
+                meta: {
+                    breadcrumbName: "Hoá đơn bán",
+                    requiresAuth: true,
+                },
+                children: [
+                    {
+                        path: "",
+                        name: "ListBillSell",
+                        component: () =>
+                            import("~/components/BillSell/ListBillSell.vue"),
+                        meta: {
+                            breadcrumbName: "Danh sách",
+                            requiresAuth: true,
+                        },
+                    },
+                    {
+                        path: "add",
+                        name: "AddBillSell",
+                        component: () =>
+                            import(
+                                "~/components/BillSell/AddorEditBillSell.vue"
+                            ),
+                        meta: {
+                            breadcrumbName: "Thêm hoá đơn bán",
+                            requiresAuth: true,
+                        },
+                    },
+                    {
+                        path: "edit/:id",
+                        name: "EditBillSell",
+                        component: () =>
+                            import(
+                                "~/components/BillSell/AddorEditBillSell.vue"
+                            ),
+                        meta: {
+                            breadcrumbName: "Sửa hoá đơn bán",
+                            requiresAuth: true,
+                        },
+                    },
+                ],
+            },
+            {
+                path: "importbill",
+                name: "ImportBill",
+                component: LayoutView,
+                meta: {
+                    breadcrumbName: "Hoá đơn nhập",
+                    requiresAuth: true,
+                },
+                children: [
+                    {
+                        path: "",
+                        name: "ListImportBill",
+                        component: () =>
+                            import(
+                                "~/components/ImportBill/ListImportBill.vue"
+                            ),
+                        meta: {
+                            breadcrumbName: "Danh sách",
+                            requiresAuth: true,
+                        },
+                    },
+                    {
+                        path: "add",
+                        name: "AddImportBill",
+                        component: () =>
+                            import(
+                                "~/components/ImportBill/AddorEditImportBill.vue"
+                            ),
+                        meta: {
+                            breadcrumbName: "Thêm hoá đơn nhập",
+                            requiresAuth: true,
+                        },
+                    },
+                    {
+                        path: "edit/:id",
+                        name: "EditImportBill",
+                        component: () =>
+                            import(
+                                "~/components/ImportBill/AddorEditImportBill.vue"
+                            ),
+                        meta: {
+                            breadcrumbName: "Sửa hoá đơn nhập",
+                            requiresAuth: true,
+                        },
+                    },
+                ],
+            },
+            {
                 path: "tabletype",
                 name: "TableType",
                 component: LayoutView,
@@ -306,98 +419,6 @@ const routes = [
                             ),
                         meta: {
                             breadcrumbName: "Sửa quy tắc giá",
-                            requiresAuth: true,
-                        },
-                    },
-                ],
-            },
-            {
-                path: "billsell",
-                name: "BillSell",
-                component: LayoutView,
-                meta: {
-                    breadcrumbName: "Hoá đơn bán",
-                    requiresAuth: true,
-                },
-                children: [
-                    {
-                        path: "",
-                        name: "ListBillSell",
-                        component: () =>
-                            import("~/components/BillSell/ListBillSell.vue"),
-                        meta: {
-                            breadcrumbName: "Danh sách",
-                            requiresAuth: true,
-                        },
-                    },
-                    {
-                        path: "add",
-                        name: "AddBillSell",
-                        component: () =>
-                            import(
-                                "~/components/BillSell/AddorEditBillSell.vue"
-                            ),
-                        meta: {
-                            breadcrumbName: "Thêm hoá đơn bán",
-                            requiresAuth: true,
-                        },
-                    },
-                    {
-                        path: "edit/:id",
-                        name: "EditBillSell",
-                        component: () =>
-                            import(
-                                "~/components/BillSell/AddorEditBillSell.vue"
-                            ),
-                        meta: {
-                            breadcrumbName: "Sửa hoá đơn bán",
-                            requiresAuth: true,
-                        },
-                    },
-                ],
-            },
-            {
-                path: "importbill",
-                name: "ImportBill",
-                component: LayoutView,
-                meta: {
-                    breadcrumbName: "Hoá đơn nhập",
-                    requiresAuth: true,
-                },
-                children: [
-                    {
-                        path: "",
-                        name: "ListImportBill",
-                        component: () =>
-                            import(
-                                "~/components/ImportBill/ListImportBill.vue"
-                            ),
-                        meta: {
-                            breadcrumbName: "Danh sách",
-                            requiresAuth: true,
-                        },
-                    },
-                    {
-                        path: "add",
-                        name: "AddImportBill",
-                        component: () =>
-                            import(
-                                "~/components/ImportBill/AddorEditImportBill.vue"
-                            ),
-                        meta: {
-                            breadcrumbName: "Thêm hoá đơn nhập",
-                            requiresAuth: true,
-                        },
-                    },
-                    {
-                        path: "edit/:id",
-                        name: "EditImportBill",
-                        component: () =>
-                            import(
-                                "~/components/ImportBill/AddorEditImportBill.vue"
-                            ),
-                        meta: {
-                            breadcrumbName: "Sửa hoá đơn nhập",
                             requiresAuth: true,
                         },
                     },

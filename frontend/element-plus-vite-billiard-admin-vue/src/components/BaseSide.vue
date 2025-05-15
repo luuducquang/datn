@@ -25,6 +25,22 @@
             </router-link>
         </el-sub-menu>
 
+        <el-sub-menu index="8-9">
+            <template #title>
+                <el-icon><Mug /></el-icon>
+                <span>Hoá đơn</span>
+            </template>
+            <router-link to="/pay">
+                <el-menu-item index="20">Thanh toán</el-menu-item>
+            </router-link>
+            <router-link to="/billsell">
+                <el-menu-item index="8">Đơn hàng bán</el-menu-item>
+            </router-link>
+            <router-link to="/importbill">
+                <el-menu-item index="9">Đơn hàng nhập</el-menu-item>
+            </router-link>
+        </el-sub-menu>
+
         <el-sub-menu index="5-6-7">
             <template #title>
                 <el-icon><Box /></el-icon>
@@ -38,19 +54,6 @@
             </router-link>
             <router-link to="/pricingrule">
                 <el-menu-item index="7">Quy tắc giá</el-menu-item>
-            </router-link>
-        </el-sub-menu>
-
-        <el-sub-menu index="8-9">
-            <template #title>
-                <el-icon><Mug /></el-icon>
-                <span>Hoá đơn</span>
-            </template>
-            <router-link to="/billsell">
-                <el-menu-item index="8">Hoá đơn bán</el-menu-item>
-            </router-link>
-            <router-link to="/importbill">
-                <el-menu-item index="9">Hoá đơn nhập</el-menu-item>
             </router-link>
         </el-sub-menu>
 
@@ -171,6 +174,7 @@ const activeIndex = computed(() => {
     if (path.startsWith("/supplier")) return "17";
     if (path.startsWith("/typeaccount")) return "18";
     if (path.startsWith("/account")) return "19";
+    if (path.startsWith("/pay")) return "20";
 
     return "0";
 });

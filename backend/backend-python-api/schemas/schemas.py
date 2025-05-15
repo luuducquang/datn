@@ -106,6 +106,7 @@ class TableTypes(BaseModel):
 
 class Tables(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
+    booking_id: str = None
     description: str
     table_number: int
     table_type_id: str
@@ -169,6 +170,7 @@ class OrderItems(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     user_id: str
     table_id: str
+    timesession_id: str
     pay_date: datetime = None
     total_price: Optional[int]
     menu_items: Optional[List[OrderMenuItems]] = None
@@ -193,6 +195,7 @@ class TimeSessions(BaseModel):
     start_time: datetime
     end_time: datetime
     price: Optional[int]
+    price_paid: Optional[int]
 
 
 class PricingRules(BaseModel):

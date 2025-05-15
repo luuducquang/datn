@@ -982,14 +982,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/bookings/get-by-table/6732cee552e9e56c542a2490",
+							"raw": "{{host}}/bookings/get-by-table/6732ceea52e9e56c542a2492",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"bookings",
 								"get-by-table",
-								"6732cee552e9e56c542a2490"
+								"6732ceea52e9e56c542a2492"
 							]
 						}
 					},
@@ -1028,6 +1028,25 @@
 								"bookings",
 								"get-booking-by-userid",
 								"6804adfc832c1ccd40e7b73f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByIdBooking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/bookings/get-by-id/682597215e8b0d0c58e1cae8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"get-by-id",
+								"682597215e8b0d0c58e1cae8"
 							]
 						}
 					},
@@ -2421,10 +2440,152 @@
 			]
 		},
 		{
+			"name": "OrderMenuItems",
+			"item": [
+				{
+					"name": "addOrderMenuItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"table_id\": \"6732ceea52e9e56c542a2492\",\r\n    \"user_id\": \"670f17f5279b5da63b9bdc7a\",\r\n    \"order_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"total_price\": 10000,\r\n    \"menu_items\": {\r\n        \"item_id\": \"67643c354d902420a592af6f\",\r\n        \"quantity\": \"8\",\r\n        \"total_price\": \"120000\",\r\n        \"unit_price\": \"15000\"\r\n    }\r\n\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ordermenuitems/add",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ordermenuitems",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrderMenuItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/ordermenuitems/get",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ordermenuitems",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editOrderMenuItem",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"66f831a1e3fd66143ef40c24\",\r\n    \"user_id\": \"12312gfdgdgdfg31\",\r\n    \"order_date\": \"2019-01-31T10:00:00.000Z\",\r\n    \"status\": \"da dat hang\",\r\n    \"total_price\": 100001\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ordermenuitems/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ordermenuitems",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteOrderMenuItem",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/ordermenuitems/delete/66f831a1e3fd66143ef40c24",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ordermenuitems",
+								"delete",
+								"66f831a1e3fd66143ef40c24"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchOrderMenuItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ordermenuitems/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ordermenuitems",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByIdOrderID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/ordermenuitems/get/682600e0657a0bb829b7a85d",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ordermenuitems",
+								"get",
+								"682600e0657a0bb829b7a85d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "OrderItems",
 			"item": [
 				{
-					"name": "addFoodOrder",
+					"name": "addOrderItem",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -2451,7 +2612,7 @@
 					"response": []
 				},
 				{
-					"name": "getFoodOrder",
+					"name": "getOrderItem",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -2469,7 +2630,7 @@
 					"response": []
 				},
 				{
-					"name": "editFoodOrder",
+					"name": "editOrderItem",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -2496,7 +2657,7 @@
 					"response": []
 				},
 				{
-					"name": "deleteFoodOrder",
+					"name": "deleteOrderItem",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -2509,6 +2670,60 @@
 								"foodorders",
 								"delete",
 								"66f831a1e3fd66143ef40c24"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchOrderItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/orderitems/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"orderitems",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchOrderItem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/orderitems/search",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"orderitems",
+								"search"
 							]
 						}
 					},
@@ -2855,7 +3070,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"table_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"start_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"end_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"price\": 100000\r\n}",
+							"raw": "{\r\n    \"table_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"start_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"end_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"price\": 100000,\r\n    \"price_paid\": 100000\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2882,7 +3097,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"_id\":\"66f8d439e1baa74a5bc36758\",\r\n    \"table_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"start_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"end_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"price\": 1000001\r\n}",
+							"raw": "{\r\n    \"_id\":\"66f8d439e1baa74a5bc36758\",\r\n    \"table_id\": \"fgfjfgjxsw5w534dg\",\r\n    \"start_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"end_time\": \"2019-01-31T10:00:00.000Z\",\r\n    \"price\": 1000001,\r\n    \"price_paid\": 100000\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

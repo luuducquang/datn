@@ -13,3 +13,15 @@ export const setFalseStatusBooking = async (id: string): Promise<Bookings> => {
     const res = await apiClient?.put(`${BookingUrl}/false-status/${id}`);
     return res?.data;
 };
+
+export const getBookingByIDTable = async (id: string): Promise<Bookings[]> => {
+    const res = await apiClient?.get(`${BookingUrl}/get-by-table/${id}`);
+    return res?.data;
+};
+
+export const getBookingByIDBooking = async (
+    id: string
+): Promise<Bookings> => {
+    const res = await apiClient?.get(`${BookingUrl}/get-by-id/${id}`);
+    return res?.data;
+};
