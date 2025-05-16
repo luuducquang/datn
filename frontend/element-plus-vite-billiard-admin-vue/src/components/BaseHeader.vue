@@ -68,35 +68,32 @@ a {
     text-decoration: none;
 }
 .el-menu-demo {
-    background-color: #2f2d2d;
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
     color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-}
-
-.link_logo {
-    display: flex;
-    align-items: center;
+    padding: 0 30px;
+    height: 70px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
     height: 50px;
     width: 50px;
     cursor: pointer;
-    margin-left: 40px;
+    margin-left: 20px;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1);
 }
 
 .header_right_item {
     display: flex;
     align-items: center;
-    gap: 20px;
-}
-
-.bell-icon {
-    font-size: 24px;
-    cursor: pointer;
+    gap: 24px;
 }
 
 .el-dropdown-link {
@@ -105,12 +102,26 @@ a {
     gap: 10px;
     cursor: pointer;
     color: #fff;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.el-dropdown-link:hover {
+    color: #f1f1f1;
 }
 
 .user-image {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
 }
+
+.user-image:hover {
+    transform: scale(1.05);
+}
+
 </style>

@@ -1,127 +1,138 @@
 <template>
     <el-menu
         :default-active="activeIndex"
-        class="el-menu-vertical-demo"
+        class="custom-sidebar"
         :collapse="isCollapse"
         @open="handleOpen"
         @close="handleClose"
+        background-color="#f9fbfc"
+        text-color="#000000"
     >
+        <!-- Tổng quan -->
         <el-sub-menu index="1-2-3-4">
             <template #title>
                 <el-icon><House /></el-icon>
-                <span>Tổng quan</span>
+                <span class="fw-bold">Tổng quan</span>
             </template>
-            <router-link to="/">
+            <router-link to="/" class="menu-link">
                 <el-menu-item index="1">Trang chủ</el-menu-item>
             </router-link>
-            <router-link to="/statistic">
+            <router-link to="/statistic" class="menu-link">
                 <el-menu-item index="2">Thống kê</el-menu-item>
             </router-link>
-            <router-link to="/discount">
+            <router-link to="/discount" class="menu-link">
                 <el-menu-item index="3">Mã giảm giá</el-menu-item>
             </router-link>
-            <router-link to="/ratebooking">
+            <router-link to="/ratebooking" class="menu-link">
                 <el-menu-item index="4">Đánh giá</el-menu-item>
             </router-link>
-            <router-link to="/booking">
+            <router-link to="/booking" class="menu-link">
                 <el-menu-item index="21">Đặt bàn</el-menu-item>
             </router-link>
         </el-sub-menu>
 
+        <!-- Hoá đơn -->
         <el-sub-menu index="8-9">
             <template #title>
                 <el-icon><Mug /></el-icon>
-                <span>Hoá đơn</span>
+                <span class="fw-bold">Hoá đơn</span>
             </template>
-            <router-link to="/pay">
+            <router-link to="/pay" class="menu-link">
                 <el-menu-item index="20">Thanh toán</el-menu-item>
             </router-link>
-            <router-link to="/billsell">
+            <router-link to="/billsell" class="menu-link">
                 <el-menu-item index="8">Đơn hàng bán</el-menu-item>
             </router-link>
-            <router-link to="/importbill">
+            <router-link to="/importbill" class="menu-link">
                 <el-menu-item index="9">Đơn hàng nhập</el-menu-item>
             </router-link>
         </el-sub-menu>
 
+        <!-- Quản lý bàn -->
         <el-sub-menu index="5-6-7">
             <template #title>
                 <el-icon><Box /></el-icon>
-                <span>Quản lý bàn</span>
+                <span class="fw-bold">Quản lý bàn</span>
             </template>
-            <router-link to="/tabletype">
+            <router-link to="/tabletype" class="menu-link">
                 <el-menu-item index="5">Loại bàn</el-menu-item>
             </router-link>
-            <router-link to="/table">
+            <router-link to="/table" class="menu-link">
                 <el-menu-item index="6">Bàn</el-menu-item>
             </router-link>
-            <router-link to="/pricingrule">
+            <router-link to="/pricingrule" class="menu-link">
                 <el-menu-item index="7">Quy tắc giá</el-menu-item>
             </router-link>
         </el-sub-menu>
 
+        <!-- Sản phẩm -->
         <el-sub-menu index="10-11">
             <template #title>
                 <el-icon><Mug /></el-icon>
-                <span>Sản phẩm</span>
+                <span class="fw-bold">Sản phẩm</span>
             </template>
-            <router-link to="/menuitem">
+            <router-link to="/menuitem" class="menu-link">
                 <el-menu-item index="10">Sản phẩm thuê</el-menu-item>
             </router-link>
-            <router-link to="/product">
+            <router-link to="/product" class="menu-link">
                 <el-menu-item index="11">Sản phẩm bán</el-menu-item>
             </router-link>
         </el-sub-menu>
 
-        <router-link to="/news">
+        <!-- Tin tức -->
+        <router-link to="/news" class="menu-link">
             <el-menu-item index="12">
-                <el-icon><Files /></el-icon>
-                <template #title>Tin tức</template>
+                <el-icon><Tickets /></el-icon>
+                <span class="fw-bold">Tin tức</span>
             </el-menu-item>
         </router-link>
 
-        <router-link to="/banner">
+        <!-- Banner -->
+        <router-link to="/banner" class="menu-link">
             <el-menu-item index="13">
                 <el-icon><Files /></el-icon>
-                <template #title>Banner</template>
+                <span class="fw-bold">Banner</span>
             </el-menu-item>
         </router-link>
 
+        <!-- Danh mục -->
         <el-sub-menu index="14-15">
             <template #title>
                 <el-icon><CollectionTag /></el-icon>
-                <span>Danh mục</span>
+                <span class="fw-bold">Danh mục</span>
             </template>
-            <router-link to="/categorymenuitem">
+            <router-link to="/categorymenuitem" class="menu-link">
                 <el-menu-item index="14">Danh mục dịch vụ</el-menu-item>
             </router-link>
-            <router-link to="/categoryproduct">
+            <router-link to="/categoryproduct" class="menu-link">
                 <el-menu-item index="15">Danh mục sản phẩm</el-menu-item>
             </router-link>
         </el-sub-menu>
 
+        <!-- Nhà cung cấp -->
         <el-sub-menu index="16-17">
             <template #title>
                 <el-icon><OfficeBuilding /></el-icon>
-                <span>Nhà cung cấp</span>
+                <span class="fw-bold">Nhà cung cấp</span>
             </template>
-            <router-link to="/manufactor">
+            <router-link to="/manufactor" class="menu-link">
                 <el-menu-item index="16">Hãng sản xuất</el-menu-item>
             </router-link>
-            <router-link to="/supplier">
+            <router-link to="/supplier" class="menu-link">
                 <el-menu-item index="17">Nhà phân phối</el-menu-item>
             </router-link>
         </el-sub-menu>
 
+        <!-- Tài khoản -->
         <el-sub-menu index="18-19">
             <template #title>
                 <el-icon><User /></el-icon>
-                <span>Tài khoản</span>
+                <span class="fw-bold">Tài khoản</span>
             </template>
-            <router-link to="/typeaccount">
+            <router-link to="/typeaccount" class="menu-link">
                 <el-menu-item index="18">Loại tài khoản</el-menu-item>
             </router-link>
-            <router-link to="/account">
+            <router-link to="/account" class="menu-link">
                 <el-menu-item index="19">Tài khoản</el-menu-item>
             </router-link>
         </el-sub-menu>
@@ -133,27 +144,16 @@ import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import {
     House,
-    Document,
-    Menu as IconMenu,
-    Tickets,
-    Notebook,
     Files,
-    ChatLineRound,
     CollectionTag,
-    PriceTag,
     OfficeBuilding,
-    School,
-    CreditCard,
-    Picture,
-    Connection,
     User,
     Mug,
-    Ship,
     Box,
+    Tickets,
 } from "@element-plus/icons-vue";
 
 const isCollapse = ref(false);
-
 const route = useRoute();
 
 const activeIndex = computed(() => {
@@ -183,22 +183,23 @@ const activeIndex = computed(() => {
     return "0";
 });
 
-const handleOpen = (key: string, keyPath: string[]) => {
-    // console.log(key, keyPath);
-};
-const handleClose = (key: string, keyPath: string[]) => {
-    // console.log(key, keyPath);
-};
+const handleOpen = (key: string, keyPath: string[]) => {};
+const handleClose = (key: string, keyPath: string[]) => {};
 </script>
 
 <style lang="scss" scoped>
-a {
-    text-decoration: none;
-    color: #333;
-}
-
-.el-menu-vertical-demo {
-    min-width: 192px;
-    overflow-y: scroll;
+.custom-sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background-color: #fff;
+    box-shadow: 2px 0 12px rgba(46, 204, 113, 0.3);
+    border-right: none;
+    transition: width 0.3s ease;
+    .menu-link {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+        outline: none;
+    }
 }
 </style>

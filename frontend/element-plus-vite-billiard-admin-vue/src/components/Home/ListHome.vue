@@ -25,7 +25,11 @@
             <el-col :span="24">
                 <el-card>
                     <h2>Danh Sách Đặt Bàn</h2>
-                    <el-table :data="searchBookingData" class="table_booking">
+                    <el-table
+                        v-if="searchBookingData.length > 0"
+                        :data="searchBookingData"
+                        class="table_booking"
+                    >
                         <el-table-column
                             label="Số Bàn"
                             prop="tableNumber"
@@ -82,6 +86,9 @@
                             </template>
                         </el-table-column>
                     </el-table>
+                    <p v-if="searchBookingData.length < 0">
+                        Không có người đặt bàn
+                    </p>
                 </el-card>
             </el-col>
         </el-row>
