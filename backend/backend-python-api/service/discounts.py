@@ -103,7 +103,7 @@ def ser_search_discount(_data:Searchs):
 
     total_items = discount_collection.count_documents(query)
 
-    discounts = discount_collection.find(query).skip(skip).limit(_data.pageSize)
+    discounts = discount_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for discount in discounts:

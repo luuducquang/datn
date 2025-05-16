@@ -134,7 +134,7 @@ def ser_search_booking(_data:Searchs):
 
     total_items = booking_collection.count_documents(query)
 
-    bookings = booking_collection.find(query).skip(skip).limit(_data.pageSize)
+    bookings = booking_collection.find(query).sort("_id", -1).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for booking in bookings:

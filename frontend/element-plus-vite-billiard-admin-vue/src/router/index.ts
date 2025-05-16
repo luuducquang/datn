@@ -179,6 +179,27 @@ const routes = [
                 ],
             },
             {
+                path: "booking",
+                name: "Booking",
+                component: LayoutView,
+                meta: {
+                    breadcrumbName: "Đặt bàn",
+                    requiresAuth: true,
+                },
+                children: [
+                    {
+                        path: "",
+                        name: "ListBooking",
+                        component: () =>
+                            import("~/components/Booking/ListBooking.vue"),
+                        meta: {
+                            breadcrumbName: "Danh sách",
+                            requiresAuth: true,
+                        },
+                    },
+                ],
+            },
+            {
                 path: "pay",
                 name: "Pay",
                 component: LayoutView,

@@ -49,7 +49,7 @@ async def search_supplier(
 
     total_items = supplier_collection.count_documents(query)
 
-    suppliers = supplier_collection.find(query).skip(skip).limit(pageSize)
+    suppliers = supplier_collection.find(query).sort("_id", -1).skip(skip).limit(pageSize)
 
     data = []
     for supplier in suppliers:

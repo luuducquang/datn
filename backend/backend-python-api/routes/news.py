@@ -67,7 +67,7 @@ async def search_new(
 
     total_items = new_collection.count_documents(query)
 
-    news = new_collection.find(query).skip(skip).limit(pageSize)
+    news = new_collection.find(query).sort("_id", -1).skip(skip).limit(pageSize)
 
     data = []
     for new in news:

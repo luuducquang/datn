@@ -99,6 +99,7 @@ declare module 'vue' {
     ListAdvertisement: (typeof import("./components/Advertisement/ListAdvertisement.vue"))["default"]
     ListBanner: typeof import('./components/Banner/ListBanner.vue')['default']
     ListBillSell: typeof import('./components/BillSell/ListBillSell.vue')['default']
+    ListBooking: typeof import('./components/Booking/ListBooking.vue')['default']
     ListCategory: (typeof import("./components/CategoryMenuItem/ListCategory.vue"))["default"]
     ListCategoryMenuItem: typeof import('./components/CategoryMenuItem/ListCategoryMenuItem.vue')['default']
     ListCategoryOffer: (typeof import("./components/CategoryOffer/ListCategoryOffer.vue"))["default"]

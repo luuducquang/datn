@@ -62,7 +62,7 @@ def ser_search_billsell(_data: Searchs) -> dict:
 
     total_items = billsell_collection.count_documents(query)
 
-    billsells = billsell_collection.find(query).skip(skip).limit(_data.pageSize)
+    billsells = billsell_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for billsell in billsells:

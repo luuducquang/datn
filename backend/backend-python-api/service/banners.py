@@ -27,7 +27,7 @@ def ser_search_banner(_data: Searchs):
 
     total_items = banner_collection.count_documents({})  # Bỏ query, trả về tổng số tài liệu
 
-    banners = banner_collection.find({}).skip(skip).limit(_data.pageSize)
+    banners = banner_collection.find({}).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for banner in banners:

@@ -40,7 +40,7 @@ def ser_search_categorymenuitem(_data:Searchs):
 
     total_items = categorymenuitem_collection.count_documents(query)
 
-    categorymenuitems = categorymenuitem_collection.find(query).skip(skip).limit(_data.pageSize)
+    categorymenuitems = categorymenuitem_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for category in categorymenuitems:

@@ -61,7 +61,7 @@ def ser_search_ratebooking(_data: Searchs):
         ]
 
     total_items = ratebooking_collection.count_documents(query)
-    ratebookings = ratebooking_collection.find(query).skip(skip).limit(_data.pageSize)
+    ratebookings = ratebooking_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for ratebooking in ratebookings:

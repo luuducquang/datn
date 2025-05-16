@@ -59,7 +59,7 @@ def ser_search_ordermenuitem(_data:Searchs):
 
     total_items = ordermenuitem_collection.count_documents(query)
 
-    ordermenuitems = ordermenuitem_collection.find(query).skip(skip).limit(_data.pageSize)
+    ordermenuitems = ordermenuitem_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for ordermenuitem in ordermenuitems:

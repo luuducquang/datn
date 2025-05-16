@@ -23,6 +23,9 @@
             <router-link to="/ratebooking">
                 <el-menu-item index="4">Đánh giá</el-menu-item>
             </router-link>
+            <router-link to="/booking">
+                <el-menu-item index="21">Đặt bàn</el-menu-item>
+            </router-link>
         </el-sub-menu>
 
         <el-sub-menu index="8-9">
@@ -175,6 +178,7 @@ const activeIndex = computed(() => {
     if (path.startsWith("/typeaccount")) return "18";
     if (path.startsWith("/account")) return "19";
     if (path.startsWith("/pay")) return "20";
+    if (path.startsWith("/booking")) return "21";
 
     return "0";
 });

@@ -27,16 +27,16 @@
             <el-table-column label="Số lượng" align="center" prop="quantity" />
             <el-table-column label="Trạng thái" align="center" prop="status">
                 <template #default="scope">
-                    <p
-                        :style="{
-                            color:
-                                scope.row.status === true
-                                    ? '#33CC33'
-                                    : '#CC3333',
-                        }"
-                    >
-                        {{ scope.row.status ? "Đang hoạt động" : "Đã hết hạn" }}
-                    </p>
+                    <div :class="scope.row.status ? 'paid' : 'unpaid'">
+                        <p
+                        >
+                            {{
+                                scope.row.status
+                                    ? "Đang hoạt động"
+                                    : "Đã hết hạn"
+                            }}
+                        </p>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column align="right">

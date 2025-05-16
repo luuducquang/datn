@@ -39,7 +39,7 @@ def ser_search_categoryproduct(_data:Searchs):
 
     total_items = categoryproduct_collection.count_documents(query)
 
-    categoryRentalitems = categoryproduct_collection.find(query).skip(skip).limit(_data.pageSize)
+    categoryRentalitems = categoryproduct_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for category in categoryRentalitems:

@@ -15,3 +15,8 @@ export const searchOrderItem = async (
     const res = await apiClient?.post(`${OrderItemUrl}/search`, data);
     return res?.data;
 };
+
+export const deleteOrderItem = async (id: String): Promise<OrderItems> => {
+    const res = await apiClient?.delete(`${OrderItemUrl}/delete/` + id);
+    return res?.data;
+};

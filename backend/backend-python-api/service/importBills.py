@@ -67,7 +67,7 @@ def ser_search_importbills(_data: Searchs) -> dict:
             }
 
     total_items = importbill_collection.count_documents(query)
-    importbills = importbill_collection.find(query).skip(skip).limit(_data.pageSize)
+    importbills = importbill_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for importbill in importbills:

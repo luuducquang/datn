@@ -169,7 +169,6 @@ const fetchData = async () => {
     try {
         const res = await getAllTable();
         tableData.value = res;
-        console.log(res);
         const resBooking = await searchBooking({
             page: 1,
             pageSize: 100,

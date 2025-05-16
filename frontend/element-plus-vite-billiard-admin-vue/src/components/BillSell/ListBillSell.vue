@@ -50,32 +50,29 @@
             </el-table-column>
             <el-table-column label="Trạng thái" align="center" prop="status">
                 <template #default="scope">
-                    <p
-                        :style="{
-                            color:
-                                scope.row.status === 'Huỷ đơn'
-                                    ? '#CC3333'
-                                    : '#33CC33',
-                        }"
-                    >
-                        {{ scope.row.status }}
-                    </p>
+                    <div :class="scope.row.status != 'Huỷ đơn' ? 'paid' : 'unpaid'">
+                        <p
+                        >
+                            {{
+                                scope.row.status
+                            }}
+                        </p>
+                    </div>
                 </template>
             </el-table-column>
 
             <el-table-column label="Thanh toán" align="center" prop="is_paid">
                 <template #default="scope">
-                    <p
-                        :style="{
-                            color: scope.row.is_paid ? '#33CC33' : '#CC3333',
-                        }"
-                    >
-                        {{
-                            scope.row.is_paid
-                                ? "Đã thanh toán"
-                                : "Chưa thanh toán"
-                        }}
-                    </p>
+                    <div :class="scope.row.status ? 'paid' : 'unpaid'">
+                        <p
+                        >
+                            {{
+                                scope.row.status
+                                    ? "Đã thanh toán"
+                                    : "Chưa thanh toán"
+                            }}
+                        </p>
+                    </div>
                 </template>
             </el-table-column>
 

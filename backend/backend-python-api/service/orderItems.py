@@ -52,7 +52,7 @@ def ser_search_orderitems(_data: Searchs):
         ]
 
     total_items = orderitem_collection.count_documents(query)
-    items_cursor = orderitem_collection.find(query).skip(skip).limit(_data.pageSize)
+    items_cursor = orderitem_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for item in items_cursor:

@@ -29,6 +29,31 @@ export interface Bookings {
     table?: Tables;
 }
 
+export interface Bookings {
+    _id?: string;
+    table_id: string;
+    name: string;
+    phone: string;
+    start_time: Date;
+    end_time: Date;
+    status: Boolean;
+    money_paid: Number;
+    created_at: Date;
+    table?: Tables;
+}
+
+
+export interface BookingItems {
+    _id?: string;
+    booking_id: string;
+    item_id: string;
+    image: string;
+    quantity: number;
+    unit_price: number;
+    total_price: number;
+    name?: string;
+}
+
 export interface Product {
     maSanPham?: number;
     tenSanPham: string;

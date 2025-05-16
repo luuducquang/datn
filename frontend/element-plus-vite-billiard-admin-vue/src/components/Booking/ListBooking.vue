@@ -1,69 +1,81 @@
 <template>
     <el-card class="card_content" v-loading="loading">
         <el-table :data="tableData" class="table_content">
+            <el-table-column label="Bàn số" align="center" prop="table_number">
+                <template #default="scope">
+                    <span :title="scope.row.table.table_number" class="name_item">{{
+                        scope.row.table.table_number
+                    }}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="Bắt đầu" align="center" prop="start_time">
                 <template #default="scope">
-                    <span
-                        :title="scope.row.timesession.start_time"
-                        class="name_item"
-                        >{{
-                            convertDate(scope.row.timesession.start_time)
-                        }}</span
-                    >
+                    <span :title="scope.row.start_time" class="name_item">{{
+                        convertDate(scope.row.start_time)
+                    }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="Kết thúc" align="center" prop="end_time">
                 <template #default="scope">
-                    <span
-                        :title="scope.row.timesession.end_time"
-                        class="name_item"
-                        >{{ convertDate(scope.row.timesession.end_time) }}</span
-                    >
+                    <span :title="scope.row.end_time" class="name_item">{{
+                        convertDate(scope.row.end_time)
+                    }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="Số giờ" align="center" prop="">
                 <template #default="scope">
-                    <span :title="scope.row.timesession" class="name_item">{{
+                    <span :title="scope.row" class="name_item">{{
                         convertTimeToHoursMinute(
-                            scope.row.timesession.start_time,
-                            scope.row.timesession.end_time
+                            scope.row.start_time,
+                            scope.row.end_time
                         )
                     }}</span>
                 </template>
             </el-table-column>
-            <!-- <el-table-column label="Tiền giờ chơi" align="center" prop="price">
-                <template #default="scope">
-                    <span
-                        :title="scope.row.timesession.price"
-                        class="name_item"
-                        >{{ ConvertPrice(scope.row.timesession.price) }}</span
-                    >
-                </template>
-            </el-table-column>
             <el-table-column
-                label="Tiền dịch vụ"
+                label="Khách hàng"
                 align="center"
                 prop="total_price"
             >
                 <template #default="scope">
-                    <span :title="scope.row.total_price" class="name_item">{{
-                        ConvertPrice(scope.row.total_price)
+                    <span :title="scope.row.name" class="name_item">{{
+                        scope.row.name
                     }}</span>
                 </template>
-            </el-table-column> -->
+            </el-table-column>
+
             <el-table-column
-                label="Tiền thanh toán"
+                label="Số điện thoại"
                 align="center"
-                prop="price_paid"
+                prop="total_price"
+            >
+                <template #default="scope">
+                    <span :title="scope.row.phone" class="name_item">{{
+                        scope.row.phone
+                    }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column
+                label="Đã thanh toán"
+                align="center"
+                prop="total_price"
             >
                 <template #default="scope">
                     <span
-                        :title="scope.row.timesession.price_paid"
+                        v-if="scope.row.status === true"
+                        :title="scope.row.money_paid"
                         class="name_item"
-                        >{{
-                            ConvertPrice(scope.row.timesession.price_paid)
-                        }}</span
                     >
+                        {{ ConvertPrice(scope.row.money_paid) }}
+                    </span>
+                    <div
+                        v-else
+                        :title="scope.row.money_paid"
+                        class="unpaid name_item"
+                    >
+                        <p>Chưa thanh toán</p>
+                    </div>
                 </template>
             </el-table-column>
 
@@ -111,35 +123,22 @@
         <template #default>
             <p>
                 Bắt đầu:
-                {{ convertDate(dataOrderItem?.timesession?.start_time) }}
+                {{ convertDate(dataBooking?.start_time) }}
             </p>
             <p>
                 Kết thúc:
-                {{ convertDate(dataOrderItem?.timesession?.end_time) }}
+                {{ convertDate(dataBooking?.end_time) }}
             </p>
             <p>
                 Số giờ:
                 {{
                     convertTimeToHoursMinute(
-                        String(dataOrderItem?.timesession?.start_time),
-                        String(dataOrderItem?.timesession?.end_time)
+                        String(dataBooking?.start_time),
+                        String(dataBooking?.end_time)
                     )
                 }}
             </p>
-            <p>
-                Tiền giờ chơi:
-                {{ ConvertPrice(Number(dataOrderItem?.timesession?.price)) }}
-            </p>
-            <p>
-                Tiền dịch vụ:
-                {{ ConvertPrice(Number(dataOrderItem?.total_price)) }}
-            </p>
-            <p>
-                Tiền thanh toán:
-                {{
-                    ConvertPrice(Number(dataOrderItem?.timesession?.price_paid))
-                }}
-            </p>
+
             <el-table
                 :data="dataOrderMenuItem"
                 v-if="dataOrderMenuItem.length > 0"
@@ -148,7 +147,7 @@
                 <el-table-column label="Hình ảnh" align="center" prop="image">
                     <template #default="scope">
                         <img
-                            :src="apiImage + scope.row.menu_items.image"
+                            :src="apiImage + scope.row.image"
                             alt="Hình ảnh sản phẩm"
                             class="img-item"
                         />
@@ -160,7 +159,7 @@
                     prop="unit_price"
                 >
                     <template #default="scope">
-                        <span>{{ scope.row.menu_items.name }}</span>
+                        <span>{{ scope.row.name }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -199,8 +198,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { CirclePlus, StarFilled } from "@element-plus/icons-vue";
 import debounce from "~/utils/debounce";
-import { OrderItems, OrderMenuItems } from "~/constant/api";
-import { deleteOrderItem, searchOrderItem } from "~/services/orderitem.service";
+import { BookingItems, Bookings } from "~/constant/api";
 import { apiImage } from "~/constant/request";
 import router from "~/router";
 import { ElMessage } from "element-plus";
@@ -209,19 +207,20 @@ import ConvertPrice from "~/utils/convertprice";
 import { convertTimeToHoursMinute } from "~/utils/convertTimeToHoursMinute";
 import { getbyOrderId } from "~/services/ordermenuitem.service";
 import axios from "axios";
+import { deleteBooking, getBookingByIDBooking, searchBooking } from "~/services/booking.service";
 
 const search = ref("");
 const loading = ref(false);
 
-const tableData = ref<OrderItems[]>([]);
+const tableData = ref<Bookings[]>([]);
 
 const currentPage = ref(1);
 const currentPageSize = ref(10);
 const totalItemPage = ref(0);
 
 const dialogVisible = ref(false);
-const dataOrderMenuItem = ref<OrderMenuItems[]>([]);
-const dataOrderItem = ref<OrderItems>();
+const dataOrderMenuItem = ref<BookingItems[]>([]);
+const dataBooking = ref<Bookings>();
 
 const Notification = (
     message: string,
@@ -239,16 +238,17 @@ watch(currentPage, (payPage: number, oldPage: number) => {
     }
 });
 
-const handleEdit = async (index: number, row: OrderItems) => {
+const handleEdit = async (index: number, row: Bookings) => {
     dialogVisible.value = true;
-    dataOrderItem.value = row;
-    const dataDetailMenu = await getbyOrderId(String(row._id));
+    dataBooking.value = row;
+    const dataDetailMenu = await getBookingByIDBooking(String(row._id));
     dataOrderMenuItem.value = dataDetailMenu;
+    console.log(dataDetailMenu);
 };
 
 const confirmEvent = async (Id: string) => {
     try {
-        await deleteOrderItem(Id);
+        await deleteBooking(Id);
         Notification("Xoá thành công", "success");
         fetchData(search.value);
     } catch (error) {
@@ -266,7 +266,7 @@ const fetchData = async (searchTerm = "") => {
             pageSize: currentPageSize.value,
             search_term: searchTerm,
         };
-        const res = await searchOrderItem(payLoad);
+        const res = await searchBooking(payLoad);
         totalItemPage.value = res.totalItems;
         tableData.value = res.data;
     } catch (error) {
@@ -339,5 +339,20 @@ onMounted(() => {
     height: 60px;
     object-fit: cover;
     border-radius: 8px;
+}
+
+.unpaid {
+    background-color: var(--ep-color-danger);
+    color: #fff;
+    height: 30px;
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.unpaid p {
+    padding: 0;
+    margin: 0;
+    line-height: 30px;
 }
 </style>

@@ -49,7 +49,7 @@ async def search_manufactor(
 
     total_items = manufactor_collection.count_documents(query)
 
-    manufactors = manufactor_collection.find(query).skip(skip).limit(pageSize)
+    manufactors = manufactor_collection.find(query).sort("_id", -1).sort("_id", -1).skip(skip).limit(pageSize)
 
     data = []
     for manufactor in manufactors:

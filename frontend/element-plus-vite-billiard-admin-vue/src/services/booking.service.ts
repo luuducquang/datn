@@ -1,5 +1,5 @@
-import type { Bookings, ResponseData, Tables } from "~/constant/api";
-import { BookingUrl, TableUrl } from "~/constant/endpoints";
+import type { BookingItems, Bookings, ResponseData, Tables } from "~/constant/api";
+import { BookingItemUrl, BookingUrl, TableUrl } from "~/constant/endpoints";
 import { apiClient } from "~/constant/request";
 
 export const searchBooking = async (
@@ -19,9 +19,12 @@ export const getBookingByIDTable = async (id: string): Promise<Bookings[]> => {
     return res?.data;
 };
 
-export const getBookingByIDBooking = async (
-    id: string
-): Promise<Bookings> => {
-    const res = await apiClient?.get(`${BookingUrl}/get-by-id/${id}`);
+export const getBookingByIDBooking = async (id: string): Promise<BookingItems[]> => {
+    const res = await apiClient?.get(`${BookingItemUrl}/get/${id}`);
+    return res?.data;
+};
+
+export const deleteBooking = async (id: String): Promise<Tables> => {
+    const res = await apiClient?.delete(`${BookingUrl}/delete/` + id);
     return res?.data;
 };

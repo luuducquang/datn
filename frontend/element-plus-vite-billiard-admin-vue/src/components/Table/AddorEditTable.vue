@@ -188,6 +188,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         description: ruleForm.description,
                         table_type_id: ruleForm.table_type_id,
                         status: ruleForm.status,
+                        booking_id: "",
                     });
                     Notification("Thêm thành công", "success");
                     router.push("/table");

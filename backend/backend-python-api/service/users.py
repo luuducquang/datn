@@ -43,7 +43,7 @@ def ser_search_user(_data: Searchs):
         ]
 
     total_items = user_collection.count_documents(query)
-    users = user_collection.find(query).skip(skip).limit(_data.pageSize)
+    users = user_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for user in users:

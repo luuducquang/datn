@@ -75,7 +75,7 @@ def ser_getbyid_product(product_id:str):
 
 #     total_items = product_collection.count_documents(query)
 
-#     products = product_collection.find(query).skip(skip).limit(_data.pageSize)
+#     products = product_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
 #     data = []
 #     for product in products:
@@ -138,7 +138,7 @@ def ser_search_product(_data: Searchs):
             }
 
     total_items = product_collection.count_documents(query)
-    products = product_collection.find(query).skip(skip).limit(_data.pageSize)
+    products = product_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for product in products:

@@ -39,7 +39,7 @@ def ser_search_tabletype(_data:Searchs):
 
     total_items = tabletype_collection.count_documents(query)
 
-    tabletypes = tabletype_collection.find(query).skip(skip).limit(_data.pageSize)
+    tabletypes = tabletype_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
 
     data = []
     for tabletype in tabletypes:

@@ -41,3 +41,27 @@ code {
   color: #fff;
   background-color: #0c193d;
 }
+
+.unpaid {
+  background-color: var(--ep-color-danger);
+  color: #fff;
+  height: 30px;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.paid {
+  background-color: var(--ep-color-success);
+  color: #fff;
+  height: 30px;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.unpaid p,.paid p {
+  padding: 0;
+  margin: 0;
+  line-height: 30px;
+}
