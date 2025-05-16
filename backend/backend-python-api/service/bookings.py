@@ -49,6 +49,51 @@ def ser_get_booking_by_user_id(user_id: str):
         datas.append(data)
     return datas
 
+
+def get_active_bookings_service():
+    now = datetime.now()
+
+    bookings = booking_collection.find({"status": True}).sort("start_time", 1)
+
+    data = []
+    for booking in bookings:
+        end_time_value = booking.get("end_time")
+        start_time_value = booking.get("start_time")
+
+        if isinstance(end_time_value, str):
+            booking_end_time = datetime.fromisoformat(end_time_value)
+        elif isinstance(end_time_value, datetime):
+            booking_end_time = end_time_value
+        else:
+            continue
+
+        booking_end_time = booking_end_time.replace(tzinfo=None)
+
+        if isinstance(start_time_value, str):
+            booking_start_time = datetime.fromisoformat(start_time_value)
+        elif isinstance(start_time_value, datetime):
+            booking_start_time = start_time_value
+        else:
+            continue
+
+        booking_start_time = booking_start_time.replace(tzinfo=None)
+
+        if booking_end_time >= now:
+            booking["_id"] = str(booking["_id"])
+
+            table_id = ObjectId(booking["table_id"])
+            table_data = table_collection.find_one({"_id": table_id})
+            if table_data:
+                table_data["_id"] = str(table_data["_id"])  
+                booking["table"] = table_data  
+            else:
+                booking["table"] = None  
+
+
+            data.append(booking)
+
+    return data
+
 def ser_update_booking_status_service(booking_id: str):
     if not ObjectId.is_valid(booking_id):
         raise HTTPException(status_code=400, detail="Invalid booking ID")

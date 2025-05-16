@@ -95,7 +95,7 @@ import { io } from "socket.io-client";
 import { ref, onMounted } from "vue";
 import router from "~/router";
 import {
-    searchBooking,
+    getBookingAvailable,
     setFalseStatusBooking,
 } from "~/services/booking.service";
 import { convertDate } from "~/utils/convertDate";
@@ -169,12 +169,8 @@ const fetchData = async () => {
     try {
         const res = await getAllTable();
         tableData.value = res;
-        const resBooking = await searchBooking({
-            page: 1,
-            pageSize: 100,
-            status: true,
-        });
-        const formattedBookingList = resBooking.data.map((booking: any) => {
+        const resBooking = await getBookingAvailable();
+        const formattedBookingList = resBooking.map((booking: any) => {
             return {
                 id: booking._id,
                 tableNumber: booking?.table?.table_number,
@@ -182,7 +178,7 @@ const fetchData = async () => {
                 customerPhone: booking.phone,
                 startTime: convertDate(booking.start_time),
                 endTime: convertDate(booking.end_time),
-                timeBefore: getTimeDifference(booking.start_time),
+                timeBefore: getTimeDifference(booking.created_at),
             };
         });
         searchBookingData.value = formattedBookingList.reverse();
@@ -284,7 +280,7 @@ onMounted(() => {
 
 /*  */
 
-.container_col{
+.container_col {
     display: grid;
 }
 

@@ -28,3 +28,8 @@ export const deleteBooking = async (id: String): Promise<Tables> => {
     const res = await apiClient?.delete(`${BookingUrl}/delete/` + id);
     return res?.data;
 };
+
+export const getBookingAvailable = async (): Promise<BookingItems[]> => {
+    const res = await apiClient?.get(`${BookingUrl}/get-booking-active`);
+    return res?.data;
+};

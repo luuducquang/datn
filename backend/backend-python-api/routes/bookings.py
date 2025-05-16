@@ -1,10 +1,10 @@
-from typing import Optional
+from typing import List, Optional
 from fastapi import APIRouter, Body, HTTPException, Query
 from pymongo.collection import Collection
 from config.database import database
 from datetime import datetime
 from schemas.schemas import Bookings, Searchs
-from service.bookings import ser_get_booking_by_id,ser_get_booking_by_user_id,ser_update_booking_status_service,ser_get_booking_by_table,ser_get_booking,ser_search_booking,ser_delete_booking, ser_insert_booking, ser_update_booking,ser_check_availability_booking,ser_update_booking_status
+from service.bookings import get_active_bookings_service,ser_get_booking_by_id,ser_get_booking_by_user_id,ser_update_booking_status_service,ser_get_booking_by_table,ser_get_booking,ser_search_booking,ser_delete_booking, ser_insert_booking, ser_update_booking,ser_check_availability_booking,ser_update_booking_status
 
 
 router = APIRouter()
@@ -26,6 +26,10 @@ async def get_booking_by_table(table_id: str):
 @router.get("/bookings/get-booking-by-userid/{user_id}")
 async def get_booking_by_user_id(user_id: str):
     return ser_get_booking_by_user_id(user_id)
+
+@router.get("/bookings/get-booking-active")
+async def get_active_bookings():
+    return get_active_bookings_service()
 
 @router.put("/bookings/update-status/{booking_id}")
 async def update_booking_status(booking_id: str):
