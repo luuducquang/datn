@@ -170,6 +170,8 @@
                                 @change="handleBookingChange"
                                 size="large"
                                 class="full-width"
+                                :disabled="shouldDisableBookingSelect"
+                                :title="bookingTitleTooltip"
                             >
                                 <el-option
                                     :key="'none'"
@@ -506,7 +508,6 @@ import {
 import ConvertPriceToK from "~/utils/convertpricetoK";
 import ConvertPrice from "~/utils/convertprice";
 import { apiImage } from "~/constant/request";
-import { getAllProduct } from "~/services/product.service";
 import { useUserStore } from "~/store";
 import { createOrderItem } from "~/services/orderitem.service";
 import { createTimeSession } from "~/services/timesession.service";
@@ -516,6 +517,7 @@ import {
     getBookingByIDBooking,
     getBookingByIDTable,
 } from "~/services/booking.service";
+import { getBookingItemByIDBooking } from "~/services/bookingitem.service";
 
 const route = useRoute();
 const dataDetailTable = ref<Tables | null>(null);
@@ -604,6 +606,39 @@ const rules = reactive<FormRules>({
     ],
 });
 
+const bookingTitleTooltip = computed(() => {
+    if (!selectedBookingId.value) return "";
+
+    const booking = dataBookings.value.find(
+        (b) => String(b._id) === selectedBookingId.value
+    );
+    if (!booking) return "";
+
+    const now = new Date();
+    const bookingEnd = new Date(booking.end_time);
+
+    if (now < bookingEnd) {
+        const formattedDate = `${bookingEnd.getHours().toString().padStart(2, "0")}:${bookingEnd.getMinutes().toString().padStart(2, "0")}:${bookingEnd.getSeconds().toString().padStart(2, "0")} ${bookingEnd.getDate().toString().padStart(2, "0")}/${(bookingEnd.getMonth() + 1).toString().padStart(2, "0")}/${bookingEnd.getFullYear()}`;
+
+        return `Bàn đã đặt này sẽ được mở sau ${formattedDate}`;
+    }
+
+    return "";
+});
+
+const shouldDisableBookingSelect = computed(() => {
+    if (!selectedBookingId.value) return false;
+
+    const booking = dataBookings.value.find(
+        (b) => String(b._id) === selectedBookingId.value
+    );
+    if (!booking) return false;
+
+    const now = new Date();
+    const bookingEnd = new Date(booking.end_time);
+    return now < bookingEnd;
+});
+
 const handleBookingChange = async (id: string) => {
     const selected = dataBookings.value.find((b) => b._id === id);
     await updateTable({
@@ -616,10 +651,32 @@ const handleBookingChange = async (id: string) => {
         description: String(dataDetailTable?.value?.description),
         booking_id: selected?._id ? String(selected._id) : "",
     });
-    fetchById(String(route.params.id));
     if (selectedBookingId.value === "") {
         moneyPaid.value = 0;
+    } else {
+        try {
+            const resBookingItem = await getBookingItemByIDBooking(
+                String(selected?._id)
+            );
+            if (Array.isArray(resBookingItem) && resBookingItem.length > 0) {
+                for (const item of resBookingItem) {
+                    await createTableMenuItem({
+                        table_id: String(route.params.id),
+                        item_id: item.item_id,
+                        quantity: item.quantity,
+                        unit_price: item.unit_price,
+                        total_price: item.quantity * item.unit_price,
+                    });
+                }
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                Notification(error.response?.data.detail, "warning");
+                fetchById(String(route.params.id));
+            }
+        }
     }
+    fetchById(String(route.params.id));
 };
 
 const formatDate = (date: Date | string): string => {
@@ -692,7 +749,6 @@ const PayAndPrintInvoice = async () => {
             ),
         });
 
-        
         await createOrderItem({
             user_id: String(userStore?.user?._id),
             table_id: String(route.params.id),
@@ -910,7 +966,10 @@ const fetchById = async (id: string) => {
 
     selectedBookingId.value = String(dataDetailTable?.value?.booking_id);
 
-    if (dataDetailTable.value?.booking_id != "" && dataDetailTable.value?.booking_id != null) {
+    if (
+        dataDetailTable.value?.booking_id != "" &&
+        dataDetailTable.value?.booking_id != null
+    ) {
         const dataBooking = await getBookingByIDBooking(
             String(dataDetailTable.value?.booking_id)
         );

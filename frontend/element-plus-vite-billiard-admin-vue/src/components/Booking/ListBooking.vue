@@ -207,7 +207,8 @@ import ConvertPrice from "~/utils/convertprice";
 import { convertTimeToHoursMinute } from "~/utils/convertTimeToHoursMinute";
 import { getbyOrderId } from "~/services/ordermenuitem.service";
 import axios from "axios";
-import { deleteBooking, getBookingByIDBooking, searchBooking } from "~/services/booking.service";
+import { deleteBooking, searchBooking } from "~/services/booking.service";
+import { getBookingItemByIDBooking } from "~/services/bookingitem.service";
 
 const search = ref("");
 const loading = ref(false);
@@ -241,7 +242,7 @@ watch(currentPage, (payPage: number, oldPage: number) => {
 const handleEdit = async (index: number, row: Bookings) => {
     dialogVisible.value = true;
     dataBooking.value = row;
-    const dataDetailMenu = await getBookingByIDBooking(String(row._id));
+    const dataDetailMenu = await getBookingItemByIDBooking(String(row._id));
     dataOrderMenuItem.value = dataDetailMenu;
     console.log(dataDetailMenu);
 };

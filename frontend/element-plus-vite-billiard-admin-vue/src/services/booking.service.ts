@@ -19,8 +19,8 @@ export const getBookingByIDTable = async (id: string): Promise<Bookings[]> => {
     return res?.data;
 };
 
-export const getBookingByIDBooking = async (id: string): Promise<BookingItems[]> => {
-    const res = await apiClient?.get(`${BookingItemUrl}/get/${id}`);
+export const getBookingByIDBooking = async (id: string): Promise<Bookings> => {
+    const res = await apiClient?.get(`${BookingUrl}/get-by-id/${id}`);
     return res?.data;
 };
 
