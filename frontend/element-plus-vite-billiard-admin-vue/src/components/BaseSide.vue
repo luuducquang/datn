@@ -180,7 +180,7 @@ const activeIndex = computed(() => {
     if (path.startsWith("/pay")) return "20";
     if (path.startsWith("/booking")) return "21";
 
-    return "0";
+    return "1";
 });
 
 const handleOpen = (key: string, keyPath: string[]) => {};
