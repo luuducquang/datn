@@ -102,7 +102,7 @@ import { getAllCategoryMenuItem } from "~/services/categorymenuitem.service";
 const formSize = ref<ComponentSize>("default");
 const ruleFormRef = ref<FormInstance>();
 const useStore = useUserStore();
-const token = useStore.user.token;
+const token = useStore?.user?.token;
 const route = useRoute();
 
 const Notification = (

@@ -1,11 +1,20 @@
 <template>
     <el-card class="card_content" v-loading="loading">
+        <div class="button_add">
+            <el-button @click="showAlert = true" type="primary"
+                >Đặt bàn</el-button
+            >
+        </div>
+
+        <AlertBooking v-model="showAlert" @booking-success="fetchData" />
         <el-table :data="tableData" class="table_content">
             <el-table-column label="Bàn số" align="center" prop="table_number">
                 <template #default="scope">
-                    <span :title="scope.row.table.table_number" class="name_item">{{
-                        scope.row.table.table_number
-                    }}</span>
+                    <span
+                        :title="scope.row.table.table_number"
+                        class="name_item"
+                        >{{ scope.row.table.table_number }}</span
+                    >
                 </template>
             </el-table-column>
             <el-table-column label="Bắt đầu" align="center" prop="start_time">
@@ -186,6 +195,29 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <el-popconfirm
+                confirm-button-text="Yes"
+                cancel-button-text="No"
+                icon-color="#626AEF"
+                title="Bạn có muốn huỷ không?"
+                @confirm="confirmEventCancelTable(String(dataBooking?._id))"
+            >
+                <template #reference>
+                    <el-button
+                        v-if="
+                            dataBooking?.start_time &&
+                            dataBooking?.end_time &&
+                            !isCurrentTimeWithinRange(
+                                dataBooking?.start_time,
+                                dataBooking?.end_time
+                            )
+                        "
+                        size="small"
+                        type="danger"
+                        >Huỷ bàn</el-button
+                    >
+                </template>
+            </el-popconfirm>
         </template>
 
         <template #footer>
@@ -205,10 +237,14 @@ import { ElMessage } from "element-plus";
 import { convertDate } from "~/utils/convertDate";
 import ConvertPrice from "~/utils/convertprice";
 import { convertTimeToHoursMinute } from "~/utils/convertTimeToHoursMinute";
-import { getbyOrderId } from "~/services/ordermenuitem.service";
 import axios from "axios";
-import { deleteBooking, searchBooking } from "~/services/booking.service";
+import {
+    deleteBooking,
+    searchBooking,
+    setFalseStatusBooking,
+} from "~/services/booking.service";
 import { getBookingItemByIDBooking } from "~/services/bookingitem.service";
+import AlertBooking from "~/components/common/AlertBooking.vue";
 
 const search = ref("");
 const loading = ref(false);
@@ -239,12 +275,16 @@ watch(currentPage, (payPage: number, oldPage: number) => {
     }
 });
 
+const showAlert = ref(false);
+
 const handleEdit = async (index: number, row: Bookings) => {
     dialogVisible.value = true;
     dataBooking.value = row;
     const dataDetailMenu = await getBookingItemByIDBooking(String(row._id));
     dataOrderMenuItem.value = dataDetailMenu;
-    console.log(dataDetailMenu);
+    console.log("Start:", dataBooking?.value?.start_time);
+    console.log("End:", dataBooking?.value?.end_time);
+    console.log("Now:", new Date());
 };
 
 const confirmEvent = async (Id: string) => {
@@ -256,6 +296,38 @@ const confirmEvent = async (Id: string) => {
         if (axios.isAxiosError(error)) {
             Notification(error.response?.data.detail, "warning");
         }
+    }
+};
+
+const isCurrentTimeWithinRange = (
+    startTime: string | Date,
+    endTime: string | Date
+) => {
+    const start = new Date(startTime); // UTC
+    const end = new Date(endTime);     // UTC
+    const now = new Date();            // local (UTC+7)
+
+    // Chuyển now về UTC để so sánh công bằng
+    const nowUTC = new Date(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate(),
+        now.getUTCHours(),
+        now.getUTCMinutes(),
+        now.getUTCSeconds()
+    );
+
+    return nowUTC >= start && nowUTC <= end;
+};
+
+
+const confirmEventCancelTable = async (id: string) => {
+    try {
+        await setFalseStatusBooking(id);
+        fetchData();
+    } catch (error) {
+        console.error("Lỗi khi hủy bàn:", error);
+        alert("Có lỗi xảy ra khi hủy bàn.");
     }
 };
 

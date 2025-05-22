@@ -7,11 +7,11 @@
         >
             <el-form-item
                 label="Tài khoản"
-                :error="username.errorMsg"
-                :status="username.validateStatus"
+                :error="email.errorMsg"
+                :status="email.validateStatus"
             >
                 <el-input
-                    v-model="formState.username"
+                    v-model="formState.email"
                     placeholder="Vui lòng nhập tài khoản"
                     type="text"
                 />
@@ -60,11 +60,11 @@ const Notification = (
 };
 
 const formState = reactive({
-    username: "",
+    email: "",
     password: "",
 });
 
-const username = ref({
+const email = ref({
     validateStatus: "",
     errorMsg: "",
 });
@@ -80,13 +80,13 @@ const router = useRouter();
 
 const validateForm = () => {
     let isValid = true;
-    if (!formState.username) {
-        username.value.validateStatus = "error";
-        username.value.errorMsg = "Vui lòng nhập tài khoản";
+    if (!formState.email) {
+        email.value.validateStatus = "error";
+        email.value.errorMsg = "Vui lòng nhập tài khoản";
         isValid = false;
     } else {
-        username.value.validateStatus = "";
-        username.value.errorMsg = "";
+        email.value.validateStatus = "";
+        email.value.errorMsg = "";
     }
 
     if (!formState.password) {
@@ -108,10 +108,11 @@ const handleSubmit = async () => {
             setTimeout(async function () {
                 try {
                     const res = await login({
-                        username: formState.username,
+                        email: formState.email,
                         password: formState.password,
                     });
-                    if (res?.role_name === "ADMIN") {
+                    console.log(res);
+                    if (res?.role_name !== "ADMIN") {
                         loading.value = false;
                         userStore.setUser(res);
                         router.push("/");

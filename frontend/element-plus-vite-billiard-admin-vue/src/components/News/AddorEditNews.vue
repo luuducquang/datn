@@ -74,7 +74,7 @@ import axios from "axios";
 const formSize = ref<ComponentSize>("default");
 const ruleFormRef = ref<FormInstance>();
 const useStore = useUserStore();
-const token = useStore.user.token;
+const token = useStore?.user?.token;
 const route = useRoute();
 
 const editor = ClassicEditor;
@@ -179,7 +179,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         title: ruleForm.title,
                         content: ruleForm.content,
                         image: ruleForm.image,
-                        user_id: useStore.user._id,
+                        user_id: String(useStore?.user?._id),
                         status: ruleForm.status,
                     });
                     Notification("Cập nhật thành công", "success");
@@ -195,7 +195,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         title: ruleForm.title,
                         content: ruleForm.content,
                         image: ruleForm.image,
-                        user_id: useStore.user._id,
+                        user_id: String(useStore?.user?._id),
                         status: ruleForm.status,
                     });
                     Notification("Thêm thành công", "success");

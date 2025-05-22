@@ -42,7 +42,6 @@ export interface Bookings {
     table?: Tables;
 }
 
-
 export interface BookingItems {
     _id?: string;
     booking_id: string;
@@ -143,6 +142,7 @@ export interface Users {
     address: string;
     avatar: string;
     loyalty_points: number;
+    wallet: number;
     role_name: string;
     token?: string;
 }

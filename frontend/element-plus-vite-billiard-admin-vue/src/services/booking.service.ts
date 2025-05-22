@@ -1,4 +1,9 @@
-import type { BookingItems, Bookings, ResponseData, Tables } from "~/constant/api";
+import type {
+    BookingItems,
+    Bookings,
+    ResponseData,
+    Tables,
+} from "~/constant/api";
 import { BookingItemUrl, BookingUrl, TableUrl } from "~/constant/endpoints";
 import { apiClient } from "~/constant/request";
 
@@ -6,6 +11,23 @@ export const searchBooking = async (
     data: Record<string, string | number | Boolean>
 ): Promise<ResponseData<Bookings>> => {
     const res = await apiClient?.post(`${BookingUrl}/search`, data);
+    return res?.data;
+};
+
+export const createBooking = async (
+    data: Record<string, string | number | Boolean>
+): Promise<Bookings> => {
+    const res = await apiClient?.post(`${BookingUrl}/add`, data);
+    return res?.data;
+};
+
+export const checkBooking = async (
+    data: Record<string, string | number | Boolean>
+): Promise<Boolean> => {
+    const res = await apiClient?.post(
+        `${BookingUrl}/check-availability-booking`,
+        data
+    );
     return res?.data;
 };
 

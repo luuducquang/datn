@@ -101,7 +101,7 @@
 
                                 <div v-if="isStatusTable" class="row g-3">
                                     <p class="fw-bold">
-                                        Lưu ý: Bàn này có người đặt vui lòng
+                                        Lưu ý: Bàn này có người đang chơi vui lòng
                                         chọn thời gian bắt đầu sau 4 tiếng
                                     </p>
                                 </div>

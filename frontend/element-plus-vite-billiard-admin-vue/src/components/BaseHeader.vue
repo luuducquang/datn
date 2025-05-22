@@ -24,7 +24,10 @@
                             Cài đặt
                         </el-dropdown-item>
                         <router-link to="/login">
-                            <el-dropdown-item :icon="CaretRight">
+                            <el-dropdown-item
+                                :icon="CaretRight"
+                                @click="logout"
+                            >
                                 Đăng xuất
                             </el-dropdown-item>
                         </router-link>
@@ -43,17 +46,17 @@ import {
     ArrowDown,
 } from "@element-plus/icons-vue";
 import { computed } from "vue";
+import { Users } from "~/constant/api";
 import { apiImage } from "~/constant/request";
 import { useUserStore } from "~/store";
 
-interface User {
-    avatar: string;
-    fullname: string;
-}
-
 const userStore = useUserStore();
 
-const user = computed<User>(() => userStore.getUser);
+const user = computed<any>(() => userStore.getUser);
+
+const logout = () => {
+    userStore.logout();
+};
 
 const info = computed(() => {
     return {
@@ -123,5 +126,4 @@ a {
 .user-image:hover {
     transform: scale(1.05);
 }
-
 </style>

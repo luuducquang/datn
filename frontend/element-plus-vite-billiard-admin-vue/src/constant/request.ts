@@ -11,7 +11,7 @@ export const apiImage = "http://127.0.0.1:8000";
 apiClient.interceptors.request.use(
     (config) => {
         const useStore = useUserStore();
-        const token = useStore.user.token;
+        const token = useStore?.user?.token;
 
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;

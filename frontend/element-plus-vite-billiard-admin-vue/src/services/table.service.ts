@@ -32,3 +32,8 @@ export const getbyIdTable = async (id: string): Promise<Tables> => {
     const res = await apiClient?.get(`${TableUrl}/get/` + id);
     return res?.data;
 };
+
+export const getbyAllTable = async (): Promise<Tables> => {
+    const res = await apiClient?.get(`${TableUrl}/get/`);
+    return res?.data;
+};
