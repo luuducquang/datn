@@ -205,17 +205,15 @@
                 <template #reference>
                     <el-button
                         v-if="
-                            dataBooking?.start_time &&
                             dataBooking?.end_time &&
-                            !isCurrentTimeWithinRange(
-                                dataBooking?.start_time,
-                                dataBooking?.end_time
-                            )
+                            new Date() < new Date(dataBooking.end_time) &&
+                            dataBooking?.status === true
                         "
                         size="small"
                         type="danger"
-                        >Huỷ bàn</el-button
                     >
+                        Huỷ bàn
+                    </el-button>
                 </template>
             </el-popconfirm>
         </template>
@@ -244,7 +242,6 @@ import {
     setFalseStatusBooking,
 } from "~/services/booking.service";
 import { getBookingItemByIDBooking } from "~/services/bookingitem.service";
-import AlertBooking from "~/components/common/AlertBooking.vue";
 
 const search = ref("");
 const loading = ref(false);
@@ -282,9 +279,6 @@ const handleEdit = async (index: number, row: Bookings) => {
     dataBooking.value = row;
     const dataDetailMenu = await getBookingItemByIDBooking(String(row._id));
     dataOrderMenuItem.value = dataDetailMenu;
-    console.log("Start:", dataBooking?.value?.start_time);
-    console.log("End:", dataBooking?.value?.end_time);
-    console.log("Now:", new Date());
 };
 
 const confirmEvent = async (Id: string) => {
@@ -299,32 +293,11 @@ const confirmEvent = async (Id: string) => {
     }
 };
 
-const isCurrentTimeWithinRange = (
-    startTime: string | Date,
-    endTime: string | Date
-) => {
-    const start = new Date(startTime); // UTC
-    const end = new Date(endTime);     // UTC
-    const now = new Date();            // local (UTC+7)
-
-    // Chuyển now về UTC để so sánh công bằng
-    const nowUTC = new Date(
-        now.getUTCFullYear(),
-        now.getUTCMonth(),
-        now.getUTCDate(),
-        now.getUTCHours(),
-        now.getUTCMinutes(),
-        now.getUTCSeconds()
-    );
-
-    return nowUTC >= start && nowUTC <= end;
-};
-
-
 const confirmEventCancelTable = async (id: string) => {
     try {
         await setFalseStatusBooking(id);
         fetchData();
+        dialogVisible.value = false;
     } catch (error) {
         console.error("Lỗi khi hủy bàn:", error);
         alert("Có lỗi xảy ra khi hủy bàn.");

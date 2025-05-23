@@ -16,12 +16,32 @@
             <el-row :gutter="20" class="chart-row">
                 <el-col :span="24">
                     <el-card>
-                        <h2>Biểu đồ Doanh Thu Theo Ngày</h2>
-                        <el-tooltip
-                            content="Số liệu doanh thu theo ngày"
-                            placement="top"
-                        >
+                        <h2>Biểu đồ giờ chơi</h2>
+                        <el-tooltip content="" placement="top" disabled>
+                            <div id="playTimeChart" style="height: 300px"></div>
+                        </el-tooltip>
+                    </el-card>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20" class="chart-row">
+                <el-col :span="24">
+                    <el-card>
+                        <h2>Biểu đồ doanh thu theo ngày</h2>
+                        <el-tooltip content="" placement="top" disabled>
                             <div id="revenueChart" style="height: 300px"></div>
+                        </el-tooltip>
+                    </el-card>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20" class="chart-row">
+                <el-col :span="24">
+                    <el-card>
+                        <h2>Biểu đồ tồn kho sản phẩm</h2>
+                        <el-tooltip content="" placement="top" disabled>
+                            <div
+                                id="inventoryItemChart"
+                                style="height: 300px"
+                            ></div>
                         </el-tooltip>
                     </el-card>
                 </el-col>
@@ -33,7 +53,13 @@
 <script setup lang="ts">
 import * as echarts from "echarts";
 import { ref, onMounted } from "vue";
-import { getOverview, getRevenue } from "~/services/statistic.service";
+import {
+    getInventoryItem,
+    getOverview,
+    getPlaytime,
+    getRevenue,
+} from "~/services/statistic.service";
+import ConvertPrice from "~/utils/convertprice";
 
 const formatCurrency = (value: any) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -46,6 +72,10 @@ const summaryStats = ref<any>([]);
 
 const revenueData = ref<any>([]);
 
+const playTimeData = ref<any>([]);
+
+const inventoryData = ref<any>([]);
+
 onMounted(() => {
     Fetchdata();
 });
@@ -57,21 +87,30 @@ const Fetchdata = async () => {
         { label: "Bàn đang sử dụng", value: resOverview.banDangDung },
         { label: "Bàn trống", value: resOverview.banTrong },
         {
-            label: "Số lượng đặt bàn trong ngày",
-            value: resOverview.soLuongBanNgay,
+            label: "Đặt bàn trong ngày",
+            value: resOverview.soLuongBookingHomNay,
         },
-        { label: "Số lượng hoá đơn bán", value: resOverview.hoaDonBan },
-        { label: "Số lượng hoá đơn nhập", value: resOverview.hoaDonNhap },
+        {
+            label: "Đặt bàn trong tháng",
+            value: resOverview.soLuongBookingTrongThang,
+        },
+        { label: "Tổng hoá đơn bán", value: resOverview.hoaDonBan },
+        { label: "Tổng hoá đơn nhập", value: resOverview.hoaDonNhap },
+        { label: "Tổng hoá đơn giờ chơi", value: resOverview.hoaDonGioChoi },
+        {
+            label: "Tổng giờ chơi",
+            value: Math.ceil(Number(resOverview.tongGioChoi)),
+        },
         { label: "Tổng số khách hàng", value: resOverview.khachHang },
         {
             label: "Khách hàng mới trong tháng",
             value: resOverview.khachHangMoi,
         },
-        { label: "Đơn hàng bị huỷ", value: resOverview.donHuy },
-        { label: "Đơn hàng chờ", value: resOverview.donCho },
-        { label: "Đơn hàng đang giao", value: resOverview.dangGiao },
-        { label: "Đơn hàng hoàn tất", value: resOverview.hoantat },
-        { label: "Đơn hàng đổi trả", value: resOverview.doiTra },
+        { label: "Tổng đơn hàng bị huỷ", value: resOverview.donHuy },
+        { label: "Tổng đơn hàng chờ", value: resOverview.donCho },
+        { label: "Tổng đơn hàng đang giao", value: resOverview.dangGiao },
+        { label: "Tổng đơn hàng hoàn tất", value: resOverview.hoantat },
+        { label: "Tổng đơn hàng đổi trả", value: resOverview.doiTra },
         { label: "Tổng lượt xem sản phẩm", value: resOverview.luotXem },
         {
             label: "Tổng tiền nhập",
@@ -84,18 +123,15 @@ const Fetchdata = async () => {
     ];
     summaryStats.value = dataOverview;
 
+    // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
     const resRevenue = await getRevenue();
-    // const dataRevenue = resRevenue.map((value: any) => {
-    //     return {
-    //         date: value.date,
-    //         revenue:
-    //             Math.floor(Math.random() * (10000000 - 1000000 + 1)) + 1000000,
-    //     };
-    // });
-    const dataRevenue = Array.from({ length: 19 }, (_, index) => ({
-        date: `2024-12-${String(index + 1).padStart(2, "0")}`, //
-        revenue: Math.floor(Math.random() * (10000000 - 1000000 + 1)) + 1000000,
-    }));
+    const dataRevenue = resRevenue.map((value: any) => {
+        return {
+            date: value.date,
+            revenue: value.revenue,
+        };
+    });
     revenueData.value = dataRevenue;
 
     const chart = echarts.init(document.getElementById("revenueChart"));
@@ -112,9 +148,92 @@ const Fetchdata = async () => {
                 smooth: true,
             },
         ],
-        tooltip: { trigger: "axis" },
+        tooltip: {
+            trigger: "axis",
+            formatter: function (params: any) {
+                const item = params[0];
+                return `${item.axisValue}<br/>Doanh thu: ${ConvertPrice(item.data)}`;
+            },
+        },
     };
     chart.setOption(option);
+
+    // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    const resPlaytime = await getPlaytime();
+    const dataPlaytime = resPlaytime.map((value: any) => {
+        return {
+            date: value.date,
+            hours_played: Math.ceil(value.hours_played),
+        };
+    });
+    playTimeData.value = dataPlaytime;
+
+    const chartPlayTime = echarts.init(
+        document.getElementById("playTimeChart")
+    );
+    const optionPlayTime = {
+        xAxis: {
+            type: "category",
+            data: playTimeData.value.map((item: any) => item.date),
+        },
+        yAxis: { type: "value" },
+        series: [
+            {
+                data: playTimeData.value.map((item: any) => item.hours_played),
+                type: "line",
+                smooth: true,
+            },
+        ],
+        tooltip: {
+            trigger: "axis",
+            formatter: function (params: any) {
+                const item = params[0];
+                return `${item.axisValue}<br/>Giờ chơi: ${item.data} giờ`;
+            },
+        },
+    };
+    chartPlayTime.setOption(optionPlayTime);
+
+    // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    const resInventory = await getInventoryItem();
+    const dataInventory = resInventory.map((value: any) => {
+        return {
+            product_name: value.product_name,
+            quantity: value.quantity,
+        };
+    });
+    inventoryData.value = dataInventory;
+
+    const chartImventory = echarts.init(
+        document.getElementById("inventoryItemChart")
+    );
+    const optionImventory = {
+        xAxis: {
+            type: "category",
+            data: inventoryData.value.map((item: any) => item.product_name),
+            axisLabel: {
+                show: false,
+            },
+        },
+        yAxis: {
+            type: "value",
+        },
+        series: [
+            {
+                data: inventoryData.value.map((item: any) => item.quantity),
+                type: "line",
+                smooth: true,
+            },
+        ],
+        tooltip: {
+            trigger: "axis",
+            formatter: function (params: any) {
+                const item = params[0];
+                return `${item.axisValue}<br/>Tồn kho: ${item.data}`;
+            },
+        },
+    };
+    chartImventory.setOption(optionImventory);
 };
 </script>
 

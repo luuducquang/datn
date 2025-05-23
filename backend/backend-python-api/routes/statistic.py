@@ -2,7 +2,7 @@ from typing import Dict, List
 from fastapi import APIRouter
 from pymongo.collection import Collection
 from config.database import database
-from service.statistic import ser_get_info_overview,generate_revenue_data
+from service.statistic import ser_get_info_overview,generate_revenue_data,generate_playtime_data,get_quantity_item
 
 
 router = APIRouter()
@@ -14,3 +14,11 @@ def get_overview():
 @router.get("/statistic/monthly-revenue")
 def get_monthly_revenue():
     return generate_revenue_data()
+
+@router.get("/statistic/playtime")
+def get_daily_playtime():
+    return generate_playtime_data()
+
+@router.get("/statistic/inventory-item")
+def get_inventory_item():
+    return get_quantity_item()

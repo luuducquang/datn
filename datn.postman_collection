@@ -1051,6 +1051,31 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "getbookingnotexpried",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\": 1,\r\n    \"pageSize\": 10,\r\n    \"status\": true\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{host}}/bookings/get-booking-active",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"get-booking-active"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2670,33 +2695,6 @@
 								"foodorders",
 								"delete",
 								"66f831a1e3fd66143ef40c24"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "searchOrderItem",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/orderitems/search",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"orderitems",
-								"search"
 							]
 						}
 					},
@@ -4417,6 +4415,42 @@
 							"path": [
 								"statistic",
 								"monthly-revenue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "playtimeMonth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/statistic/playtime",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"statistic",
+								"playtime"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getInverntoryItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/statistic/inventory-item",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"statistic",
+								"inventory-item"
 							]
 						}
 					},

@@ -8,7 +8,6 @@
         background-color="#f9fbfc"
         text-color="#000000"
     >
-        <!-- Tổng quan -->
         <el-sub-menu index="1-2-3-4">
             <template #title>
                 <el-icon><House /></el-icon>
@@ -31,7 +30,6 @@
             </router-link>
         </el-sub-menu>
 
-        <!-- Hoá đơn -->
         <el-sub-menu index="8-9">
             <template #title>
                 <el-icon><Mug /></el-icon>
@@ -48,7 +46,6 @@
             </router-link>
         </el-sub-menu>
 
-        <!-- Quản lý bàn -->
         <el-sub-menu index="5-6-7">
             <template #title>
                 <el-icon><Box /></el-icon>
@@ -65,7 +62,6 @@
             </router-link>
         </el-sub-menu>
 
-        <!-- Sản phẩm -->
         <el-sub-menu index="10-11">
             <template #title>
                 <el-icon><Mug /></el-icon>
@@ -79,7 +75,6 @@
             </router-link>
         </el-sub-menu>
 
-        <!-- Tin tức -->
         <router-link to="/news" class="menu-link">
             <el-menu-item index="12">
                 <el-icon><Tickets /></el-icon>
@@ -87,7 +82,6 @@
             </el-menu-item>
         </router-link>
 
-        <!-- Banner -->
         <router-link to="/banner" class="menu-link">
             <el-menu-item index="13">
                 <el-icon><Files /></el-icon>
@@ -95,7 +89,6 @@
             </el-menu-item>
         </router-link>
 
-        <!-- Danh mục -->
         <el-sub-menu index="14-15">
             <template #title>
                 <el-icon><CollectionTag /></el-icon>
@@ -109,7 +102,6 @@
             </router-link>
         </el-sub-menu>
 
-        <!-- Nhà cung cấp -->
         <el-sub-menu index="16-17">
             <template #title>
                 <el-icon><OfficeBuilding /></el-icon>
@@ -123,7 +115,6 @@
             </router-link>
         </el-sub-menu>
 
-        <!-- Tài khoản -->
         <el-sub-menu index="18-19">
             <template #title>
                 <el-icon><User /></el-icon>
@@ -201,5 +192,11 @@ const handleClose = (key: string, keyPath: string[]) => {};
         text-decoration: none;
         outline: none;
     }
+
+    
 }
+.ep-menu {
+        overflow: auto;
+        padding-bottom: 10%;
+    }
 </style>

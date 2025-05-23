@@ -12,3 +12,13 @@ export const getRevenue = async (): Promise<any> => {
     const res = await apiClient?.get(`${StatisticUrl}/monthly-revenue`);
     return res?.data;
 };
+
+export const getPlaytime = async (): Promise<any> => {
+    const res = await apiClient?.get(`${StatisticUrl}/playtime`);
+    return res?.data;
+};
+
+export const getInventoryItem = async (): Promise<any> => {
+    const res = await apiClient?.get(`${StatisticUrl}/inventory-item`);
+    return res?.data;
+};
