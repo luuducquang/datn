@@ -49,7 +49,7 @@
                 <template #default="scope">
                     <p>
                         {{
-                            convertDate(String(scope.row?.booking?.created_at))
+                            scope.row?.booking?.created_at ? convertDate(String(scope.row?.booking?.created_at)): ""
                         }}
                     </p>
                 </template>

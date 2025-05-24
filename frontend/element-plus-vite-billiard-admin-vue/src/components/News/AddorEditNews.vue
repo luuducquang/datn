@@ -94,6 +94,7 @@ const ruleForm = reactive<News>({
     image: "",
     status: true,
     content: "",
+    view: 0,
 });
 
 const rules = reactive<FormRules>({
@@ -151,6 +152,7 @@ const fetchById = async (id: string) => {
     ruleForm.image = resId?.image;
     ruleForm.status = resId?.status;
     ruleForm.content = resId?.content;
+    ruleForm.view = resId?.view;
 
     fileListImg.value = [
         {
@@ -179,6 +181,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         title: ruleForm.title,
                         content: ruleForm.content,
                         image: ruleForm.image,
+                        view: Number(ruleForm.view),
                         user_id: String(useStore?.user?._id),
                         status: ruleForm.status,
                     });

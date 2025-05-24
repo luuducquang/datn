@@ -31,7 +31,7 @@
             </el-form-item>
 
             <el-form-item label="Mật khẩu" prop="password">
-                <el-input v-model="ruleForm.password" type="password" />
+                <el-input v-model="ruleForm.password" placeholder="Nhập mật khẩu mới nếu muốn đổi" type="password" />
             </el-form-item>
 
             <el-form-item label="Họ tên" prop="fullname">
@@ -108,25 +108,18 @@ const Notification = (
 };
 
 const ruleForm = reactive<Users>({
-    username: "",
+    email: "",
     password: "",
     fullname: "",
-    email: "",
     phone: "",
     address: "",
     avatar: "",
     loyalty_points: 0,
+    wallet: 0,
     role_name: "",
 });
 
 const rules = reactive<FormRules>({
-    username: [
-        {
-            required: true,
-            message: "Vui lòng nhập tên tài khoản",
-            trigger: "blur",
-        },
-    ],
     email: [
         {
             required: true,
@@ -138,13 +131,6 @@ const rules = reactive<FormRules>({
         {
             required: true,
             message: "Vui lòng nhập họ tên",
-            trigger: "blur",
-        },
-    ],
-    password: [
-        {
-            required: true,
-            message: "Vui lòng nhập mật khẩu",
             trigger: "blur",
         },
     ],
@@ -221,7 +207,6 @@ const handleRemoveImg: UploadProps["onRemove"] = (uploadFile, uploadFiles) => {
 
 const fetchById = async (id: string) => {
     const resId = await getDetailAccount(id);
-    ruleForm.username = resId?.username || "";
     ruleForm.email = resId?.email || "";
     ruleForm.fullname = resId?.fullname || "";
     ruleForm.password = resId?.password || "";
@@ -229,6 +214,8 @@ const fetchById = async (id: string) => {
     ruleForm.phone = resId?.phone || "";
     ruleForm.role_name = String(resId?.role_name || "");
     ruleForm.avatar = resId?.avatar || "";
+
+    console.log(resId);
 
 
     fileListImg.value = [
@@ -255,7 +242,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 try {
                     await updateAccount({
                         _id: String(route.params.id),
-                        username: ruleForm.username,
                         password: ruleForm.password,
                         fullname: ruleForm.fullname,
                         email: ruleForm.email,
@@ -275,7 +261,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
             } else {
                 try {
                     await createAccount({
-                        username: ruleForm.username,
                         password: ruleForm.password,
                         fullname: ruleForm.fullname,
                         email: ruleForm.email,
@@ -283,6 +268,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         address: ruleForm.address,
                         avatar: ruleForm.avatar,
                         loyalty_points: 0,
+                        wallet: 0,
                         role_name: ruleForm.role_name,
                     });
                     Notification("Thêm thành công", "success");

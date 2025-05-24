@@ -20,6 +20,31 @@
                     /> </template
             ></el-table-column>
             <el-table-column label="Email" align="center" prop="email" />
+            <el-table-column label="Điểm thành viên" align="center">
+                <template #default="{ row }">
+                    <span>
+                        {{
+                            row.loyalty_points
+                                ? row.loyalty_points?.toLocaleString("de-DE")
+                                : 0
+                        }}
+                        -
+                        <span
+                            :style="{
+                                color: getMembershipRank(row.loyalty_points)
+                                    .color,
+                            }"
+                        >
+                            {{ getMembershipRank(row.loyalty_points).rank }}
+                        </span>
+                    </span>
+                </template>
+            </el-table-column>
+            <el-table-column label="Số dư ví" align="center" prop="wallet">
+                <template #default="scope">
+                    <p>{{ ConvertPrice(scope.row.wallet) }}</p>
+                </template>
+            </el-table-column>
 
             <el-table-column align="right">
                 <template #header>
@@ -74,6 +99,8 @@ import router from "~/router";
 import { ElMessage } from "element-plus";
 import { apiImage } from "~/constant/request";
 import axios from "axios";
+import ConvertPrice from "~/utils/convertprice";
+import { getMembershipRank } from "~/utils/getMemberShip";
 
 const search = ref("");
 const loading = ref(false);

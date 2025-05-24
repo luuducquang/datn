@@ -12,15 +12,6 @@
                 align="center"
                 prop="tabletype.table_type_name"
             />
-            <el-table-column
-                label="Giá chơi 1 phút"
-                align="center"
-                prop="rate_per_minute"
-            >
-                <template #default="scope">
-                    <p>{{ ConvertPrice(scope.row.rate_per_minute) }}</p>
-                </template>
-            </el-table-column>
 
             <el-table-column
                 label="Giá chơi 1 giờ"
@@ -114,7 +105,6 @@ const fetchData = async () => {
                 _id: value._id,
                 type_table_id: value.type_table_id,
                 rate_per_hour: value.rate_per_hour,
-                rate_per_minute: value.rate_per_minute,
                 tabletype: value.tabletype,
             };
         });

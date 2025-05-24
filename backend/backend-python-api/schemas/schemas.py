@@ -202,7 +202,6 @@ class PricingRules(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     type_table_id: str
     rate_per_hour: int
-    rate_per_minute: int
 
 class ImportItems(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  

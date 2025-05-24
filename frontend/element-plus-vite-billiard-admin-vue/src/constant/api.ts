@@ -134,10 +134,9 @@ export interface Roles {
 
 export interface Users {
     _id?: string;
-    username: string;
+    email: string;
     password: string;
     fullname: string;
-    email: string;
     phone: string;
     address: string;
     avatar: string;
@@ -165,7 +164,6 @@ export interface PricingRules {
     _id?: string;
     type_table_id: string;
     rate_per_hour: number;
-    rate_per_minute: number;
     tabletype?: TableTypes;
 }
 

@@ -25,10 +25,6 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item label="Giá chơi trong 1 phút" prop="rate_per_minute">
-                <el-input v-model="ruleForm.rate_per_minute" />
-            </el-form-item>
-
             <el-form-item label="Giá chơi trong 1 giờ" prop="rate_per_hour">
                 <el-input v-model="ruleForm.rate_per_hour" />
             </el-form-item>
@@ -77,7 +73,6 @@ const Notification = (
 const ruleForm = reactive<PricingRules>({
     type_table_id: "",
     rate_per_hour: 0,
-    rate_per_minute: 0,
 });
 
 const rules = reactive<FormRules>({
@@ -131,7 +126,6 @@ const fetchById = async (id: string) => {
     const resId = await getbyIdPricingRule(id);
     ruleForm.type_table_id = resId?.type_table_id;
     ruleForm.rate_per_hour = resId?.rate_per_hour;
-    ruleForm.rate_per_minute = resId?.rate_per_minute;
 };
 
 onMounted(() => {
@@ -153,7 +147,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         _id: String(route.params.id),
                         type_table_id: ruleForm.type_table_id,
                         rate_per_hour: ruleForm.rate_per_hour,
-                        rate_per_minute: ruleForm.rate_per_minute,
                     });
                     Notification("Cập nhật thành công", "success");
                     router.push("/pricingrule");
@@ -167,7 +160,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                     await createPricingRule({
                         type_table_id: ruleForm.type_table_id,
                         rate_per_hour: ruleForm.rate_per_hour,
-                        rate_per_minute: ruleForm.rate_per_minute,
                     });
                     Notification("Thêm thành công", "success");
                     router.push("/pricingrule");

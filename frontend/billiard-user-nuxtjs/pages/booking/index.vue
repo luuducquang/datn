@@ -392,7 +392,7 @@
                                 </p>
 
                                 <p class="form-label fw-bold mb-3">
-                                    Giảm giá thành viên hạng
+                                    Giảm giá giờ chơi thành viên hạng
                                     {{
                                         getMembershipRank(
                                             dataCustomer?.loyalty_points
@@ -407,7 +407,6 @@
                                     {{
                                         ConvertPrice(
                                             Number(
-                                                getTotalAmount() +
                                                     Number(
                                                         dataDetailTable
                                                             ?.pricingrule
@@ -431,11 +430,10 @@
                                 >
                                     Đã áp dụng mã:
                                     <strong>{{ voucherCode }}</strong> – Giảm
-                                    {{ discountAmount }}% =
+                                    {{ discountAmount }}% giờ chơi =
                                     {{
                                         ConvertPrice(
                                             (Number(
-                                                getTotalAmount() +
                                                     Number(
                                                         dataDetailTable
                                                             ?.pricingrule
@@ -449,8 +447,13 @@
                                     }}
                                 </p>
 
+                                <p class="form-label fw-bold mb-3">
+                                    Tổng tiền :
+                                    {{ ConvertPrice(totalPricePaid + getTotalAmount()) }}
+                                </p>
+
                                 <h4 class="form-label fw-bold mb-3">
-                                    Tổng thanh toán :
+                                    Thanh toán trước :
                                     {{ ConvertPrice(totalPricePaid) }}
                                 </h4>
 
@@ -682,7 +685,6 @@ async function applyVoucher() {
 }
 
 const totalPricePaid = computed(() => {
-    const serviceTotal = getTotalAmount();
     const tableRate = Number(
         dataDetailTable?.value?.pricingrule?.rate_per_hour || 0
     );
@@ -693,7 +695,7 @@ const totalPricePaid = computed(() => {
         ) +
             Number(discountAmount.value || 0)) /
         100;
-    return (serviceTotal + timeCost) * (1 - discountPercent);
+    return (timeCost) * (1 - discountPercent);
 });
 
 const addService = () => {

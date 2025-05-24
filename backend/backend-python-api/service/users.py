@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 from bson import ObjectId
 from fastapi import HTTPException
@@ -61,8 +62,16 @@ def ser_search_user(_data: Searchs):
 def ser_insert_user(_data: Users) -> str:
     existing_email = user_collection.find_one({"email": _data.email})
     if existing_email:
-        raise HTTPException(status_code=400, detail=f"email '{_data.email}' already exists.")
-    result = user_collection.insert_one(_data.dict(exclude={"id"}))
+        raise HTTPException(status_code=400, detail=f"Email '{_data.email}' already exists.")
+
+    hashed_password = hash_password(_data.password)
+
+    user_dict = _data.dict(exclude={"id"})
+    user_dict["password"] = hashed_password
+    user_dict["is_verified"] = True
+    user_dict["created_at"] = datetime.now()
+
+    result = user_collection.insert_one(user_dict)
     return str(result.inserted_id)
 
 def ser_update_user(_data: Users, user_collection: Collection):
@@ -78,13 +87,15 @@ def ser_update_user(_data: Users, user_collection: Collection):
     if not existing_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    if _data.password:
-        _data.password = hash_password(_data.password)
+    update_data = _data.dict(exclude={"id", "is_verified", "created_at", "loyalty_points", "wallet", "password"})
 
-    update_data = _data.dict(exclude={"id", "is_verified", "created_at"})
+    if _data.password:
+        update_data["password"] = hash_password(_data.password)
+    else:
+        update_data["password"] = existing_user["password"]
 
     updated_user = user_collection.update_one(
-        {"_id": object_id},  
+        {"_id": object_id},
         {"$set": update_data}
     )
 
@@ -92,6 +103,7 @@ def ser_update_user(_data: Users, user_collection: Collection):
         raise HTTPException(status_code=400, detail="Update failed or no changes made")
 
     return {"message": "User updated successfully"}
+
 
 
 def ser_delete_user(user_id: str, user_collection: Collection):
