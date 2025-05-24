@@ -2,8 +2,9 @@
     <el-card title="Login Admin" class="login-card">
         <el-form
             :model="formState"
-            @submit.native.prevent="handleSubmit"
+            @submit.prevent="handleSubmit"
             label-position="top"
+            autocomplete="on"
         >
             <el-form-item
                 label="Tài khoản"
@@ -13,7 +14,9 @@
                 <el-input
                     v-model="formState.email"
                     placeholder="Vui lòng nhập tài khoản"
-                    type="text"
+                    name="email"
+                    type="email"
+                    autocomplete="username"
                 />
             </el-form-item>
 
@@ -25,7 +28,9 @@
                 <el-input
                     v-model="formState.password"
                     placeholder="Vui lòng nhập mật khẩu"
+                    name="password"
                     type="password"
+                    autocomplete="current-password"
                 />
             </el-form-item>
 
@@ -112,7 +117,10 @@ const handleSubmit = async () => {
                         password: formState.password,
                     });
                     console.log(res);
-                    if (res?.role_name !== "ADMIN") {
+                    if (
+                        res?.role_name === "ADMIN" ||
+                        res?.role_name === "EMPLOYEE"
+                    ) {
                         loading.value = false;
                         userStore.setUser(res);
                         router.push("/");

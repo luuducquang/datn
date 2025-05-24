@@ -31,7 +31,13 @@
             </el-form-item>
 
             <el-form-item label="Mật khẩu" prop="password">
-                <el-input v-model="ruleForm.password" placeholder="Nhập mật khẩu mới nếu muốn đổi" type="password" />
+                <el-input
+                    v-model="ruleForm.password"
+                    :placeholder="
+                        route.params.id ? 'Nhập mật khẩu mới nếu muốn đổi' : ''
+                    "
+                    type="password"
+                />
             </el-form-item>
 
             <el-form-item label="Họ tên" prop="fullname">
@@ -169,6 +175,16 @@ const rules = reactive<FormRules>({
     ],
 });
 
+if (!route.params.id) {
+    rules.password = [
+        {
+            required: true,
+            message: "Vui lòng nhập mật khẩu",
+            trigger: "blur",
+        },
+    ];
+}
+
 const optionsTypeAccount = ref<OptionSelect[]>();
 
 async function fetchTypeAccount() {
@@ -216,7 +232,6 @@ const fetchById = async (id: string) => {
     ruleForm.avatar = resId?.avatar || "";
 
     console.log(resId);
-
 
     fileListImg.value = [
         {

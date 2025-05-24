@@ -35,16 +35,6 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item label="Trạng thái" prop="status">
-                <el-select
-                    v-model="ruleForm.status"
-                    placeholder="Vui lòng chọn"
-                >
-                    <el-option label="Đang sử dụng" :value="true" />
-                    <el-option label="Đang trống" :value="false" />
-                </el-select>
-            </el-form-item>
-
             <el-form-item>
                 <el-button type="primary" @click="submitForm(ruleFormRef)">
                     {{ route.params.id ? "Update" : "Create" }}

@@ -152,6 +152,7 @@ const fetchData = async (searchTerm = "") => {
             search_term: searchTerm,
         };
         const res = await searchAccount(payLoad);
+        console.log(res);
         totalItemPage.value = res.totalItems;
         tableData.value = res.data;
     } catch (error) {
