@@ -221,6 +221,7 @@ export interface OrderItems {
     total_price?: number;
     menu_items?: OrderMenuItems[];
     timesession?: TimeSessions;
+    table?: Tables;
 }
 
 export interface TimeSessions {
@@ -285,6 +286,7 @@ export interface TableBillSell {
     soLuong: number | string;
     donGia: number;
     tongTien: number;
+    tenSanPham?: string;
 }
 
 export interface ImportBills {

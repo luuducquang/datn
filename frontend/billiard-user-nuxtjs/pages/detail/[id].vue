@@ -22,21 +22,6 @@
                         alt="anh san pham"
                 /></span>
                 <div class="miror"></div>
-                <!-- <div class="but">
-                    <span>
-                        <i class="fa-solid fa-angle-left"></i>
-                    </span>
-                    <span>
-                        <i class="fa-solid fa-angle-right"></i>
-                    </span>
-                </div> -->
-                <div class="img-slider">
-                    <!-- <img class="activeImg opacity1" src="./assets/img/Cleanser/cerave/3.jpg" alt=""> -->
-                    <!-- <img ng-repeat="x in listImgDetail" src={{x.linkAnh}} alt=""> -->
-                    <!-- <img src="./assets/img/Cleanser/cerave/2.jpg" alt="">
-                    <img src="./assets/img/Cleanser/cerave/1.webp" alt="">
-                    <img src="./assets/img/Cleanser/cerave/5.webp" alt=""> -->
-                </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <table>
@@ -81,7 +66,7 @@
                                         color:
                                             Number(
                                                 productDetail?.quantity_available
-                                            ) < 5
+                                            ) <=0
                                                 ? '#FF3300'
                                                 : '#33CC00',
                                     }"
@@ -91,7 +76,7 @@
                                         ) > 0
                                             ? Number(
                                                   productDetail?.quantity_available
-                                              ) < 5
+                                              ) <=0
                                                 ? "Hết hàng"
                                                 : "Còn hàng"
                                             : "Hết hàng"
@@ -114,18 +99,18 @@
                         </td>
                     </tr>
 
-                    <!-- <tr>
+                    <tr v-if="Number(productDetail?.sales) > 0">
                         <td>
                             Đã bán :
                             {{
-                                productDetail?.luotBan > 0
-                                    ? productDetail?.luotBan.toLocaleString(
-                                          "de-DE"
-                                      )
+                                Number(productDetail?.sales) > 0
+                                    ? Number(
+                                          productDetail?.sales
+                                      ).toLocaleString("de-DE")
                                     : ""
                             }}
                         </td>
-                    </tr> -->
+                    </tr>
 
                     <tr>
                         <td>
@@ -135,21 +120,6 @@
                             }}</span>
                         </td>
                     </tr>
-
-                    <!-- <tr>
-                        <td>
-                            <div class="product-item-capacity">
-                                <span class="capacity-name">Dung tích : </span>
-                                <span class="size">{{
-                                    productDetail?.trongLuong
-                                }}</span>
-                                <div class="capacity-volume">
-                                    <input type="radio" id="1" name="capacity" class="size-mini">235ml</input>
-                                    <input type="radio" id="1" name="capacity" class="size-big">473ml</input>
-                                </div>
-                            </div>
-                        </td>
-                    </tr> -->
 
                     <tr>
                         <td>
@@ -301,7 +271,7 @@ const fetchProductDetail = async () => {
     try {
         const res = await getProductById(String(id));
         productDetail.value = res;
-        
+
         useHead({
             title: `${
                 productDetail?.value ? productDetail?.value?.item_name : ""
@@ -638,6 +608,11 @@ const buyNow = async () => {
 .add-item:hover {
     color: red;
     border: solid 1px red;
+}
+
+.minus_btn:hover,
+.plus_btn:hover {
+    background-color: #bbb;
 }
 
 .buy-now {

@@ -11,3 +11,10 @@ export const getInvoiceById = async (id: string): Promise<SellItems[]> => {
     const res = await apiClient?.get(`${BillSellUrl}/get-billsell-id/` + id);
     return res?.data;
 };
+
+export const updateOrder = async (
+    data: BillSells
+): Promise<BillSells> => {
+    const res = await apiClient?.put(`${BillSellUrl}/update`, data);
+    return res?.data;
+};

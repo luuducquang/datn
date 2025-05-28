@@ -106,18 +106,13 @@ def ser_getbyid_product(product_id:str):
 def ser_search_product(_data: Searchs):
     if _data.page <= 0 or _data.pageSize <= 0:
         raise HTTPException(status_code=400, detail="Page and pageSize must be greater than 0")
-    
+
     skip = (_data.page - 1) * _data.pageSize
     query = {}
+
     if _data.search_term:
         query["$or"] = [
             {"item_name": {"$regex": _data.search_term, "$options": "i"}},
-            {"price": {"$regex": _data.search_term, "$options": "i"}},
-            {"price_reduction": {"$regex": _data.search_term, "$options": "i"}},
-            {"rental_price_day": {"$regex": _data.search_term, "$options": "i"}},
-            {"rental_price_hours": {"$regex": _data.search_term, "$options": "i"}},
-            {"quantity_available": {"$regex": _data.search_term, "$options": "i"}},
-            {"view": {"$regex": _data.search_term, "$options": "i"}},
             {"origin": {"$regex": _data.search_term, "$options": "i"}},
             {"description": {"$regex": _data.search_term, "$options": "i"}},
             {"description_detail": {"$regex": _data.search_term, "$options": "i"}},
@@ -125,8 +120,6 @@ def ser_search_product(_data: Searchs):
 
     if _data.category_name:
         category = categoryproduct_collection.find_one({"category_name": {"$regex": _data.category_name, "$options": "i"}})
-        print(_data.category_name)
-        print(category)
         if category:
             query["category_id"] = str(category["_id"])
         else:
@@ -137,26 +130,35 @@ def ser_search_product(_data: Searchs):
                 "data": []
             }
 
+    sort_field = "_id"
+    sort_order = -1  
+
+    if _data.sort_by == "up":
+        sort_field = "price_reduction"
+        sort_order = 1
+    elif _data.sort_by == "down":
+        sort_field = "price_reduction"
+        sort_order = -1
+    elif _data.sort_by == "new":
+        sort_field = "_id"
+        sort_order = -1
+
     total_items = product_collection.count_documents(query)
-    products = product_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
+    products = product_collection.find(query).sort(sort_field, sort_order).skip(skip).limit(_data.pageSize)
 
     data = []
     for product in products:
         product["_id"] = str(product["_id"])
 
         categoryproduct_data = categoryproduct_collection.find_one({"_id": ObjectId(product["category_id"])})
-        if categoryproduct_data:
-            categoryproduct_data["_id"] = str(categoryproduct_data["_id"])
-            product["categoryproduct"] = categoryproduct_data
-        else:
-            product["categoryproduct"] = None
+        product["categoryproduct"] = categoryproduct_data if categoryproduct_data else None
+        if product["categoryproduct"]:
+            product["categoryproduct"]["_id"] = str(product["categoryproduct"]["_id"])
 
         manufactor_data = manufactor_collection.find_one({"_id": ObjectId(product["manufactor_id"])})
-        if manufactor_data:
-            manufactor_data["_id"] = str(manufactor_data["_id"])
-            product["manufactor"] = manufactor_data
-        else:
-            product["manufactor"] = None
+        product["manufactor"] = manufactor_data if manufactor_data else None
+        if product["manufactor"]:
+            product["manufactor"]["_id"] = str(product["manufactor"]["_id"])
 
         data.append(product)
 
@@ -166,6 +168,7 @@ def ser_search_product(_data: Searchs):
         "totalItems": total_items,
         "data": data,
     }
+
 
 def ser_insert_product(_data: Products) -> str:
     result = product_collection.insert_one(_data.dict(exclude={"id"}))

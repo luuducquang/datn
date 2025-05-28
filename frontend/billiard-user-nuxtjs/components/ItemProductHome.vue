@@ -25,6 +25,7 @@
                         >{{ product?.price.toLocaleString("DE-de")
                         }}<sup>đ</sup></span
                     >
+                    
                 </div>
                 <div class="product-meta">
                     <div class="view" v-if="Number(product?.view) > 0">

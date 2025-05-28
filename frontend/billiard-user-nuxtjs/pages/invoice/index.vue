@@ -5,7 +5,9 @@
             <i class="fa-solid fa-arrow-right"></i>
             <NuxtLink to="/invoice">Lịch sử đơn hàng</NuxtLink>
         </div>
-        <div class="mt-3"><item-invoice :billsell="dataInvoice" /></div>
+        <div class="mt-3">
+            <item-invoice :billsell="dataInvoice" @refresh="fetchData" />
+        </div>
     </div>
 </template>
 
@@ -15,11 +17,11 @@ import Cookies from "js-cookie";
 import { useRouter } from "vue-router";
 import { type BillSells } from "~/constant/api";
 import { getInvoiceAll } from "~/services/invoice.service";
-import { useHead } from '@unhead/vue'
+import { useHead } from "@unhead/vue";
 
 useHead({
-  title: 'Đơn hàng'
-})
+    title: "Đơn hàng",
+});
 
 const router = useRouter();
 

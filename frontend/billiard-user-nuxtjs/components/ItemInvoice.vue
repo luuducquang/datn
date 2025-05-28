@@ -91,31 +91,47 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div
-                    v-if="value.trangThai === 'Đang xử lý'"
-                    class="text-center"
-                >
+                <div class="text-center">
                     <button
-                        @click="cancelOrder(Number(value.maHoaDon))"
-                        class="btn btn_cancel"
+                        v-if="
+                            value.status != 'Huỷ đơn' &&
+                            value.status === 'Đang xử lý'
+                        "
+                        class="btn btn-danger mb-3"
+                        @click="
+                            handleCancelBooking(
+                                value,
+                                Number(value?.total_price),
+                                Boolean(value?.is_paid)
+                            )
+                        "
                     >
-                        Huỷ đơn
+                        Huỷ đơn hàng
                     </button>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 import { onMounted, ref, nextTick } from "vue";
 import type { BillSells, SellItems } from "~/constant/api";
 import { apiImage } from "~/constant/request";
-import { getInvoiceById } from "~/services/invoice.service";
+import {
+    getInformation,
+    updateInformationWalletPoint,
+} from "~/services/information.service";
+import { getInvoiceById, updateOrder } from "~/services/invoice.service";
+import { login } from "~/services/login.service";
 
 const props = defineProps<{
     billsell: BillSells[];
 }>();
+
+const emit = defineEmits(["refresh"]);
 
 const detailBillSells = ref<SellItems[]>([]);
 
@@ -140,9 +156,82 @@ onMounted(() => {
     fetchData();
 });
 
-const cancelOrder = (id: number) => {
-    console.log(id);
-};
+async function handleCancelBooking(
+    item: BillSells,
+    money_paid: number,
+    is_paid: boolean
+) {
+    Swal.fire({
+        title: "Bạn có chắc muốn huỷ đơn hàng?",
+        text: is_paid
+            ? `Số tiền đã thanh toán: ${money_paid.toLocaleString(
+                  "de-DE"
+              )}đ sẽ được chuyển vào ví của bạn`
+            : `Đơn hàng sẽ bị huỷ`,
+
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Có, huỷ ngay",
+        cancelButtonText: "Không",
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const customerData = Cookies.get("customer");
+            if (customerData) {
+                const customer = JSON.parse(customerData);
+                const dataUser = await getInformation(customer._id);
+
+                await updateOrder({
+                    _id: item._id,
+                    status: "Huỷ đơn",
+                    sell_date: item.sell_date,
+                    total_price: item.total_price,
+                    name: item.name,
+                    address: item.address,
+                    email: item.email,
+                    phone: item.phone,
+                    address_detail: item.address_detail,
+                    user_id: item.user_id,
+                    is_paid: item.is_paid,
+                });
+
+                if (is_paid === true) {
+                    await updateInformationWalletPoint({
+                        _id: customer._id,
+                        username: customer.username,
+                        password: customer.password,
+                        fullname: customer.fullname,
+                        email: customer.email,
+                        phone: customer.phone,
+                        address: customer.address,
+                        avatar: dataUser.avatar,
+                        loyalty_points:
+                            Number(dataUser.loyalty_points) -
+                            Number(money_paid) * 0.2,
+                        wallet: Number(dataUser.wallet) + Number(money_paid),
+                        role_name: customer.role_name,
+                    });
+                    const res = await login({
+                        email: String(dataUser.email),
+                        password: String(customer.password),
+                    });
+                    Cookies.set("customer", JSON.stringify(res), {
+                        expires: 1,
+                    });
+                }
+
+                emit("refresh");
+
+                Swal.fire(
+                    "Đã huỷ!",
+                    "Đơn hàng đã được huỷ thành công.",
+                    "success"
+                );
+            }
+        }
+    });
+}
 </script>
 
 <style lang="css" scoped>
@@ -159,7 +248,7 @@ const cancelOrder = (id: number) => {
     opacity: 0.8;
 }
 
-a{
+a {
     font-size: 20px;
 }
 </style>

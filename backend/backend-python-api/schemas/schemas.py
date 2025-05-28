@@ -7,6 +7,7 @@ class Searchs(BaseModel):
     page: int = Body(...),
     pageSize: int = Body(...),
     search_term: Optional[str] = Body(None)
+    sort_by: Optional[str] = Body(None)
     category_name:Optional[str] = Body(None)
     status:Optional[bool] = Body(None)
 

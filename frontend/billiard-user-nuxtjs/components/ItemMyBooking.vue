@@ -285,8 +285,9 @@ async function handleCancelBooking(
                         address: customer.address,
                         avatar: dataUser.avatar,
                         loyalty_points:
-                            dataUser.loyalty_points + money_paid * 0.2,
-                        wallet: Number(dataUser.wallet) + money_paid,
+                            Number(dataUser.loyalty_points) -
+                            Number(money_paid) * 0.2,
+                        wallet: Number(dataUser.wallet) + Number(money_paid),
                         role_name: customer.role_name,
                     });
                 } else {

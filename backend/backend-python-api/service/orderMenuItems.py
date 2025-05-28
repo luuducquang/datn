@@ -37,11 +37,6 @@ def ser_getbyid_ordermenuitem(orderitem_id: str):
 
         ordermenuitems.append(item)
 
-    if len(ordermenuitems) == 0:
-        # In ra debug để xem
-        print(f"No ordermenuitems found for order_id: {cursor}")
-        raise HTTPException(status_code=404, detail="No ordermenuitems found for this order_id")
-
     return ordermenuitems
 
 

@@ -60,6 +60,11 @@
                     {{ ruleForm.is_paid ? "Đã thanh toán" : "Chưa thanh toán" }}
                 </el-tag>
             </el-form-item>
+            <el-form-item v-if="route.params.id" label="Tuỳ chọn">
+                <el-button type="warning" @click="invoiceDialogVisible = true"
+                    >Xem hoá đơn</el-button
+                >
+            </el-form-item>
 
             <el-card>
                 <el-form-item label="Tên sản phẩm" prop="item_id">
@@ -198,6 +203,78 @@
                 </el-form-item>
             </el-card>
         </el-form>
+        <el-dialog
+            v-model="invoiceDialogVisible"
+            title="Hoá đơn đặt hàng"
+            width="50%"
+        >
+            <template #default>
+                <div id="print-section">
+                    <div class="header">
+                        <h1>Q-BILLIARDS CLUB</h1>
+                        <p>Hưng Đạo - Tiên Lữ - Hưng Yên<br />0123.456.789</p>
+                    </div>
+
+                    <h3 style="text-align: center">HOÁ ĐƠN KHÁCH HÀNG</h3>
+                    <p>Họ tên: {{ ruleForm.name }}</p>
+                    <p>SĐT: {{ ruleForm.phone }}</p>
+                    <p>Email: {{ ruleForm.email }}</p>
+                    <p>Địa chỉ giao hàng: {{ ruleForm.address_detail }}</p>
+
+                    <el-table :data="tableData" class="table-menu-item">
+                        <el-table-column
+                            label="Sản phẩm"
+                            align="center"
+                            prop="tenSanPham"
+                        />
+                        <el-table-column
+                            label="Số lượng"
+                            align="center"
+                            prop="soLuong"
+                        />
+                        <el-table-column
+                            label="Đơn giá"
+                            align="center"
+                            prop="donGia"
+                        >
+                            <template #default="scope">
+                                {{ ConvertPrice(scope.row.donGia) }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            label="Tổng tiền"
+                            align="center"
+                            prop="tongTien"
+                        >
+                            <template #default="scope">
+                                {{ ConvertPrice(scope.row.tongTien) }}
+                            </template>
+                        </el-table-column>
+                    </el-table>
+
+                    <div class="summary">
+                        <p class="total">
+                            Tổng hoá đơn:
+                            {{ ConvertPrice(ruleForm.total_price) }}
+                        </p>
+                    </div>
+
+                    <div class="footer">
+                        <p>In bởi qbillardclub.com.vn</p>
+                        <p>Cảm ơn quý khách!</p>
+                    </div>
+                </div>
+            </template>
+
+            <template #footer>
+                <el-button type="primary" @click="PrintInvoice"
+                    >In hoá đơn</el-button
+                >
+                <el-button @click="invoiceDialogVisible = false"
+                    >Đóng</el-button
+                >
+            </template>
+        </el-dialog>
     </el-card>
 </template>
 
@@ -225,9 +302,7 @@ import {
     updateBillSell,
     updateSellItem,
 } from "~/services/billsell.service";
-import { el } from "element-plus/es/locale";
 import { watch } from "vue";
-import { table } from "console";
 import { getAllProduct } from "~/services/product.service";
 import { getCurrentDateTime } from "~/utils/getTimeCurrent";
 import axios from "axios";
@@ -245,6 +320,15 @@ const Notification = (
         message: message,
         type: type,
     });
+};
+
+const invoiceDialogVisible = ref(false);
+
+const ConvertPrice = (val: any) => {
+    return new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+    }).format(val);
 };
 
 const ruleForm = reactive<any>({
@@ -357,6 +441,19 @@ onMounted(() => {
     fetchProduct();
 });
 
+const PrintInvoice = async () => {
+    const printContent: any = document.getElementById("print-section");
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent.outerHTML;
+
+    await window.print();
+
+    document.body.innerHTML = originalContent;
+
+    router.push(`/billsell/edit/${route.params.id}`).then(() => window.location.reload());
+};
+
 const handleProductChange = (value: any) => {
     const filteredProduct = optionsProduct.value?.find(
         (product) => product.value === value
@@ -393,6 +490,7 @@ const fetchById = async (id: string) => {
                 soLuong: Number(value.quantity),
                 donGia: Number(value.unit_price),
                 tongTien: Number(value.unit_price) * Number(value.quantity),
+                tenSanPham: value.product.item_name,
             };
         });
         tableData.value = dataTempTable;
@@ -404,7 +502,7 @@ const fetchById = async (id: string) => {
         });
         await updateBillSell({
             _id: String(route.params.id),
-            user_id: store.user._id,
+            user_id: String(store?.user?._id),
             sell_date: String(getCurrentDateTime()),
             name: ruleForm.name,
             email: ruleForm.email,
@@ -481,7 +579,7 @@ const handlerAddDetail = async () => {
 
                 await updateBillSell({
                     _id: String(route.params.id),
-                    user_id: store.user._id,
+                    user_id: String(store?.user?._id),
                     sell_date: String(getCurrentDateTime()),
                     name: ruleForm.name,
                     email: ruleForm.email,
@@ -549,7 +647,7 @@ const updateTotalPrice = async (row: TableBillSell) => {
 
             await updateBillSell({
                 _id: String(route.params.id),
-                user_id: store.user._id,
+                user_id: String(store?.user?._id),
                 sell_date: String(getCurrentDateTime()),
                 name: ruleForm.name,
                 email: ruleForm.email,
@@ -598,7 +696,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                     );
                     await updateBillSell({
                         _id: String(route.params.id),
-                        user_id: store.user._id,
+                        user_id: String(store?.user?._id),
                         sell_date: String(getCurrentDateTime()),
                         name: ruleForm.name,
                         email: ruleForm.email,
@@ -618,7 +716,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 } else {
                     await updateBillSell({
                         _id: String(route.params.id),
-                        user_id: store.user._id,
+                        user_id: String(store?.user?._id),
                         sell_date: String(getCurrentDateTime()),
                         name: ruleForm.name,
                         email: ruleForm.email,
@@ -646,7 +744,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 } else {
                     try {
                         await createBillSell({
-                            user_id: store.user._id,
+                            user_id: String(store?.user?._id),
                             sell_date: String(getCurrentDateTime()),
                             name: ruleForm.name,
                             email: ruleForm.email,

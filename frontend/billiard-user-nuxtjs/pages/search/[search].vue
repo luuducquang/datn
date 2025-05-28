@@ -5,7 +5,33 @@
             <i class="fa-solid fa-arrow-right"></i>
             <NuxtLink :to="`/search/${name}`"> Tìm kiếm - {{ name }}</NuxtLink>
         </div>
-        <h4 class="mt-2">Có {{ itemFit }} kết quả phù hợp</h4>
+        <h4 class="mt-3">Có {{ itemFit }} kết quả phù hợp</h4>
+        <div
+            class="sort-bar mb-3 d-flex gap-2 align-items-center flex-wrap justify-content-end"
+        >
+            <span>Sắp xếp theo:</span>
+            <button
+                class="btn-sort"
+                :class="{ active: sortBy === 'new' }"
+                @click="updateSort('new')"
+            >
+                Mới nhất
+            </button>
+            <button
+                class="btn-sort"
+                :class="{ active: sortBy === 'up' }"
+                @click="updateSort('up')"
+            >
+                Giá tăng
+            </button>
+            <button
+                class="btn-sort"
+                :class="{ active: sortBy === 'down' }"
+                @click="updateSort('down')"
+            >
+                Giá giảm
+            </button>
+        </div>
         <div class="row">
             <div
                 class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6 mb-4 d-flex"
@@ -15,7 +41,7 @@
                 <item-product-home :product="product" :isSale="false" />
             </div>
         </div>
-        <h3 v-if="products.length === 0" class="text-center mt-4">
+        <h3 v-if="products.length === 0" class="text-center mb-4">
             Không có sản phẩm nào
         </h3>
         <nav v-if="products.length > 0" aria-label="Page navigation example">
@@ -80,12 +106,15 @@ const itemFit = ref(0);
 
 const products = ref<Products[]>([]);
 
+const sortBy = ref("new");
+
 const fetchProducts = async (page: number) => {
     try {
         const response = await getProductCategory({
             page,
             pageSize: 12,
             search_term: String(name),
+            sort_by: sortBy.value,
         });
 
         products.value = response.data;
@@ -95,6 +124,12 @@ const fetchProducts = async (page: number) => {
     } catch (error) {
         console.error("Error while fetching products:", error);
     }
+};
+
+const updateSort = (sort: string) => {
+    sortBy.value = sort;
+    currentPage.value = 1;
+    fetchProducts(1);
 };
 
 const changePage = (page: number) => {
@@ -179,5 +214,29 @@ fetchProducts(currentPage.value);
     background-color: #f9f9f9;
     pointer-events: none;
     border-color: #ddd;
+}
+
+.btn-sort {
+    padding: 6px 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    color: #333;
+}
+
+.btn-sort:hover {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.btn-sort.active {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
 }
 </style>

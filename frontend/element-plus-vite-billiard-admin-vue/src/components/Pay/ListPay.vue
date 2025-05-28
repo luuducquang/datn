@@ -109,87 +109,119 @@
     </el-card>
     <el-dialog v-model="dialogVisible" title="Thông tin hoá đơn" width="50%">
         <template #default>
-            <p>
-                Bắt đầu:
-                {{ convertDate(dataOrderItem?.timesession?.start_time) }}
-            </p>
-            <p>
-                Kết thúc:
-                {{ convertDate(dataOrderItem?.timesession?.end_time) }}
-            </p>
-            <p>
-                Số giờ:
-                {{
-                    convertTimeToHoursMinute(
-                        String(dataOrderItem?.timesession?.start_time),
-                        String(dataOrderItem?.timesession?.end_time)
-                    )
-                }}
-            </p>
-            <p>
-                Tiền giờ chơi:
-                {{ ConvertPrice(Number(dataOrderItem?.timesession?.price)) }}
-            </p>
-            <p>
-                Tiền dịch vụ:
-                {{ ConvertPrice(Number(dataOrderItem?.total_price)) }}
-            </p>
-            <p>
-                Tiền thanh toán:
-                {{
-                    ConvertPrice(Number(dataOrderItem?.timesession?.price_paid))
-                }}
-            </p>
-            <el-table
-                :data="dataOrderMenuItem"
-                v-if="dataOrderMenuItem.length > 0"
-                class="table-menu-item"
-            >
-                <el-table-column label="Hình ảnh" align="center" prop="image">
-                    <template #default="scope">
-                        <img
-                            :src="apiImage + scope.row.menu_items.image"
-                            alt="Hình ảnh sản phẩm"
-                            class="img-item"
-                        />
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    label="Sản phẩm"
-                    align="center"
-                    prop="unit_price"
+            <el-card id="print-section">
+                <div class="header">
+                    <h1>Q-BILLIARDS CLUB</h1>
+                    <p>Hưng Đạo - Tiên Lữ - Hưng Yên<br />0123.456.789</p>
+                </div>
+
+                <h3 style="text-align: center">
+                    HÓA ĐƠN BÀN {{ dataOrderItem?.table?.table_number }}
+                </h3>
+                <p>
+                    Giờ bắt đầu:
+                    {{ convertDate(dataOrderItem?.timesession?.start_time) }}
+                </p>
+                <p>
+                    Giờ kết thúc:
+                    {{ convertDate(dataOrderItem?.timesession?.end_time) }}
+                </p>
+                <p>
+                    Thời gian sử dụng:
+                    {{
+                        convertTimeToHoursMinute(
+                            String(dataOrderItem?.timesession?.start_time),
+                            String(dataOrderItem?.timesession?.end_time)
+                        )
+                    }}
+                </p>
+
+                <el-table
+                    :data="dataOrderMenuItem"
+                    v-if="dataOrderMenuItem.length > 0"
+                    class="table-menu-item"
                 >
-                    <template #default="scope">
-                        <span>{{ scope.row.menu_items.name }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    label="Số lượng"
-                    align="center"
-                    prop="quantity"
-                >
-                    <template #default="scope">
-                        <span>{{ scope.row.quantity }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="Giá" align="center" prop="unit_price">
-                    <template #default="scope">
-                        <span>{{ ConvertPrice(scope.row.unit_price) }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    label="Tổng giá"
-                    align="center"
-                    prop="total_price"
-                >
-                    <template #default="scope">
-                        <span>{{ ConvertPrice(scope.row.total_price) }}</span>
-                    </template>
-                </el-table-column>
-            </el-table>
+                    <el-table-column
+                        label="Sản phẩm"
+                        align="center"
+                        prop="unit_price"
+                    >
+                        <template #default="scope">
+                            <span>{{ scope.row.menu_items.name }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="Số lượng"
+                        align="center"
+                        prop="quantity"
+                    >
+                        <template #default="scope">
+                            <span>{{ scope.row.quantity }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="Giá"
+                        align="center"
+                        prop="unit_price"
+                    >
+                        <template #default="scope">
+                            <span>{{
+                                ConvertPrice(scope.row.unit_price)
+                            }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        label="Tổng giá"
+                        align="center"
+                        prop="total_price"
+                    >
+                        <template #default="scope">
+                            <span>{{
+                                ConvertPrice(scope.row.total_price)
+                            }}</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <div class="summary">
+                    <p>
+                        Tổng dịch vụ:
+                        {{ ConvertPrice(Number(dataOrderItem?.total_price)) }}
+                    </p>
+                    <p>
+                        Tổng tiền giờ chơi:
+                        {{
+                            ConvertPrice(
+                                Number(dataOrderItem?.timesession?.price)
+                            )
+                        }}
+                    </p>
+                    <p class="total">
+                        Tổng thanh toán:
+                        {{
+                            ConvertPrice(
+                                Number(dataOrderItem?.timesession?.price_paid)
+                            )
+                        }}
+                    </p>
+                </div>
+
+                <div class="footer">
+                    <p>In bởi qbillardclub.com.vn</p>
+                    <p>
+                        Quý khách vui lòng kiểm tra lại hóa đơn trước khi thanh
+                        toán
+                    </p>
+                    <p>Xin chân thành cảm ơn quý khách</p>
+                    <p>Hẹn gặp lại quý khách lần sau</p>
+                </div>
+            </el-card>
         </template>
 
         <template #footer>
+            <el-button type="primary" @click="PayAndPrintInvoice">
+                In hoá đơn
+            </el-button>
             <el-button @click="dialogVisible = false">Đóng</el-button>
         </template>
     </el-dialog>
@@ -256,6 +288,19 @@ const confirmEvent = async (Id: string) => {
             Notification(error.response?.data.detail, "warning");
         }
     }
+};
+
+const PayAndPrintInvoice = async () => {
+    const printContent: any = document.getElementById("print-section");
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent.outerHTML;
+
+    await window.print();
+
+    document.body.innerHTML = originalContent;
+
+    router.push("/pay").then(() => window.location.reload());
 };
 
 const fetchData = async (searchTerm = "") => {

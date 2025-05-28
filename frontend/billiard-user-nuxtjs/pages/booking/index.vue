@@ -552,6 +552,11 @@ import {
 } from "~/services/discount.service";
 
 import { useHead } from "@unhead/vue";
+import {
+    getInformation,
+    updateInformationWalletPoint,
+} from "~/services/information.service";
+import { login } from "~/services/login.service";
 
 useHead({
     title: "Đặt bàn",
@@ -783,6 +788,31 @@ const formatDuration = (seconds: number) => {
 const handleSuccess = async (result: any) => {
     console.log("Thanh toán thành công:", result);
     await updateStatusBooking(idCreatedBooking.value);
+    const customerData = Cookies.get("customer");
+    if (customerData) {
+        const customer = JSON.parse(customerData);
+        const dataUser = await getInformation(customer._id);
+        await updateInformationWalletPoint({
+            _id: customer._id,
+            username: customer.username,
+            password: customer.password,
+            fullname: customer.fullname,
+            email: customer.email,
+            phone: customer.phone,
+            address: customer.address,
+            avatar: customer.avatar,
+            loyalty_points:
+                dataUser.loyalty_points + totalPricePaid.value * 0.2,
+            wallet: Number(dataUser.wallet) - totalPricePaid.value,
+            role_name: customer.role_name,
+        });
+
+        const res = await login({
+            email: String(dataUser.email),
+            password: String(customer.password),
+        });
+        Cookies.set("customer", JSON.stringify(res), { expires: 1 });
+    }
     closeModal();
     Swal.fire("Thông Báo", "Đặt bàn thành công !", "success");
 };
@@ -921,7 +951,7 @@ const fetchData = async () => {
         const resListMenuItem = await getAllMenuItem();
         optionListMenuItems.value = resListMenuItem
             ?.filter(function (item) {
-                return item?.stock_quantity > 0;
+                return item?.stock_quantity > 10;
             })
             ?.map(function ({ _id, name, price, image }) {
                 return {

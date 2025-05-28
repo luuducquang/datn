@@ -74,7 +74,7 @@ def ser_search_table(_data: Searchs):
 
     total_items = table_collection.count_documents(query)
 
-    tables = table_collection.find(query).sort("_id", -1).skip(skip).limit(_data.pageSize)
+    tables = table_collection.find(query).sort("_id", 1).skip(skip).limit(_data.pageSize)
 
     data = []
     for table in tables:

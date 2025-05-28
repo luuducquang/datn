@@ -8,6 +8,7 @@ from config.database import database
 orderitem_collection: Collection = database['OrderItems']
 ordermenuitem_collection: Collection = database['OrderMenuItems']
 timesession_collection: Collection = database['TimeSessions']
+table_collection: Collection = database['Tables']
 
 def ser_get_orderitem():
     datas = []
@@ -67,6 +68,16 @@ def ser_search_orderitems(_data: Searchs):
                 item["timesession"] = None
         else:
             item["timesession"] = None
+
+        if "table_id" in item and item["table_id"]:
+            table = table_collection.find_one({"_id": ObjectId(item["table_id"])})
+            if table:
+                table["_id"] = str(table["_id"])
+                item["table"] = table
+            else:
+                item["table"] = None
+        else:
+            item["table"] = None
 
         data.append(item)
 
