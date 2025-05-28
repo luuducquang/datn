@@ -192,7 +192,7 @@ async function fetchTypeAccount() {
     ruleForm.role_name = String(res[0].role_name);
     optionsTypeAccount.value = res?.map(function ({ _id, role_name }) {
         return {
-            value: _id || 0,
+            value: role_name || 0,
             label: role_name || "",
         };
     });

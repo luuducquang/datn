@@ -346,6 +346,19 @@
                                 <input
                                     class="form-check-input"
                                     type="radio"
+                                    value="wallet"
+                                    v-model="paymentMethod"
+                                    @click="ChangeMethod"
+                                />
+                                <label class="form-check-label" for="wallet">
+                                    Thanh toán bằng ví (Số dư:
+                                    {{ ConvertPrice(dataCustomer?.wallet) }})
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
                                     value="paypal"
                                     v-model="paymentMethod"
                                     @click="ChangeMethod"
@@ -421,10 +434,17 @@ import {
 import {
     getInformation,
     updateInformation,
+    updateInformationWalletPoint,
 } from "~/services/information.service";
 import { login } from "~/services/login.service";
 import { sendOrder } from "~/services/order.service";
 import { getMembershipRank } from "~/store/getMemberShip";
+import { useHead } from "@unhead/vue";
+import ConvertPrice from "~/store/convertprice";
+
+useHead({
+    title: "Đặt hàng",
+});
 
 const router = useRouter();
 
@@ -613,7 +633,7 @@ const handleSuccess = async (result: any) => {
 
         const dataUser = await getInformation(customer._id);
 
-        await updateInformation({
+        await updateInformationWalletPoint({
             _id: customer._id,
             username: customer.username,
             password: customer.password,
@@ -755,6 +775,107 @@ const handleSubmit = async () => {
                                     "Vui lòng thanh toán qua PayPal, sau khi thanh toán đơn hàng sẽ được xử lý.",
                                     "info"
                                 );
+                            } else if (paymentMethod.value === "wallet") {
+                                const dataUser = await getInformation(
+                                    dataCustomer?.value?._id
+                                );
+
+                                const customer = JSON.parse(
+                                    customerData ?? "{}"
+                                );
+                                if (
+                                    dataUser.wallet >=
+                                    Number(totalPrice.value) *
+                                        (1 -
+                                            (getMembershipRank(
+                                                dataCustomer.value
+                                                    ?.loyalty_points
+                                            ).voucher +
+                                                Number(discountAmount.value)) /
+                                                100) +
+                                        30000
+                                ) {
+                                    await checkAndUpdateQuantityItems(
+                                        listitems
+                                    );
+                                    await sendOrder({
+                                        status: "Đang xử lý",
+                                        sell_date: getDefaultDateTime(),
+                                        total_price:
+                                            Number(totalPrice.value) *
+                                                (1 -
+                                                    (getMembershipRank(
+                                                        dataCustomer.value
+                                                            ?.loyalty_points
+                                                    ).voucher +
+                                                        Number(
+                                                            discountAmount.value
+                                                        )) /
+                                                        100) +
+                                            30000,
+                                        name: formData.value.hoTen,
+                                        address: `${countryName.name}-${districtName.name}-${wardName.name}`,
+                                        email: formData.value.email,
+                                        phone: formData.value.soDienThoai,
+                                        address_detail: formData.value.diaChi,
+                                        user_id: customer._id,
+                                        sell_items: listJsonBuy,
+                                        is_paid: true,
+                                    });
+                                    await deleteManyCarts(listIdDel);
+                                    Swal.fire(
+                                        "Thành công",
+                                        "Đặt hàng thành công!",
+                                        "success"
+                                    );
+
+                                    await updateInformationWalletPoint({
+                                        _id: customer?._id,
+                                        username: customer?.username,
+                                        password: customer?.password,
+                                        fullname: customer?.fullname,
+                                        email: customer?.email,
+                                        phone: customer?.phone,
+                                        address: customer?.address,
+                                        avatar: customer?.avatar,
+                                        loyalty_points: Number(
+                                            dataUser.loyalty_points +
+                                                (Number(totalPrice.value) *
+                                                    (1 -
+                                                        getMembershipRank(
+                                                            customer?.loyalty_points
+                                                        ).voucher /
+                                                            100) +
+                                                    30000) *
+                                                    0.2
+                                        ),
+                                        wallet: Number(
+                                            Number(dataUser.wallet) -
+                                                Number(totalPricePaid.value)
+                                        ),
+                                        role_name: customer.role_name,
+                                    });
+
+                                    const res = await login({
+                                        email: String(dataUser.email),
+                                        password: String(customer.password),
+                                    });
+                                    Cookies.set(
+                                        "customer",
+                                        JSON.stringify(res),
+                                        { expires: 1 }
+                                    );
+
+                                    setTimeout(() => {
+                                        router.replace("/");
+                                    }, 1500);
+                                } else {
+                                    Swal.fire(
+                                        "Thông báo",
+                                        "Số dư của bạn không đủ, không thể thanh toán.",
+                                        "info"
+                                    );
+                                }
                             }
                         } catch (error) {
                             if (axios.isAxiosError(error)) {

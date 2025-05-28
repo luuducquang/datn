@@ -48,6 +48,11 @@ import { useRouter } from "vue-router";
 import { type Products, type Cart } from "~/constant/api";
 import { getGioHangByIdTaiKhoan } from "~/services/cart.service";
 import { getProductRecomend } from "~/services/detail.service";
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Giỏ hàng'
+})
 
 const router = useRouter();
 

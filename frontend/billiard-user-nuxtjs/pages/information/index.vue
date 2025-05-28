@@ -128,6 +128,11 @@ import { uploadImage } from "~/services/upload.service";
 import { login } from "~/services/login.service";
 import { getMembershipRank } from "~/store/getMemberShip";
 import Swal from "sweetalert2";
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Thông tin tài khoản'
+})
 
 interface FormData {
     hoTen: string;

@@ -62,9 +62,9 @@
                             height="200"
                         />
                         <div class="p-3">
-                            <h5>
+                            <NuxtLink :to="`/detail/${item?.product?._id}`">
                                 {{ item.product ? item.product.item_name : "" }}
-                            </h5>
+                            </NuxtLink>
                             <div>
                                 Số lượng:
                                 {{ item.quantity }}
@@ -157,5 +157,9 @@ const cancelOrder = (id: number) => {
 
 .btn_cancel:hover {
     opacity: 0.8;
+}
+
+a{
+    font-size: 20px;
 }
 </style>

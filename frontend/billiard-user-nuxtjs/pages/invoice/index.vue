@@ -15,6 +15,11 @@ import Cookies from "js-cookie";
 import { useRouter } from "vue-router";
 import { type BillSells } from "~/constant/api";
 import { getInvoiceAll } from "~/services/invoice.service";
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Đơn hàng'
+})
 
 const router = useRouter();
 

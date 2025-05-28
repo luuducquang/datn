@@ -105,6 +105,36 @@ def ser_update_user(_data: Users, user_collection: Collection):
     return {"message": "User updated successfully"}
 
 
+def ser_update_user_and_wallet(_data: Users, user_collection: Collection):
+    if not _data.id:
+        raise HTTPException(status_code=400, detail="ID is required for update")
+
+    try:
+        object_id = ObjectId(_data.id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid ID format")
+
+    existing_user = user_collection.find_one({"_id": object_id})
+    if not existing_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    update_data = _data.dict(exclude={"id", "is_verified", "created_at", "password"})
+
+    if _data.password:
+        update_data["password"] = hash_password(_data.password)
+    else:
+        update_data["password"] = existing_user["password"]
+
+    updated_user = user_collection.update_one(
+        {"_id": object_id},
+        {"$set": update_data}
+    )
+
+    if updated_user.modified_count == 0:
+        raise HTTPException(status_code=400, detail="Update failed or no changes made")
+
+    return {"message": "User updated successfully"}
+
 
 def ser_delete_user(user_id: str, user_collection: Collection):
     if not ObjectId.is_valid(user_id):

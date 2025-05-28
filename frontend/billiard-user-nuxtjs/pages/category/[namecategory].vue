@@ -65,9 +65,15 @@ import { ref } from "vue";
 import { type Products } from "~/constant/api";
 import { getProductCategory } from "~/services/category.service";
 
+import { useHead } from '@unhead/vue'
+
+
 const route = useRoute();
 const name = route.params.namecategory;
 
+useHead({
+  title: `${name}`
+})
 const currentPage = ref(1);
 const totalPages = ref(1);
 

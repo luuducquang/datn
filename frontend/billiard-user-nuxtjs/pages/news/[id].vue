@@ -23,6 +23,7 @@ import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
 import { type News } from "~/constant/api";
 import { getNewById } from "~/services/new.service";
+import { useHead } from "@unhead/vue";
 
 const route = useRoute();
 const id = route.params.id;
@@ -33,6 +34,10 @@ const fetchNewDetail = async (id: string) => {
     try {
         const res = await getNewById(id);
         dataNewDetail.value = res;
+
+        useHead({
+            title: `${dataNewDetail?.value ? dataNewDetail?.value?.title:""}`,
+        });
     } catch (error) {
         console.error("Error while fetching data:", error);
     }

@@ -70,6 +70,11 @@ import { useRoute, useRouter } from "vue-router";
 import { resetPasswordWithOtp } from "~/services/registry.service";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Quên mật khẩu'
+})
 
 definePageMeta({
     layout: "onlychildren",

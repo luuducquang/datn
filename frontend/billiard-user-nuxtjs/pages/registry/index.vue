@@ -130,6 +130,11 @@ import { useRouter } from "vue-router";
 import { registryUser } from "~/services/registry.service";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Đăng ký tài khoản'
+})
 
 definePageMeta({
     layout: "onlychildren",

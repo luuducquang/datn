@@ -8,8 +8,15 @@ export const getInformation = async (id: string): Promise<Account> => {
 };
 
 export const updateInformation = async (
-    data: Record<string, string,number | [object]>
+    data: Record<string, string, number | [object]>
 ): Promise<Account> => {
     const res = await apiClient?.put(`${AccountUrl}/update`, data);
+    return res?.data;
+};
+
+export const updateInformationWalletPoint = async (
+    data: Record<string, string, number | [object]>
+): Promise<Account> => {
+    const res = await apiClient?.put(`${AccountUrl}/updateuserwallet`, data);
     return res?.data;
 };

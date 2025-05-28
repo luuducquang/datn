@@ -101,8 +101,8 @@
 
                                 <div v-if="isStatusTable" class="row g-3">
                                     <p class="fw-bold">
-                                        Lưu ý: Bàn này có người đang chơi vui lòng
-                                        chọn thời gian bắt đầu sau 4 tiếng
+                                        Lưu ý: Bàn này có người đang chơi vui
+                                        lòng chọn thời gian bắt đầu sau 4 tiếng
                                     </p>
                                 </div>
 
@@ -407,12 +407,10 @@
                                     {{
                                         ConvertPrice(
                                             Number(
-                                                    Number(
-                                                        dataDetailTable
-                                                            ?.pricingrule
-                                                            ?.rate_per_hour
-                                                    ) *
-                                                        Number(duration / 3600)
+                                                Number(
+                                                    dataDetailTable?.pricingrule
+                                                        ?.rate_per_hour
+                                                ) * Number(duration / 3600)
                                             ) *
                                                 (Number(
                                                     getMembershipRank(
@@ -434,12 +432,10 @@
                                     {{
                                         ConvertPrice(
                                             (Number(
-                                                    Number(
-                                                        dataDetailTable
-                                                            ?.pricingrule
-                                                            ?.rate_per_hour
-                                                    ) *
-                                                        Number(duration / 3600)
+                                                Number(
+                                                    dataDetailTable?.pricingrule
+                                                        ?.rate_per_hour
+                                                ) * Number(duration / 3600)
                                             ) *
                                                 Number(discountAmount)) /
                                                 100
@@ -449,7 +445,11 @@
 
                                 <p class="form-label fw-bold mb-3">
                                     Tổng tiền :
-                                    {{ ConvertPrice(totalPricePaid + getTotalAmount()) }}
+                                    {{
+                                        ConvertPrice(
+                                            totalPricePaid + getTotalAmount()
+                                        )
+                                    }}
                                 </p>
 
                                 <h4 class="form-label fw-bold mb-3">
@@ -551,6 +551,12 @@ import {
     getDiscountUseCode,
 } from "~/services/discount.service";
 
+import { useHead } from "@unhead/vue";
+
+useHead({
+    title: "Đặt bàn",
+});
+
 const getDefaultDateTime = () => {
     const now = new Date();
     const vietnamTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);
@@ -616,7 +622,7 @@ const openModal = async (id: string, status: boolean) => {
     const vietnamTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);
     if (status) {
         const startTimeAfter4Hours = new Date(
-            vietnamTime.getTime() + 4 * 60 * 60 * 1000
+            vietnamTime.getTime() + 5 * 60 * 60 * 1000
         );
         const formattedStartTime = startTimeAfter4Hours
             .toISOString()
@@ -695,7 +701,7 @@ const totalPricePaid = computed(() => {
         ) +
             Number(discountAmount.value || 0)) /
         100;
-    return (timeCost) * (1 - discountPercent);
+    return timeCost * (1 - discountPercent);
 });
 
 const addService = () => {

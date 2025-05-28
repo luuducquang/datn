@@ -20,6 +20,11 @@ import Cookies from "js-cookie";
 import { useRouter } from "vue-router";
 import { type Bookings } from "~/constant/api";
 import { getBookingByID } from "~/services/mybooking.service";
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Đặt bàn'
+})
 
 const router = useRouter();
 

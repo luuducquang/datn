@@ -42,10 +42,15 @@ import { useRouter } from "vue-router";
 import { sendForgotPasswordOtp } from "~/services/registry.service";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useHead } from '@unhead/vue'
 
 definePageMeta({
     layout: "onlychildren",
 });
+
+useHead({
+  title: 'Quên mật khẩu'
+})
 
 const email = ref("");
 const loading = ref(false);

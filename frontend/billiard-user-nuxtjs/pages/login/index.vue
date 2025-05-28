@@ -84,6 +84,11 @@ import { login } from "~/services/login.service";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Đăng nhập'
+})
 
 definePageMeta({
     layout: "onlychildren",

@@ -286,6 +286,7 @@ import { useCartStore } from "~/store";
 import { checkQuantityItems } from "~/services/home.service";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useHead } from "@unhead/vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -300,6 +301,12 @@ const fetchProductDetail = async () => {
     try {
         const res = await getProductById(String(id));
         productDetail.value = res;
+        
+        useHead({
+            title: `${
+                productDetail?.value ? productDetail?.value?.item_name : ""
+            }`,
+        });
     } catch (error) {
         console.error("Error while fetching product detail:", error);
     }

@@ -68,6 +68,11 @@ import { maskEmail } from "~/store/maskEmail";
 import { sentOtp, verifyOtp } from "~/services/registry.service";
 import { login } from "~/services/login.service";
 import Swal from "sweetalert2";
+import { useHead } from "@unhead/vue";
+
+useHead({
+    title: "Xác thực tài khoản",
+});
 
 definePageMeta({
     layout: "onlychildren",
@@ -150,7 +155,6 @@ const handleResendOtp = async () => {
         await sentOtp({ email: email.value });
         Swal.fire("Thông báo", "Mã OTP đã được gửi lại!", "info");
         startCountdown();
-        
     } catch (err) {
         Swal.fire("Thông báo", "Gửi lại OTP thất bại!", "warning");
     } finally {

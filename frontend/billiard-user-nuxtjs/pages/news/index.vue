@@ -61,6 +61,11 @@
 import { ref, onMounted } from "vue";
 import { type News } from "~/constant/api";
 import { getNews } from "~/services/new.service";
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Tin tức'
+})
 
 const currentPage = ref(1);
 const totalPages = ref(1);

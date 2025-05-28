@@ -220,6 +220,7 @@ import Cookies from "js-cookie";
 import {
     getInformation,
     updateInformation,
+    updateInformationWalletPoint,
 } from "~/services/information.service";
 import { updateStatusBooking } from "~/services/booking.service";
 import {
@@ -274,7 +275,7 @@ async function handleCancelBooking(
                 const dataUser = await getInformation(customer._id);
 
                 if (isBefore2Hours && money_paid > 0) {
-                    await updateInformation({
+                    await updateInformationWalletPoint({
                         _id: customer._id,
                         username: customer.username,
                         password: customer.password,
