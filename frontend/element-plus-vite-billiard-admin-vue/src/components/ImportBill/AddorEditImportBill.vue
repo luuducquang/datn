@@ -447,7 +447,7 @@ const handlerAddDetail = async () => {
                 );
                 await updateImportBill({
                     _id: String(route.params.id),
-                    user_id: store.user._id,
+                    user_id: String(store?.user?._id),
                     supplier_id: String(ruleForm.supplier_id),
                     import_date: getCurrentDateTime(),
                     total_price: Number(totalTongTien),
@@ -506,7 +506,7 @@ const updateTotalPrice = async (row: TableImportBill) => {
             );
             await updateImportBill({
                 _id: String(route.params.id),
-                user_id: store.user._id,
+                user_id: String(store?.user?._id),
                 supplier_id: String(ruleForm.supplier_id),
                 import_date: getCurrentDateTime(),
                 total_price: Number(totalTongTien),
@@ -542,7 +542,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
             if (route.params.id) {
                 await updateImportBill({
                     _id: String(route.params.id),
-                    user_id: store.user._id,
+                    user_id: String(store?.user?._id),
                     supplier_id: String(ruleForm.supplier_id),
                     import_date: getCurrentDateTime(),
                     total_price: Number(String(ruleForm.total_price)),
@@ -563,7 +563,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 } else {
                     try {
                         await createImportBill({
-                            user_id: store.user._id,
+                            user_id: String(store?.user?._id),
                             supplier_id: String(ruleForm.supplier_id),
                             import_date: getCurrentDateTime(),
                             total_price: Number(String(ruleForm.total_price)),

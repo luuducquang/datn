@@ -34,7 +34,7 @@ def login(request_data: LoginRegisterRequest):
     if not user["is_verified"]:
         raise HTTPException(status_code=403, detail="Tài khoản chưa được xác thực")
 
-    token = generate_token(request_data.email)
+    token = generate_token(request_data.email,user.get("role_name", ""))
 
     return {
         "_id": str(user.get("_id")),

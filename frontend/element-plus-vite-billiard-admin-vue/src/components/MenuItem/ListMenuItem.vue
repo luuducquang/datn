@@ -64,6 +64,7 @@
                         Edit
                     </el-button>
                     <el-popconfirm
+                        v-if="checkIsAdmin()"
                         confirm-button-text="Yes"
                         cancel-button-text="No"
                         icon-color="#626AEF"
@@ -100,6 +101,7 @@ import { apiImage } from "~/constant/request";
 import router from "~/router";
 import { ElMessage } from "element-plus";
 import ConvertPrice from "~/utils/convertprice";
+import { checkIsAdmin } from "~/utils/checkRole";
 
 const search = ref("");
 const loading = ref(false);

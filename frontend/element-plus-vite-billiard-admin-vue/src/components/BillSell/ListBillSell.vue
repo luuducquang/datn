@@ -1,6 +1,6 @@
 <template>
     <el-card class="card_content" v-loading="loading">
-        <div class="button_add">
+        <div class="button_add" v-if="checkIsAdmin()">
             <el-button @click="handlerAdd" type="primary"
                 ><el-icon><CirclePlus /></el-icon
             ></el-button>
@@ -50,12 +50,13 @@
             </el-table-column>
             <el-table-column label="Trạng thái" align="center" prop="status">
                 <template #default="scope">
-                    <div :class="scope.row.status != 'Huỷ đơn' ? 'paid' : 'unpaid'">
-                        <p
-                        >
-                            {{
-                                scope.row.status
-                            }}
+                    <div
+                        :class="
+                            scope.row.status != 'Huỷ đơn' ? 'paid' : 'unpaid'
+                        "
+                    >
+                        <p>
+                            {{ scope.row.status }}
                         </p>
                     </div>
                 </template>
@@ -64,8 +65,7 @@
             <el-table-column label="Thanh toán" align="center" prop="is_paid">
                 <template #default="scope">
                     <div :class="scope.row.status ? 'paid' : 'unpaid'">
-                        <p
-                        >
+                        <p>
                             {{
                                 scope.row.status
                                     ? "Đã thanh toán"
@@ -98,6 +98,7 @@
                         icon-color="#626AEF"
                         title="Bạn có muốn xoá không?"
                         @confirm="() => confirmEvent(scope.row._id)"
+                        v-if="checkIsAdmin()"
                     >
                         <template #reference>
                             <el-button size="small" type="danger">
@@ -129,6 +130,7 @@ import { deleteBillSell, searchBillSell } from "~/services/billsell.service";
 import router from "~/router";
 import { ElMessage } from "element-plus";
 import { convertDate } from "~/utils/convertDate";
+import { checkIsAdmin } from "~/utils/checkRole";
 
 const search_term = ref("");
 const loading = ref(false);

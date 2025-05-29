@@ -22,3 +22,8 @@ export const getInventoryItem = async (): Promise<any> => {
     const res = await apiClient?.get(`${StatisticUrl}/inventory-item`);
     return res?.data;
 };
+
+export const getLowStock = async (): Promise<any> => {
+    const res = await apiClient?.get(`${StatisticUrl}/low-stock`);
+    return res?.data;
+};

@@ -9,7 +9,8 @@ from sercurity import validate_token
 
 
 router = APIRouter()
-# dependencies=[Depends(validate_token)]
+
+# @router.post("/products/search", dependencies=[Depends(require_role(["ADMIN"]))])
 
 user_collection: Collection = database['Users']
 

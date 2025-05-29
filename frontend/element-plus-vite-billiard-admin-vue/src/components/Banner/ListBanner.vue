@@ -1,6 +1,6 @@
 <template>
     <el-card class="card_content" v-loading="loading">
-        <div class="button_add">
+        <div v-if="checkIsAdmin()" class="button_add">
             <el-button @click="handlerAdd" type="primary"
                 ><el-icon><CirclePlus /></el-icon
             ></el-button>
@@ -30,6 +30,7 @@
                         icon-color="#626AEF"
                         title="Bạn có muốn xoá không?"
                         @confirm="() => confirmEvent(scope.row._id)"
+                        v-if="checkIsAdmin()"
                     >
                         <template #reference>
                             <el-button size="small" type="danger">
@@ -59,6 +60,7 @@ import { Banner } from "~/constant/api";
 import { deleteBanner, searchBanner } from "~/services/banner.service";
 import router from "~/router";
 import { ElMessage } from "element-plus";
+import { checkIsAdmin } from "~/utils/checkRole";
 
 const tableData = ref<Banner[]>([]);
 const loading = ref(false);

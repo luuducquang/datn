@@ -98,12 +98,14 @@
                 </template>
                 <template #default="scope">
                     <el-button
+                        v-if="scope.row.status === true"
                         size="small"
                         @click="handleEdit(scope.$index, scope.row)"
                     >
                         Info
                     </el-button>
                     <el-popconfirm
+                        v-if="checkIsAdmin()"
                         confirm-button-text="Yes"
                         cancel-button-text="No"
                         icon-color="#626AEF"
@@ -242,6 +244,7 @@ import {
     setFalseStatusBooking,
 } from "~/services/booking.service";
 import { getBookingItemByIDBooking } from "~/services/bookingitem.service";
+import { checkIsAdmin } from "~/utils/checkRole";
 
 const search = ref("");
 const loading = ref(false);

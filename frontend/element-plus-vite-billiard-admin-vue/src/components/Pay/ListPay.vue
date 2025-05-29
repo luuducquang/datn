@@ -83,6 +83,7 @@
                         Info
                     </el-button>
                     <el-popconfirm
+                        v-if="checkIsAdmin()"
                         confirm-button-text="Yes"
                         cancel-button-text="No"
                         icon-color="#626AEF"
@@ -241,6 +242,7 @@ import ConvertPrice from "~/utils/convertprice";
 import { convertTimeToHoursMinute } from "~/utils/convertTimeToHoursMinute";
 import { getbyOrderId } from "~/services/ordermenuitem.service";
 import axios from "axios";
+import { checkIsAdmin } from "~/utils/checkRole";
 
 const search = ref("");
 const loading = ref(false);

@@ -8,12 +8,13 @@ from datetime import datetime, timedelta
 SECURITY_ALGORITHM = 'HS256'
 SECRET_KEY = '123456'
 
-def generate_token(email: Union[str, Any]) -> str:
+def generate_token(email: Union[str, Any], role_name: str) -> str:
     expire = datetime.now() + timedelta(
         seconds=60 * 60 * 24 * 3 
     )
     to_encode = {
-        "exp": expire, "email": email
+        "exp": expire, "email": email,
+        "role_name": role_name
     }
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=SECURITY_ALGORITHM)
     return encoded_jwt

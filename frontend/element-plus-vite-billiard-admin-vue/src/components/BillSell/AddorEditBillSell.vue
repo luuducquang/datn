@@ -107,7 +107,7 @@
                     />
                 </el-form-item>
 
-                <el-form-item>
+                <el-form-item v-if="checkIsAdmin()">
                     <div class="list_btn">
                         <el-icon
                             @click="handlerAddDetail"
@@ -177,6 +177,7 @@
                                 Edit
                             </el-button> -->
                             <el-popconfirm
+                                v-if="checkIsAdmin()"
                                 confirm-button-text="Yes"
                                 cancel-button-text="No"
                                 icon-color="#626AEF"
@@ -306,6 +307,7 @@ import { watch } from "vue";
 import { getAllProduct } from "~/services/product.service";
 import { getCurrentDateTime } from "~/utils/getTimeCurrent";
 import axios from "axios";
+import { checkIsAdmin } from "~/utils/checkRole";
 
 const formSize = ref<ComponentSize>("default");
 const ruleFormRef = ref<FormInstance>();
@@ -451,7 +453,9 @@ const PrintInvoice = async () => {
 
     document.body.innerHTML = originalContent;
 
-    router.push(`/billsell/edit/${route.params.id}`).then(() => window.location.reload());
+    router
+        .push(`/billsell/edit/${route.params.id}`)
+        .then(() => window.location.reload());
 };
 
 const handleProductChange = (value: any) => {

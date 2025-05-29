@@ -57,10 +57,11 @@ import { onMounted, ref } from "vue";
 import Cookies from "js-cookie";
 import { getGioHangByIdTaiKhoan } from "~/services/cart.service";
 import { useCartStore } from "~/store";
+import { useHead } from "@unhead/vue";
 
-// useHead({
-//     title: "Trang chủ",
-// });
+useHead({
+    title: "Trang chủ",
+});
 
 const productNew = ref<Products[]>([]);
 const productCoBan = ref<Products[]>([]);

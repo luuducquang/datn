@@ -13,6 +13,52 @@
                     </el-card>
                 </el-col>
             </el-row>
+            <el-row :gutter="20" class="chart-row" style="margin-top: 20px">
+                <el-col :span="24">
+                    <el-card>
+                        <h2>Sản phẩm sắp hết hàng (dưới 10 sản phẩm)</h2>
+                        <div class="table-scroll-wrapper">
+                            <el-table
+                                class="low-stock-card"
+                                :data="lowStockProducts"
+                            >
+                                <el-table-column
+                                    label="Ảnh"
+                                    width="200"
+                                    header-align="center"
+                                    align="center"
+                                >
+                                    <template #default="{ row }">
+                                        <el-image
+                                            style="width: 100px; height: 100px"
+                                            :src="apiImage + row.image"
+                                            fit="contain"
+                                        />
+                                    </template>
+                                </el-table-column>
+
+                                <el-table-column
+                                    prop="name"
+                                    label="Tên sản phẩm"
+                                />
+
+                                <el-table-column
+                                    prop="quantity"
+                                    label="Tồn kho"
+                                    header-align="center"
+                                    align="center"
+                                />
+
+                                <el-table-column prop="price" label="Giá">
+                                    <template #default="{ row }">
+                                        <p>{{ formatCurrency(row.price) }}</p>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-row>
             <el-row :gutter="20" class="chart-row">
                 <el-col :span="24">
                     <el-card>
@@ -55,11 +101,14 @@ import * as echarts from "echarts";
 import { ref, onMounted } from "vue";
 import {
     getInventoryItem,
+    getLowStock,
     getOverview,
     getPlaytime,
     getRevenue,
 } from "~/services/statistic.service";
 import ConvertPrice from "~/utils/convertprice";
+import { apiImage } from "~/constant/request";
+import { ro } from "element-plus/es/locale";
 
 const formatCurrency = (value: any) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -75,6 +124,8 @@ const revenueData = ref<any>([]);
 const playTimeData = ref<any>([]);
 
 const inventoryData = ref<any>([]);
+
+const lowStockProducts = ref([]);
 
 onMounted(() => {
     Fetchdata();
@@ -234,6 +285,10 @@ const Fetchdata = async () => {
         },
     };
     chartImventory.setOption(optionImventory);
+
+    // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    const resLowStock = await getLowStock();
+    lowStockProducts.value = resLowStock;
 };
 </script>
 
@@ -266,5 +321,21 @@ const Fetchdata = async () => {
 
 .chart-row {
     margin-top: 20px;
+}
+
+.low-stock-card {
+    height: 530px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.low-stock-card h2 {
+    margin-bottom: 10px;
+}
+
+.table-scroll-wrapper {
+    flex: 1;
+    overflow-y: auto;
 }
 </style>

@@ -38,6 +38,7 @@
                         Edit
                     </el-button>
                     <el-popconfirm
+                        v-if="checkIsAdmin()"
                         confirm-button-text="Yes"
                         cancel-button-text="No"
                         icon-color="#626AEF"
@@ -73,6 +74,7 @@ import { Suppliers } from "~/constant/api";
 import { deleteSuppliers, searchSuppliers } from "~/services/supplier.service";
 import router from "~/router";
 import { ElMessage } from "element-plus";
+import { checkIsAdmin } from "~/utils/checkRole";
 
 const search = ref("");
 const loading = ref(false);

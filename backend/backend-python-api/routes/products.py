@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pymongo.collection import Collection
 from config.database import database
 from schemas.schemas import Products, Searchs, CheckorUpdateQuantityRequest
+from sercurity import require_role
 from service.products import ser_check_and_update_quantities, ser_check_quantities, ser_getbyid_product,ser_search_product,ser_get_product,ser_delete_product, ser_insert_product, ser_update_product
 
 
@@ -17,6 +18,7 @@ async def get_product():
 async def get_product_by_id(product_id: str):
     return ser_getbyid_product(product_id)
 
+# @router.post("/products/search", dependencies=[Depends(require_role(["ADMIN"]))])
 @router.post("/products/search")
 async def search_product(_data:Searchs):
     return ser_search_product(_data)

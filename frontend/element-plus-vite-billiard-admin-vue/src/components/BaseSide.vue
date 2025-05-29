@@ -19,7 +19,7 @@
             <router-link to="/statistic" class="menu-link">
                 <el-menu-item index="2">Thống kê</el-menu-item>
             </router-link>
-            <router-link to="/discount" class="menu-link">
+            <router-link v-if="checkIsAdmin()" to="/discount" class="menu-link">
                 <el-menu-item index="3">Mã giảm giá</el-menu-item>
             </router-link>
             <router-link to="/ratebooking" class="menu-link">
@@ -36,7 +36,7 @@
                 <span class="fw-bold">Hoá đơn</span>
             </template>
             <router-link to="/pay" class="menu-link">
-                <el-menu-item index="20">Thanh toán</el-menu-item>
+                <el-menu-item index="20">Hoá đơn bàn</el-menu-item>
             </router-link>
             <router-link to="/billsell" class="menu-link">
                 <el-menu-item index="8">Đơn hàng bán</el-menu-item>
@@ -46,7 +46,7 @@
             </router-link>
         </el-sub-menu>
 
-        <el-sub-menu index="5-6-7">
+        <el-sub-menu v-if="checkIsAdmin()" index="5-6-7">
             <template #title>
                 <el-icon><Box /></el-icon>
                 <span class="fw-bold">Quản lý bàn</span>
@@ -115,7 +115,7 @@
             </router-link>
         </el-sub-menu>
 
-        <el-sub-menu index="18-19">
+        <el-sub-menu v-if="checkIsAdmin()" index="18-19">
             <template #title>
                 <el-icon><User /></el-icon>
                 <span class="fw-bold">Tài khoản</span>
@@ -143,6 +143,7 @@ import {
     Box,
     Tickets,
 } from "@element-plus/icons-vue";
+import { checkIsAdmin } from "~/utils/checkRole";
 
 const isCollapse = ref(false);
 const route = useRoute();
@@ -192,11 +193,9 @@ const handleClose = (key: string, keyPath: string[]) => {};
         text-decoration: none;
         outline: none;
     }
-
-    
 }
 .ep-menu {
-        overflow: auto;
-        padding-bottom: 10%;
-    }
+    overflow: auto;
+    padding-bottom: 10%;
+}
 </style>

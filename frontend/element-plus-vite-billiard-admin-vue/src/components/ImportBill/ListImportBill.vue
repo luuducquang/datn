@@ -55,12 +55,14 @@
                 </template>
                 <template #default="scope">
                     <el-button
+                        v-if="checkIsAdmin()"
                         size="small"
                         @click="handleEdit(scope.$index, scope.row)"
                     >
                         Edit
                     </el-button>
                     <el-popconfirm
+                        v-if="checkIsAdmin()"
                         confirm-button-text="Yes"
                         cancel-button-text="No"
                         icon-color="#626AEF"
@@ -99,6 +101,7 @@ import {
 import router from "~/router";
 import { ElMessage } from "element-plus";
 import { convertDate } from "~/utils/convertDate";
+import { checkIsAdmin } from "~/utils/checkRole";
 
 const search = ref("");
 const loading = ref(false);

@@ -297,3 +297,36 @@ def get_quantity_item() -> List[Dict]:
     ]
 
     return product_data + menuitem_data
+
+def get_low_stock_products():
+    products = products_collection.find(
+        {"quantity_available": {"$lt": 10}},
+        {"item_name": 1, "image": 1, "quantity_available": 1, "price": 1}
+    )
+
+    product_data = [
+        {
+            "name": p.get("item_name", "Không tên"),
+            "image": p.get("image", ""),
+            "quantity": p.get("quantity_available", 0),
+            "price": p.get("price", 0)
+        }
+        for p in products
+    ]
+
+    menuitems = menuitems_collection.find(
+        {"stock_quantity": {"$lt": 10}},
+        {"name": 1, "image": 1, "stock_quantity": 1, "price": 1}
+    )
+
+    menuitem_data = [
+        {
+            "name": m.get("name", "Không tên"),
+            "image": m.get("image", ""),
+            "quantity": m.get("stock_quantity", 0),
+            "price": m.get("price", 0)
+        }
+        for m in menuitems
+    ]
+
+    return product_data + menuitem_data

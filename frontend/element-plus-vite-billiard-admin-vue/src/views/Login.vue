@@ -123,7 +123,10 @@ const handleSubmit = async () => {
                     ) {
                         loading.value = false;
                         userStore.setUser(res);
-                        router.push("/");
+                        router.push("/").then(() => {
+                            window.location.reload();
+                        });
+
                         Notification(
                             `Đăng nhập thành công. Xin chào, ${res?.fullname}`,
                             "success"
