@@ -456,7 +456,6 @@ import {
 } from "~/services/home.service";
 import {
     getInformation,
-    updateInformation,
     updateInformationWalletPoint,
 } from "~/services/information.service";
 import { login } from "~/services/login.service";

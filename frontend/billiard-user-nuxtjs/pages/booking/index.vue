@@ -112,24 +112,51 @@
                                             >Thời gian bắt đầu</label
                                         >
                                         <input
+                                            type="date"
+                                            class="form-control rounded-3 mb-2"
+                                            v-model="startDate"
                                             :disabled="idCreatedBooking != ''"
-                                            type="datetime-local"
-                                            class="form-control rounded-3"
-                                            v-model="startTime"
                                             required
                                         />
+                                        <select
+                                            class="form-control rounded-3"
+                                            v-model="startHour"
+                                            :disabled="idCreatedBooking != ''"
+                                        >
+                                            <option
+                                                v-for="time in timeSlots"
+                                                :key="time"
+                                                :value="time"
+                                            >
+                                                {{ time }}
+                                            </option>
+                                        </select>
                                     </div>
+
                                     <div class="col-md-6">
                                         <label class="form-label fw-bold"
                                             >Thời gian kết thúc</label
                                         >
                                         <input
+                                            type="date"
+                                            class="form-control rounded-3 mb-2"
+                                            v-model="endDate"
                                             :disabled="idCreatedBooking != ''"
-                                            type="datetime-local"
-                                            class="form-control rounded-3"
-                                            v-model="endTime"
                                             required
                                         />
+                                        <select
+                                            class="form-control rounded-3"
+                                            v-model="endHour"
+                                            :disabled="idCreatedBooking != ''"
+                                        >
+                                            <option
+                                                v-for="time in timeSlots"
+                                                :key="time"
+                                                :value="time"
+                                            >
+                                                {{ time }}
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -184,7 +211,7 @@
                                                 :disabled="
                                                     idCreatedBooking != ''
                                                 "
-                                                class="btn btn-primary w-100"
+                                                class="btn btn-primary w-100 btn-success"
                                                 type="button"
                                                 @click="addService"
                                             >
@@ -347,7 +374,7 @@
                                     <div class="col-md-4">
                                         <button
                                             type="button"
-                                            class="btn btn-primary w-80"
+                                            class="btn btn-primary w-80 btn-success"
                                             @click="applyVoucher"
                                         >
                                             Áp dụng
@@ -537,9 +564,7 @@
 
                                 <div class="text-center">
                                     <button
-                                        v-show="
-                                            !isPaypal && !momoPayUrl
-                                        "
+                                        v-show="!isPaypal && !momoPayUrl"
                                         type="submit"
                                         class="btn btn-success px-5"
                                     >
@@ -632,16 +657,11 @@ import {
 } from "~/services/information.service";
 import { login } from "~/services/login.service";
 import { captureMomoOrder, createMomoOrder } from "~/services/momo.service";
+import { getTodayDate } from "~/store/getToDate";
 
 useHead({
     title: "Đặt bàn",
 });
-
-const getDefaultDateTime = () => {
-    const now = new Date();
-    const vietnamTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);
-    return vietnamTime.toISOString().slice(0, 16);
-};
 
 const dataDetailTable = ref<Tables | null>(null);
 const duration = ref<number>(0);
@@ -655,8 +675,8 @@ const searchBookingData = ref<Bookings[]>([]);
 const loading = ref(true);
 const customerName = ref("");
 const customerPhone = ref("");
-const startTime = ref(getDefaultDateTime());
-const endTime = ref(getDefaultDateTime());
+// const startTime = ref(getDefaultDateTime());
+// const endTime = ref(getDefaultDateTime());
 const selectedTableId = ref("");
 const isModalOpen = ref(false);
 const idCreatedBooking = ref("");
@@ -669,6 +689,10 @@ const paymentMethod = ref("wallet");
 const momoPayUrl = ref("");
 const orderId = ref("");
 const isPaypal = ref(false);
+const startDate = ref("");
+const endDate = ref("");
+const startHour = ref("00");
+const endHour = ref("01");
 
 const router = useRouter();
 
@@ -706,44 +730,6 @@ const openModal = async (id: string, status: boolean) => {
     const resIdTable = await getTableById(id);
     dataDetailTable.value = resIdTable;
     isStatusTable.value = status;
-
-    const now = new Date();
-    const vietnamTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);
-    if (status) {
-        const startTimeAfter4Hours = new Date(
-            vietnamTime.getTime() + 5 * 60 * 60 * 1000
-        );
-        const formattedStartTime = startTimeAfter4Hours
-            .toISOString()
-            .slice(0, 16);
-        startTime.value = formattedStartTime;
-
-        const endTimeAfter1Hour = new Date(
-            startTimeAfter4Hours.getTime() + 1 * 60 * 60 * 1000
-        );
-        const formattedEndTime = endTimeAfter1Hour.toISOString().slice(0, 16);
-        endTime.value = formattedEndTime;
-
-        Swal.fire(
-            "Lưu ý",
-            "Bàn này đang có người chơi. Thời gian bắt đầu đặt bàn được đặt sau thời điểm hiện tại 4 tiếng.",
-            "info"
-        );
-    } else {
-        const startTimeAfter1Hour = new Date(
-            vietnamTime.getTime() + 1 * 60 * 60 * 1000
-        );
-        const formattedStartTime = startTimeAfter1Hour
-            .toISOString()
-            .slice(0, 16);
-        startTime.value = formattedStartTime;
-
-        const endTimeAfter2Hours = new Date(
-            vietnamTime.getTime() + 2 * 60 * 60 * 1000
-        );
-        const formattedEndTime = endTimeAfter2Hours.toISOString().slice(0, 16);
-        endTime.value = formattedEndTime;
-    }
 };
 
 const closeModal = async () => {
@@ -752,13 +738,13 @@ const closeModal = async () => {
     isModalOpen.value = false;
     customerName.value = "";
     customerPhone.value = "";
-    startTime.value = getDefaultDateTime();
-    endTime.value = getDefaultDateTime();
+    startHour.value = getRoundedUpTimeWithOffset(1);
+    endHour.value = getRoundedUpTimeWithOffset(2);
     addedServices.value = [];
     idCreatedBooking.value = "";
-    paymentMethod.value = "wallet"
-    isPaypal.value=false
-    momoPayUrl.value=""
+    paymentMethod.value = "wallet";
+    isPaypal.value = false;
+    momoPayUrl.value = "";
 };
 
 const handleVoucherChange = () => {
@@ -854,12 +840,29 @@ const getTotalAmount = (): number => {
     }, 0);
 };
 
+const timeSlots = Array.from({ length: 48 }, (_, i) => {
+    const hour = Math.floor(i / 2);
+    const minute = i % 2 === 0 ? "00" : "30";
+    return `${hour.toString().padStart(2, "0")}:${minute}`;
+});
+
+const startTime = computed(() => {
+    return startDate.value && startHour.value
+        ? `${startDate.value}T${startHour.value}`
+        : "";
+});
+
+const endTime = computed(() => {
+    return endDate.value && endHour.value
+        ? `${endDate.value}T${endHour.value}`
+        : "";
+});
+
 watch([startTime, endTime], () => {
     if (!startTime.value || !endTime.value) {
         duration.value = 0;
         return;
     }
-
     const start = new Date(startTime.value);
     const end = new Date(endTime.value);
     const diff = Math.floor((end.getTime() - start.getTime()) / 1000);
@@ -982,6 +985,17 @@ const submitBooking = async () => {
         Swal.fire("Lỗi", "Vui lòng nhập số điện thoại!", "error");
         return;
     }
+
+    const phoneRegex = /^(0\d{9,10})$/;
+
+    if (!phoneRegex.test(customerPhone.value.trim())) {
+        Swal.fire(
+            "Lỗi",
+            "Số điện thoại phải gồm 10 hoặc 11 số và bắt đầu bằng số 0!",
+            "error"
+        );
+        return;
+    }
     if (!startTime.value) {
         Swal.fire("Lỗi", "Vui lòng chọn thời gian bắt đầu!", "error");
         return;
@@ -1061,7 +1075,7 @@ const submitBooking = async () => {
                         "info"
                     );
                 } else if (paymentMethod.value === "paypal") {
-                    isPaypal.value = true
+                    isPaypal.value = true;
                     Swal.fire(
                         "Thông Báo",
                         "Vui lòng thanh toán để hoàn tất !",
@@ -1130,6 +1144,31 @@ const fetchData = async () => {
     }
 };
 
+const getRoundedUpTimeWithOffset = (offsetHours: number) => {
+    const now = new Date();
+
+    now.setHours(now.getHours() + offsetHours);
+
+    let minutes = now.getMinutes();
+    let roundedMinutes = minutes <= 30 ? 30 : 0;
+    let hour = now.getHours() + (minutes > 30 ? 1 : 0);
+
+    const formattedHour = hour.toString().padStart(2, "0");
+    const formattedMinutes = roundedMinutes.toString().padStart(2, "0");
+
+    return `${formattedHour}:${formattedMinutes}`;
+};
+
+watch(isStatusTable, (newVal, oldVal) => {
+    if (newVal === true) {
+        startHour.value = getRoundedUpTimeWithOffset(5);
+        endHour.value = getRoundedUpTimeWithOffset(6);
+    } else {
+        startHour.value = getRoundedUpTimeWithOffset(1);
+        endHour.value = getRoundedUpTimeWithOffset(2);
+    }
+});
+
 onMounted(async () => {
     const customerData = Cookies.get("customer");
     if (customerData) {
@@ -1146,6 +1185,12 @@ onMounted(async () => {
         dataVoucher.value = listVoucher.filter(
             (voucher: Discounts) => voucher.status === true
         );
+
+        const today = getTodayDate();
+        startDate.value = today;
+        endDate.value = today;
+        startHour.value = getRoundedUpTimeWithOffset(1);
+        endHour.value = getRoundedUpTimeWithOffset(2);
     } else {
         router.push("/login");
     }

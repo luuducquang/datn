@@ -177,6 +177,14 @@
                             </li>
 
                             <li>
+                                <NuxtLink
+                                    class="dropdown-item nav-link"
+                                    to="/deposit"
+                                    >Nạp tiền</NuxtLink
+                                >
+                            </li>
+
+                            <li>
                                 <a
                                     class="dropdown-item nav-link"
                                     href="/login"

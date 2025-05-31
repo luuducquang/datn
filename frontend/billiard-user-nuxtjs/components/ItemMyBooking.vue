@@ -22,24 +22,9 @@
                     aria-expanded="false"
                     :aria-controls="`collapse${value?._id}`"
                 >
-                    <span class="fw-bold text-primary">
+                    <span class="">
                         Từ {{ formatTime(value?.start_time) }} đến
                         {{ formatTime(value?.end_time) }}
-                    </span>
-                    |
-                    {{ value?.name }}
-                    |
-                    {{
-                        value?.money_paid > 0
-                            ? `${value.money_paid.toLocaleString("de-DE")}đ_`
-                            : "0đ"
-                    }}
-                    <span
-                        :class="value?.status ? 'text-success' : 'text-danger'"
-                    >
-                        {{
-                            value?.status ? "Đã thanh toán" : "Chưa thanh toán"
-                        }}
                     </span>
                 </button>
             </h2>
@@ -51,11 +36,41 @@
                 data-bs-parent="#accordionExample"
                 style=""
             >
+                <div class="mx-3 mb-3 mt-3">
+                    <strong class="text-primary">Tên người đặt:</strong>
+                    {{ value?.name }}
+                </div>
+                <div class="mx-3 mb-3">
+                    <strong class="text-primary">Số tiền đã thanh toán:</strong>
+                    {{
+                        value?.money_paid > 0
+                            ? `${value.money_paid.toLocaleString("de-DE")}đ`
+                            : "0đ"
+                    }}
+                </div>
+                <div class="mx-3 mb-3">
+                    <strong class="text-primary">Trạng thái: </strong>
+                    <span
+                        :class="value?.status ? 'text-success' : 'text-danger'"
+                    >
+                        {{ value?.status ? "Đã thanh toán" : "Đã huỷ" }}
+                    </span>
+                </div>
+
                 <div
                     class=""
                     v-for="(item, index) in detailBookingItems"
                     :key="index"
                 >
+                    <div
+                        v-if="
+                            detailBookingItems.length > 0 &&
+                            item.booking_id === value?._id
+                        "
+                        class="mx-3 mb-3"
+                    >
+                        <strong class="text-primary">Dịch vụ: </strong>
+                    </div>
                     <div
                         v-if="item.booking_id === value?._id"
                         class="d-flex mb-3 p-2"
@@ -352,7 +367,11 @@ const submitReview = async (id: string) => {
             router.push("/login");
         }
 
-        Swal.fire("Đã đánh giá!", "Đánh giá của bạn đã được ghi nhận.", "success");
+        Swal.fire(
+            "Đã đánh giá!",
+            "Đánh giá của bạn đã được ghi nhận.",
+            "success"
+        );
         fetchData();
     } catch (error) {
         console.error("Lỗi khi gửi đánh giá:", error);

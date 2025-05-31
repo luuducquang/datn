@@ -66,7 +66,7 @@
             </el-table-column>
 
             <el-table-column
-                label="Đã thanh toán"
+                label="Trạng thái"
                 align="center"
                 prop="total_price"
             >
@@ -83,7 +83,7 @@
                         :title="scope.row.money_paid"
                         class="unpaid name_item"
                     >
-                        <p>Chưa thanh toán</p>
+                        <p>Đã huỷ</p>
                     </div>
                 </template>
             </el-table-column>

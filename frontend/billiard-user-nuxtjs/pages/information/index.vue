@@ -1,24 +1,33 @@
 <template>
-    <div class="container mt-3">
-        <form @submit.prevent="handleUpdateInformation">
-            <div class="mb-3">
-                <label class="form-label fw-bold">Xếp hạng hiện tại</label>
+    <div class="container mt-4 mb-5">
+        <div class="card shadow-lg p-4 rounded-4 border-0">
+            <h4 class="mb-4 fw-bold">Cập nhật thông tin tài khoản</h4>
+            <form @submit.prevent="handleUpdateInformation">
+                <div class="mb-4">
+                    <label class="form-label fw-semibold"
+                        >Xếp hạng hiện tại</label
+                    >
+                    <div class="text-muted small">
+                        {{
+                            formData.loyalty_points.toLocaleString("de-DE") || 0
+                        }}
+                        điểm (<strong>{{
+                            getMembershipRank(formData.loyalty_points || 0).rank
+                        }}</strong
+                        >) – Giảm giá:
+                        {{
+                            getMembershipRank(formData.loyalty_points || 0)
+                                .voucher
+                        }}%
+                    </div>
 
-                <div class="current-points mb-2">
-                    {{ formData.loyalty_points.toLocaleString("de-DE") || 0 }}
-                    điểm ({{
-                        getMembershipRank(formData.loyalty_points || 0).rank
-                    }}) khi mua hàng bạn sẽ được giảm
-                    {{
-                        getMembershipRank(formData.loyalty_points || 0).voucher
-                    }}
-                    %
-                </div>
-
-                <div class="progress-rank-container">
-                    <div class="progress-bar-bg">
+                    <div
+                        class="progress mt-2"
+                        style="height: 20px; border-radius: 10px"
+                    >
                         <div
-                            class="progress-bar-fill"
+                            class="progress-bar"
+                            role="progressbar"
                             :style="{
                                 width:
                                     getProgressWidth(
@@ -30,87 +39,132 @@
                             }"
                         ></div>
                     </div>
-                    <div class="rank-labels">
-                        <span style="left: 1%">0</span>
-                        <span style="left: 25%">500.000</span>
-                        <span style="left: 50%">1.000.000</span>
-                        <span style="left: 100%">3.000.000</span>
+                    <div
+                        class="d-flex justify-content-between small mt-1 text-secondary"
+                    >
+                        <span>0</span>
+                        <span>500K</span>
+                        <span>1M</span>
+                        <span>3M</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label for="avatar" class="form-label fw-bold">Avatar</label>
-                <input
-                    type="file"
-                    class="form-control"
-                    id="avatar"
-                    @change="handleAvatarChange"
-                />
-                <img
-                    v-if="fileList.length"
-                    :src="fileList[0].url"
-                    class="img-thumbnail mt-2"
-                    alt="avatar"
-                />
-                <img
-                    v-else-if="formData.anhDaiDien"
-                    :src="formData.anhDaiDien"
-                    class="img-thumbnail mt-2"
-                    alt="avatar"
-                />
-                <p v-if="formData.fileName">{{ formData.fileName }}</p>
-            </div>
-            <div class="mb-3">
-                <label for="hoTen" class="form-label fw-bold">Họ tên</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="hoTen"
-                    v-model="formData.hoTen"
-                />
-            </div>
-            <div class="mb-3">
-                <label for="soDienThoai" class="form-label fw-bold"
-                    >Số điện thoại</label
-                >
-                <input
-                    type="text"
-                    class="form-control"
-                    id="soDienThoai"
-                    v-model="formData.soDienThoai"
-                />
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label fw-bold">Email</label>
-                <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    v-model="formData.email"
-                />
-            </div>
-            <div class="mb-3">
-                <label for="matKhau" class="form-label fw-bold">Mật khẩu</label>
-                <input
-                    type="password"
-                    class="form-control"
-                    id="matKhau"
-                    v-model="formData.matKhau"
-                />
-            </div>
-            <div class="mb-3">
-                <label for="diaChi" class="form-label fw-bold">Địa chỉ</label>
-                <textarea
-                    class="form-control"
-                    id="diaChi"
-                    v-model="formData.diaChi"
-                ></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn_updater">
-                Cập nhật
-            </button>
-        </form>
+                <div class="mb-4 row align-items-center">
+                    <div class="col-md-3 text-center">
+                        <img
+                            v-if="fileList.length"
+                            :src="fileList[0].url"
+                            class="img-thumbnail rounded-circle"
+                            alt="avatar"
+                            style="
+                                width: 100px;
+                                height: 100px;
+                                object-fit: cover;
+                            "
+                        />
+                        <img
+                            v-else-if="formData.anhDaiDien"
+                            :src="formData.anhDaiDien"
+                            class="img-thumbnail rounded-circle"
+                            alt="avatar"
+                            style="
+                                width: 100px;
+                                height: 100px;
+                                object-fit: cover;
+                            "
+                        />
+                    </div>
+                    <div class="col-md-9">
+                        <label for="avatar" class="form-label fw-semibold"
+                            >Ảnh đại diện</label
+                        >
+                        <input
+                            type="file"
+                            class="form-control"
+                            id="avatar"
+                            @change="handleAvatarChange"
+                        />
+                        <p
+                            v-if="formData.fileName"
+                            class="mt-1 small text-secondary"
+                        >
+                            Đã chọn: {{ formData.fileName }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="hoTen" class="form-label fw-semibold"
+                            >Họ tên</label
+                        >
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="hoTen"
+                            v-model="formData.hoTen"
+                        />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="soDienThoai" class="form-label fw-semibold"
+                            >Số điện thoại</label
+                        >
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="soDienThoai"
+                            v-model="formData.soDienThoai"
+                        />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="email" class="form-label fw-semibold"
+                            >Email</label
+                        >
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            v-model="formData.email"
+                        />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="matKhau" class="form-label fw-semibold"
+                            >Mật khẩu</label
+                        >
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="matKhau"
+                            v-model="formData.matKhau"
+                        />
+                    </div>
+
+                    <div class="col-12">
+                        <label for="diaChi" class="form-label fw-semibold"
+                            >Địa chỉ</label
+                        >
+                        <textarea
+                            class="form-control"
+                            id="diaChi"
+                            rows="2"
+                            v-model="formData.diaChi"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button
+                        type="submit"
+                        class="btn btn-primary px-4 py-2 rounded-3 shadow-sm"
+                    >
+                        Cập nhật thông tin
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -128,11 +182,11 @@ import { uploadImage } from "~/services/upload.service";
 import { login } from "~/services/login.service";
 import { getMembershipRank } from "~/store/getMemberShip";
 import Swal from "sweetalert2";
-import { useHead } from '@unhead/vue'
+import { useHead } from "@unhead/vue";
 
 useHead({
-  title: 'Thông tin tài khoản'
-})
+    title: "Thông tin tài khoản",
+});
 
 interface FormData {
     hoTen: string;
@@ -145,7 +199,6 @@ interface FormData {
     loyalty_points: number;
     file: File | null;
 }
-
 
 const router = useRouter();
 const fileList = ref<{ url: string }[]>([]);
@@ -318,5 +371,30 @@ const handleUpdateInformation = async () => {
     position: absolute;
     transform: translateX(-50%);
     font-size: 12px;
+}
+
+.img-thumbnail {
+    transition: 0.3s ease-in-out;
+}
+
+.img-thumbnail:hover,
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+input.form-control,
+textarea.form-control {
+    border-radius: 10px;
+}
+
+label.form-label {
+    color: #555;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    border: none;
+    transition: 0.3s ease-in-out;
 }
 </style>

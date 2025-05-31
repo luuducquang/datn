@@ -23,15 +23,8 @@
                     :aria-controls="`collapse${value?._id}`"
                 >
                     {{
-                        `${value?.name} | ${
-                            value?.total_price > 0
-                                ? value?.total_price.toLocaleString("DE-de")
-                                : 0
-                        }đ | ${value?.address_detail} | ${value?.status} | ${
-                            value?.is_paid
-                                ? "Đã thanh toán"
-                                : "Thanh toán khi nhận hàng"
-                        }`
+                        ` ${value?.address_detail} | ${value?.status} 
+                        `
                     }}
                 </button>
             </h2>
@@ -42,6 +35,26 @@
                 data-bs-parent="#accordionExample"
                 style=""
             >
+                <div class="mx-3 mb-3 mt-3">
+                    <strong class="text-primary">Tên người đặt:</strong>
+                    {{ value?.name }}
+                </div>
+                <div class="mx-3 mb-3 mt-3">
+                    <strong class="text-primary">Tổng thanh toán:</strong>
+                    {{
+                        value?.total_price > 0
+                            ? value?.total_price.toLocaleString("DE-de")
+                            : 0
+                    }}
+                </div>
+                <div class="mx-3 mb-3">
+                    <strong class="text-primary">Trạng thái: </strong>
+                    <span
+                        :class="value?.status ? 'text-success' : 'text-danger'"
+                    >
+                        {{ value?.status ? "Đã thanh toán" : "Đã huỷ" }}
+                    </span>
+                </div>
                 <div
                     class=""
                     v-for="(item, index) in detailBillSells"
@@ -61,7 +74,7 @@
                             width="200"
                             height="200"
                         />
-                        <div class="p-3">
+                        <div class="px-3">
                             <NuxtLink :to="`/detail/${item?.product?._id}`">
                                 {{ item.product ? item.product.item_name : "" }}
                             </NuxtLink>
@@ -250,5 +263,6 @@ async function handleCancelBooking(
 
 a {
     font-size: 20px;
+    color: var(--color-primary);
 }
 </style>
