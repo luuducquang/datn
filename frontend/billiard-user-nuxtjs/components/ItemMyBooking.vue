@@ -352,7 +352,7 @@ const submitReview = async (id: string) => {
             router.push("/login");
         }
 
-        Swal.fire("Đã huỷ!", "Bàn đã được huỷ thành công.", "success");
+        Swal.fire("Đã đánh giá!", "Đánh giá của bạn đã được ghi nhận.", "success");
         fetchData();
     } catch (error) {
         console.error("Lỗi khi gửi đánh giá:", error);

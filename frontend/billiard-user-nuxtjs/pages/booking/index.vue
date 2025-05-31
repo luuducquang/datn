@@ -457,19 +457,94 @@
                                     {{ ConvertPrice(totalPricePaid) }}
                                 </h4>
 
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            value="wallet"
+                                            v-model="paymentMethod"
+                                            @click="ChangeMethod"
+                                        />
+                                        <label
+                                            class="form-check-label"
+                                            for="wallet"
+                                        >
+                                            Thanh toán bằng ví (Số dư:
+                                            {{
+                                                ConvertPrice(
+                                                    dataCustomer?.wallet
+                                                )
+                                            }})
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            value="momo"
+                                            v-model="paymentMethod"
+                                            @click="ChangeMethod"
+                                        />
+                                        <label
+                                            class="form-check-label"
+                                            for="momo"
+                                        >
+                                            Thanh toán bằng MoMo
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            value="paypal"
+                                            v-model="paymentMethod"
+                                            @click="ChangeMethod"
+                                        />
+                                        <label
+                                            class="form-check-label"
+                                            for="paypal"
+                                        >
+                                            Thanh toán bằng PayPal
+                                        </label>
+                                    </div>
+
+                                    <div
+                                        v-if="isPaypal"
+                                        class="mt-3 mb-3 d-flex justify-content-center"
+                                    >
+                                        <PayPalButton
+                                            :amount="Number(totalPricePaid)"
+                                            :onSuccess="handleSuccess"
+                                        />
+                                    </div>
+
+                                    <div
+                                        v-if="momoPayUrl"
+                                        class="text-center mt-3"
+                                    >
+                                        <p>
+                                            Quét mã QR bên dưới để thanh toán:
+                                        </p>
+                                        <img
+                                            :src="`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
+                                                momoPayUrl
+                                            )}`"
+                                            alt="QR MoMo"
+                                        />
+                                    </div>
+                                </div>
+
                                 <div class="text-center">
                                     <button
-                                        v-show="!idCreatedBooking"
+                                        v-show="
+                                            !isPaypal && !momoPayUrl
+                                        "
                                         type="submit"
                                         class="btn btn-success px-5"
                                     >
                                         Đặt bàn ngay
                                     </button>
-                                    <PayPalButton
-                                        v-show="idCreatedBooking"
-                                        :amount="totalPricePaid"
-                                        :onSuccess="handleSuccess"
-                                    />
                                 </div>
                             </form>
                         </div>
@@ -530,7 +605,6 @@ import {
     getBookingByID,
     getAllMenuItem,
     createBookingItem,
-    updateStatusBooking,
 } from "~/services/booking.service";
 import {
     type OptionSelect,
@@ -557,6 +631,7 @@ import {
     updateInformationWalletPoint,
 } from "~/services/information.service";
 import { login } from "~/services/login.service";
+import { captureMomoOrder, createMomoOrder } from "~/services/momo.service";
 
 useHead({
     title: "Đặt bàn",
@@ -590,6 +665,10 @@ const dataVoucher = ref<Discounts[]>([]);
 const voucherCode = ref("");
 const discountAmount = ref<number | null>(null);
 const voucherError = ref("");
+const paymentMethod = ref("wallet");
+const momoPayUrl = ref("");
+const orderId = ref("");
+const isPaypal = ref(false);
 
 const router = useRouter();
 
@@ -611,6 +690,11 @@ socket.on("table_status_updated", (data) => {
         table.status = data.status;
     }
 });
+
+const ChangeMethod = () => {
+    isPaypal.value = false;
+    momoPayUrl.value = "";
+};
 
 const openModal = async (id: string, status: boolean) => {
     selectedTableId.value = id;
@@ -672,6 +756,9 @@ const closeModal = async () => {
     endTime.value = getDefaultDateTime();
     addedServices.value = [];
     idCreatedBooking.value = "";
+    paymentMethod.value = "wallet"
+    isPaypal.value=false
+    momoPayUrl.value=""
 };
 
 const handleVoucherChange = () => {
@@ -785,9 +872,54 @@ const formatDuration = (seconds: number) => {
     return `${hrs} giờ ${mins} phút `;
 };
 
-const handleSuccess = async (result: any) => {
-    console.log("Thanh toán thành công:", result);
-    await updateStatusBooking(idCreatedBooking.value);
+const customerData = Cookies.get("customer");
+const handleSuccess = async () => {
+    const bookingData = {
+        table_id: selectedTableId.value,
+        user_id: dataCustomer?.value?._id,
+        name: customerName.value,
+        phone: customerPhone.value,
+        start_time: startTime.value,
+        end_time: endTime.value,
+        money_paid: Number(
+            Number(
+                getTotalAmount() +
+                    Number(dataDetailTable.value?.pricingrule?.rate_per_hour) *
+                        Number(duration.value / 3600) *
+                        (1 -
+                            (Number(discountAmount.value) +
+                                Number(
+                                    getMembershipRank(
+                                        dataCustomer?.value?.loyalty_points
+                                    ).voucher
+                                )) /
+                                100)
+            )
+        ),
+        status: true,
+    };
+
+    if (Number(discountAmount.value) > 0) {
+        await getDiscountUseCode(voucherCode.value);
+    }
+    const rescreateBooking = await createBooking(bookingData);
+
+    idCreatedBooking.value = String(rescreateBooking?._id);
+
+    const listBookingItem = addedServices.value.map((service) => ({
+        booking_id: idCreatedBooking.value,
+        item_id: String(service.item_id),
+        image: String(service.image),
+        quantity: Number(service.quantity),
+        unit_price: Number(service.unit_price),
+        total_price: Number(service.unit_price) * Number(service.quantity),
+        name: String(service.name),
+    }));
+
+    for (const element of listBookingItem) {
+        await createBookingItem(element);
+    }
+
     const customerData = Cookies.get("customer");
     if (customerData) {
         const customer = JSON.parse(customerData);
@@ -803,7 +935,7 @@ const handleSuccess = async (result: any) => {
             avatar: customer.avatar,
             loyalty_points:
                 dataUser.loyalty_points + totalPricePaid.value * 0.2,
-            wallet: Number(dataUser.wallet) - totalPricePaid.value,
+            wallet: Number(dataUser.wallet),
             role_name: customer.role_name,
         });
 
@@ -816,6 +948,30 @@ const handleSuccess = async (result: any) => {
     closeModal();
     Swal.fire("Thông Báo", "Đặt bàn thành công !", "success");
 };
+
+async function createMoMoPayment() {
+    try {
+        const res = await createMomoOrder(Number(totalPricePaid.value));
+        if (res && res.payUrl && res.orderId) {
+            momoPayUrl.value = res.payUrl;
+            orderId.value = res.orderId;
+
+            const checkStatusInterval = setInterval(async () => {
+                const status = await captureMomoOrder(orderId.value);
+                if (status.resultCode === 0) {
+                    clearInterval(checkStatusInterval);
+                    handleSuccess();
+                }
+            }, 5000);
+        } else {
+            alert("Không lấy được link MoMo!");
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            Swal.fire("Lỗi", `${error}`, "error");
+        }
+    }
+}
 
 const submitBooking = async () => {
     if (!customerName.value.trim()) {
@@ -849,33 +1005,6 @@ const submitBooking = async () => {
     }
 
     try {
-        const bookingData = {
-            table_id: selectedTableId.value,
-            user_id: dataCustomer?.value?._id,
-            name: customerName.value,
-            phone: customerPhone.value,
-            start_time: startTime.value,
-            end_time: endTime.value,
-            money_paid: Number(
-                Number(
-                    getTotalAmount() +
-                        Number(
-                            dataDetailTable.value?.pricingrule?.rate_per_hour
-                        ) *
-                            Number(duration.value / 3600) *
-                            (1 -
-                                (Number(discountAmount.value) +
-                                    Number(
-                                        getMembershipRank(
-                                            dataCustomer?.value?.loyalty_points
-                                        ).voucher
-                                    )) /
-                                    100)
-                )
-            ),
-            status: false,
-        };
-
         const ischeckBooking = await checkBooking({
             table_id: selectedTableId.value,
             start_time: startTime.value,
@@ -883,33 +1012,62 @@ const submitBooking = async () => {
         });
         if (ischeckBooking) {
             try {
-                if (Number(discountAmount.value) > 0) {
-                    await getDiscountUseCode(voucherCode.value);
+                if (paymentMethod.value === "wallet") {
+                    const dataUser = await getInformation(
+                        dataCustomer?.value?._id
+                    );
+
+                    const customer = JSON.parse(customerData ?? "{}");
+                    if (dataUser.wallet >= Number(totalPricePaid.value)) {
+                        await updateInformationWalletPoint({
+                            _id: customer._id,
+                            username: customer.username,
+                            password: customer.password,
+                            fullname: customer.fullname,
+                            email: customer.email,
+                            phone: customer.phone,
+                            address: customer.address,
+                            avatar: customer.avatar,
+                            loyalty_points:
+                                dataUser.loyalty_points +
+                                totalPricePaid.value * 0.2,
+                            wallet:
+                                Number(dataUser.wallet) -
+                                Number(totalPricePaid.value),
+                            role_name: customer.role_name,
+                        });
+
+                        await handleSuccess();
+
+                        const res = await login({
+                            email: String(dataUser.email),
+                            password: String(customer.password),
+                        });
+                        Cookies.set("customer", JSON.stringify(res), {
+                            expires: 1,
+                        });
+                    } else {
+                        Swal.fire(
+                            "Thông báo",
+                            "Số dư của bạn không đủ, không thể thanh toán.",
+                            "info"
+                        );
+                    }
+                } else if (paymentMethod.value === "momo") {
+                    createMoMoPayment();
+                    Swal.fire(
+                        "Thông Báo",
+                        "Vui lòng thanh toán để hoàn tất !",
+                        "info"
+                    );
+                } else if (paymentMethod.value === "paypal") {
+                    isPaypal.value = true
+                    Swal.fire(
+                        "Thông Báo",
+                        "Vui lòng thanh toán để hoàn tất !",
+                        "info"
+                    );
                 }
-                const rescreateBooking = await createBooking(bookingData);
-
-                idCreatedBooking.value = String(rescreateBooking?._id);
-
-                const listBookingItem = addedServices.value.map((service) => ({
-                    booking_id: idCreatedBooking.value,
-                    item_id: String(service.item_id),
-                    image: String(service.image),
-                    quantity: Number(service.quantity),
-                    unit_price: Number(service.unit_price),
-                    total_price:
-                        Number(service.unit_price) * Number(service.quantity),
-                    name: String(service.name),
-                }));
-
-                for (const element of listBookingItem) {
-                    await createBookingItem(element);
-                }
-
-                Swal.fire(
-                    "Thông Báo",
-                    "Vui lòng thanh toán để hoàn tất !",
-                    "info"
-                );
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     Swal.fire("Lỗi", error.response?.data.detail, "error");
@@ -985,7 +1143,9 @@ onMounted(async () => {
             });
         }
         const listVoucher = await getAllDiscount();
-        dataVoucher.value = listVoucher;
+        dataVoucher.value = listVoucher.filter(
+            (voucher: Discounts) => voucher.status === true
+        );
     } else {
         router.push("/login");
     }

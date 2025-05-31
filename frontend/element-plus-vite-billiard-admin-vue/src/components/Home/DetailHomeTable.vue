@@ -977,7 +977,9 @@ const fetchById = async (id: string) => {
     }
 
     const listVoucher = await getAllDiscount();
-    dataVoucher.value = listVoucher;
+    dataVoucher.value = listVoucher.filter(
+        (voucher: Discounts) => voucher.status === true
+    );
 
     const resTableMenuItem = await getbyIdTableMenuItem(id);
     tableDataMenuItem.value = resTableMenuItem;

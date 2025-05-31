@@ -54,7 +54,8 @@
                             label="Thời Gian Kết Thúc"
                             prop="endTime"
                             align="center"
-                        ></el-table-column>
+                        >
+                    </el-table-column>
                         <el-table-column
                             label="Đã đặt"
                             prop="timeBefore"

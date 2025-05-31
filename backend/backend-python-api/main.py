@@ -30,6 +30,8 @@ from routes.billSells import router as billsell_router
 from routes.sellItems import router as sellitem_router
 from routes.discounts import router as discount_router
 from routes.statistic import router as statistic_router
+from routes.momoPayment import router as momoPayment_router
+from routes.paypal import router as paypalPayment_router
 
 from socketio_server import sio_app
 
@@ -84,6 +86,8 @@ app.include_router(billsell_router)
 app.include_router(sellitem_router)
 app.include_router(discount_router)
 app.include_router(statistic_router)
+app.include_router(momoPayment_router)
+app.include_router(paypalPayment_router)
 
 
 app.mount("/socket.io", sio_app)

@@ -52,7 +52,7 @@
             </el-form-item>
 
             <el-form-item label="Tồn kho" prop="stock_quantity">
-                <el-input v-model="ruleForm.stock_quantity" :disabled="true" />
+                <el-input v-model="ruleForm.stock_quantity" />
             </el-form-item>
 
             <el-form-item label="Giá gốc" prop="price_origin">

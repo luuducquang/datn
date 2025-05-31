@@ -359,6 +359,18 @@
                                 <input
                                     class="form-check-input"
                                     type="radio"
+                                    value="momo"
+                                    v-model="paymentMethod"
+                                    @click="ChangeMethod"
+                                />
+                                <label class="form-check-label" for="momo">
+                                    Thanh toán bằng MoMo
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
                                     value="paypal"
                                     v-model="paymentMethod"
                                     @click="ChangeMethod"
@@ -367,6 +379,7 @@
                                     Thanh toán bằng PayPal
                                 </label>
                             </div>
+
                             <div
                                 v-if="
                                     paymentMethod === 'paypal' &&
@@ -386,8 +399,18 @@
                                     :onSuccess="handleSuccess"
                                 />
                             </div>
+
+                            <div v-if="momoPayUrl" class="text-center mt-3">
+                                <p>Quét mã QR bên dưới để thanh toán:</p>
+                                <img
+                                    :src="`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
+                                        momoPayUrl
+                                    )}`"
+                                    alt="QR MoMo"
+                                />
+                            </div>
                             <div
-                                v-if="!isPaypal"
+                                v-if="!isPaypal && paymentMethod != 'momo'"
                                 class="d-flex justify-content-center"
                             >
                                 <button
@@ -441,6 +464,7 @@ import { sendOrder } from "~/services/order.service";
 import { getMembershipRank } from "~/store/getMemberShip";
 import { useHead } from "@unhead/vue";
 import ConvertPrice from "~/store/convertprice";
+import { captureMomoOrder, createMomoOrder } from "~/services/momo.service";
 
 useHead({
     title: "Đặt hàng",
@@ -460,6 +484,9 @@ const dataVoucher = ref<Discounts[]>([]);
 const voucherCode = ref("");
 const discountAmount = ref<number | null>(null);
 const voucherError = ref("");
+
+const momoPayUrl = ref("");
+const orderId = ref("");
 
 const formData = ref<Record<string, string>>({
     hoTen: "",
@@ -494,6 +521,30 @@ const country = ref<Record<string, string>[]>([]);
 const district = ref<Record<string, string>[]>([]);
 
 const ward = ref<Record<string, string>[]>([]);
+
+async function createMoMoPayment() {
+    try {
+        const res = await createMomoOrder(Number(totalPricePaid.value));
+        if (res && res.payUrl && res.orderId) {
+            momoPayUrl.value = res.payUrl;
+            orderId.value = res.orderId;
+
+            const checkStatusInterval = setInterval(async () => {
+                const status = await captureMomoOrder(orderId.value);
+                if (status.resultCode === 0) {
+                    clearInterval(checkStatusInterval);
+                    handleSuccess();
+                }
+            }, 5000);
+        } else {
+            alert("Không lấy được link MoMo!");
+        }
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            Swal.fire("Lỗi", `${error}`, "error");
+        }
+    }
+}
 
 const handlerClickCountry = async (event: Event) => {
     const target = event.target as HTMLSelectElement;
@@ -567,9 +618,7 @@ const ChangeMethod = () => {
     isPaypal.value = false;
 };
 
-const handleSuccess = async (result: any) => {
-    console.log("Thanh toán thành công:", result);
-
+const handleSuccess = async () => {
     const listitems = dataCart.value.reduce(
         (acc: { ids: string[]; quantities: number[] }, value: Cart) => {
             acc.ids.push(value.item_id);
@@ -775,6 +824,8 @@ const handleSubmit = async () => {
                                     "Vui lòng thanh toán qua PayPal, sau khi thanh toán đơn hàng sẽ được xử lý.",
                                     "info"
                                 );
+                            } else if (paymentMethod.value === "momo") {
+                                createMoMoPayment();
                             } else if (paymentMethod.value === "wallet") {
                                 const dataUser = await getInformation(
                                     dataCustomer?.value?._id
