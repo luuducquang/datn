@@ -301,45 +301,45 @@ const Fetchdata = async () => {
     chartPlayTime.setOption(optionPlayTime);
 
     // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    const resInventory = await getInventoryItem();
-    const dataInventory = resInventory.map((value: any) => {
-        return {
-            product_name: value.product_name,
-            quantity: value.quantity,
-        };
-    });
-    inventoryData.value = dataInventory;
+    // const resInventory = await getInventoryItem();
+    // const dataInventory = resInventory.map((value: any) => {
+    //     return {
+    //         product_name: value.product_name,
+    //         quantity: value.quantity,
+    //     };
+    // });
+    // inventoryData.value = dataInventory;
 
-    const chartImventory = echarts.init(
-        document.getElementById("inventoryItemChart")
-    );
-    const optionImventory = {
-        xAxis: {
-            type: "category",
-            data: inventoryData.value.map((item: any) => item.product_name),
-            axisLabel: {
-                show: false,
-            },
-        },
-        yAxis: {
-            type: "value",
-        },
-        series: [
-            {
-                data: inventoryData.value.map((item: any) => item.quantity),
-                type: "line",
-                smooth: true,
-            },
-        ],
-        tooltip: {
-            trigger: "axis",
-            formatter: function (params: any) {
-                const item = params[0];
-                return `${item.axisValue}<br/>Tồn kho: ${item.data}`;
-            },
-        },
-    };
-    chartImventory.setOption(optionImventory);
+    // const chartImventory = echarts.init(
+    //     document.getElementById("inventoryItemChart")
+    // );
+    // const optionImventory = {
+    //     xAxis: {
+    //         type: "category",
+    //         data: inventoryData.value.map((item: any) => item.product_name),
+    //         axisLabel: {
+    //             show: false,
+    //         },
+    //     },
+    //     yAxis: {
+    //         type: "value",
+    //     },
+    //     series: [
+    //         {
+    //             data: inventoryData.value.map((item: any) => item.quantity),
+    //             type: "line",
+    //             smooth: true,
+    //         },
+    //     ],
+    //     tooltip: {
+    //         trigger: "axis",
+    //         formatter: function (params: any) {
+    //             const item = params[0];
+    //             return `${item.axisValue}<br/>Tồn kho: ${item.data}`;
+    //         },
+    //     },
+    // };
+    // chartImventory.setOption(optionImventory);
 
     // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     const resLowStock = await getLowStock();
