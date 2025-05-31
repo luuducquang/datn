@@ -166,10 +166,9 @@ def ser_get_info_overview():
     
 
 def generate_revenue_data() -> List[Dict]:
-    # Lấy thời gian hiện tại theo UTC
     now_utc = datetime.now(pytz.UTC)
+    total_month_revenue = 0
 
-    # Xác định ngày đầu tháng và ngày đầu tháng kế tiếp theo UTC
     year = now_utc.year
     month = now_utc.month
 
@@ -180,7 +179,6 @@ def generate_revenue_data() -> List[Dict]:
         first_day_of_month = datetime(year=year, month=month, day=1, tzinfo=pytz.UTC)
         next_month = datetime(year=year, month=month+1, day=1, tzinfo=pytz.UTC)
 
-    # Số ngày trong tháng
     last_day_of_month = (next_month - timedelta(days=1)).day
 
     days_in_month = []
@@ -190,21 +188,18 @@ def generate_revenue_data() -> List[Dict]:
         next_date = date + timedelta(days=1)
         day_str = date.strftime("%Y-%m-%d")
 
-        # Doanh thu từ orderitems (giả sử pay_date là datetime UTC)
         orderitems_revenue = list(orderitems_collection.aggregate([
             {"$match": {"pay_date": {"$gte": date, "$lt": next_date}}},
             {"$group": {"_id": None, "total_revenue": {"$sum": "$total_price"}}}
         ]))
         food_orders_total = orderitems_revenue[0]['total_revenue'] if orderitems_revenue else 0
 
-        # Doanh thu từ timesessions (end_time trong ngày)
         time_sessions_revenue = list(timesessions_collection.aggregate([
             {"$match": {"end_time": {"$gte": date, "$lt": next_date}}},
             {"$group": {"_id": None, "total_revenue": {"$sum": "$price_paid"}}}
         ]))
         time_sessions_total = time_sessions_revenue[0]['total_revenue'] if time_sessions_revenue else 0
 
-        # Doanh thu từ billsells (tránh trạng thái "Huỷ đơn"), giả sử sell_date là datetime UTC
         bill_sells_revenue = list(billsells_collection.aggregate([
             {"$match": {
                 "sell_date": {"$gte": date, "$lt": next_date},
@@ -214,7 +209,6 @@ def generate_revenue_data() -> List[Dict]:
         ]))
         bill_sells_total = bill_sells_revenue[0]['total_revenue'] if bill_sells_revenue else 0
 
-        # Doanh thu từ bookings (status True và start_time trong ngày)
         revenue_from_booking = list(bookings_collection.aggregate([
             {"$match": {
                 "status": True,
@@ -225,17 +219,79 @@ def generate_revenue_data() -> List[Dict]:
         booking_total = revenue_from_booking[0]["total_price"] if revenue_from_booking else 0
 
         total_revenue = food_orders_total + time_sessions_total + bill_sells_total + booking_total
+        total_month_revenue += total_revenue
 
         days_in_month.append({
             "date": day_str,
             "revenue": total_revenue
         })
 
-    return days_in_month
+    return {
+        "daily_revenue": days_in_month,
+        "total_revenue": total_month_revenue
+    }
+
+def generate_weekly_revenue_data() -> Dict:
+    now_utc = datetime.now(pytz.UTC)
+
+    weekly_data = []
+    total_week_revenue = 0
+
+    for i in range(6, -1, -1):  
+        date = now_utc - timedelta(days=i)
+        date = date.replace(hour=0, minute=0, second=0, microsecond=0)
+        next_date = date + timedelta(days=1)
+
+        day_str = date.strftime("%Y-%m-%d")
+
+        orderitems_revenue = list(orderitems_collection.aggregate([
+            {"$match": {"pay_date": {"$gte": date, "$lt": next_date}}},
+            {"$group": {"_id": None, "total_revenue": {"$sum": "$total_price"}}}
+        ]))
+        food_orders_total = orderitems_revenue[0]['total_revenue'] if orderitems_revenue else 0
+
+        time_sessions_revenue = list(timesessions_collection.aggregate([
+            {"$match": {"end_time": {"$gte": date, "$lt": next_date}}},
+            {"$group": {"_id": None, "total_revenue": {"$sum": "$price_paid"}}}
+        ]))
+        time_sessions_total = time_sessions_revenue[0]['total_revenue'] if time_sessions_revenue else 0
+
+        bill_sells_revenue = list(billsells_collection.aggregate([
+            {"$match": {
+                "sell_date": {"$gte": date, "$lt": next_date},
+                "status": {"$ne": "Huỷ đơn"}
+            }},
+            {"$group": {"_id": None, "total_revenue": {"$sum": "$total_price"}}}
+        ]))
+        bill_sells_total = bill_sells_revenue[0]['total_revenue'] if bill_sells_revenue else 0
+
+        booking_revenue = list(bookings_collection.aggregate([
+            {"$match": {
+                "status": True,
+                "start_time": {"$gte": date, "$lt": next_date}
+            }},
+            {"$group": {"_id": None, "total_price": {"$sum": "$money_paid"}}}
+        ]))
+        booking_total = booking_revenue[0]['total_price'] if booking_revenue else 0
+
+        total_revenue = food_orders_total + time_sessions_total + bill_sells_total + booking_total
+        total_week_revenue += total_revenue
+
+        weekly_data.append({
+            "date": day_str,
+            "revenue": total_revenue
+        })
+
+    return {
+        "daily_revenue": weekly_data,
+        "total_revenue": total_week_revenue
+    }
 
 
 def generate_playtime_data() -> List[Dict]:
     now_utc = datetime.now(pytz.UTC)
+    total_playtime_revenue = 0
+
     year = now_utc.year
     month = now_utc.month
 
@@ -254,7 +310,6 @@ def generate_playtime_data() -> List[Dict]:
         end_day = start_day + timedelta(days=1)
         day_str = start_day.strftime("%Y-%m-%d")
 
-        # Lọc các timesessions trong ngày
         sessions = list(timesessions_collection.find({
             "end_time": {"$gte": start_day, "$lt": end_day}
         }))
@@ -268,13 +323,75 @@ def generate_playtime_data() -> List[Dict]:
                 total_seconds += max(duration, 0)
 
         total_hours = round(total_seconds / 3600, 2)
+        total_playtime_revenue += total_hours
 
         results.append({
             "date": day_str,
             "hours_played": total_hours
         })
 
-    return results
+    return {
+        "daily_revenue": results,
+        "total_revenue": total_playtime_revenue
+    }
+
+def generate_yearly_revenue_data() -> Dict:
+    now_utc = datetime.now(pytz.UTC)
+    year = now_utc.year
+
+    monthly_revenue = []
+    total_year_revenue = 0
+
+    for month in range(1, 13):
+        start_date = datetime(year=year, month=month, day=1, tzinfo=pytz.UTC)
+        if month == 12:
+            end_date = datetime(year=year + 1, month=1, day=1, tzinfo=pytz.UTC)
+        else:
+            end_date = datetime(year=year, month=month + 1, day=1, tzinfo=pytz.UTC)
+
+        food_orders = list(orderitems_collection.aggregate([
+            {"$match": {"pay_date": {"$gte": start_date, "$lt": end_date}}},
+            {"$group": {"_id": None, "total": {"$sum": "$total_price"}}}
+        ]))
+        food_total = food_orders[0]['total'] if food_orders else 0
+
+        time_sessions = list(timesessions_collection.aggregate([
+            {"$match": {"end_time": {"$gte": start_date, "$lt": end_date}}},
+            {"$group": {"_id": None, "total": {"$sum": "$price_paid"}}}
+        ]))
+        time_total = time_sessions[0]['total'] if time_sessions else 0
+
+        bill_sells = list(billsells_collection.aggregate([
+            {"$match": {
+                "sell_date": {"$gte": start_date, "$lt": end_date},
+                "status": {"$ne": "Huỷ đơn"}
+            }},
+            {"$group": {"_id": None, "total": {"$sum": "$total_price"}}}
+        ]))
+        bill_total = bill_sells[0]['total'] if bill_sells else 0
+
+        bookings = list(bookings_collection.aggregate([
+            {"$match": {
+                "status": True,
+                "start_time": {"$gte": start_date, "$lt": end_date}
+            }},
+            {"$group": {"_id": None, "total": {"$sum": "$money_paid"}}}
+        ]))
+        booking_total = bookings[0]['total'] if bookings else 0
+
+        month_total = food_total + time_total + bill_total + booking_total
+        total_year_revenue += month_total
+
+        monthly_revenue.append({
+            "month": f"{month:02}",  
+            "revenue": month_total
+        })
+
+    return {
+        "year": year,
+        "monthly_revenue": monthly_revenue,
+        "total_year_revenue": total_year_revenue
+    }
 
 
 def get_quantity_item() -> List[Dict]:

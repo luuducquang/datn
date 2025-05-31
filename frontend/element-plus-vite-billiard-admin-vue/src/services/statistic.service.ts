@@ -8,8 +8,18 @@ export const getOverview = async (): Promise<
     return res?.data;
 };
 
+export const getRevenueWeek = async (): Promise<any> => {
+    const res = await apiClient?.get(`${StatisticUrl}/weekly-revenue`);
+    return res?.data;
+};
+
 export const getRevenue = async (): Promise<any> => {
     const res = await apiClient?.get(`${StatisticUrl}/monthly-revenue`);
+    return res?.data;
+};
+
+export const getRevenueYear = async (): Promise<any> => {
+    const res = await apiClient?.get(`${StatisticUrl}/yearly-revenue`);
     return res?.data;
 };
 

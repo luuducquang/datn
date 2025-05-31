@@ -62,7 +62,15 @@
             <el-row :gutter="20" class="chart-row">
                 <el-col :span="24">
                     <el-card>
-                        <h2>Biểu đồ giờ chơi</h2>
+                        <h2>
+                            Biểu đồ giờ chơi:
+                            {{
+                                Math.round(totalPlaytimeMonth)?.toLocaleString(
+                                    "de-DE"
+                                )
+                            }}
+                            giờ
+                        </h2>
                         <el-tooltip content="" placement="top" disabled>
                             <div id="playTimeChart" style="height: 300px"></div>
                         </el-tooltip>
@@ -72,7 +80,26 @@
             <el-row :gutter="20" class="chart-row">
                 <el-col :span="24">
                     <el-card>
-                        <h2>Biểu đồ doanh thu theo ngày</h2>
+                        <h2>
+                            Biểu đồ doanh thu 7 ngày gần nhất:
+                            {{ ConvertPrice(Number(totalRevenueWeek)) }}
+                        </h2>
+                        <el-tooltip content="" placement="top" disabled>
+                            <div
+                                id="revenueChartWeek"
+                                style="height: 300px"
+                            ></div>
+                        </el-tooltip>
+                    </el-card>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20" class="chart-row">
+                <el-col :span="24">
+                    <el-card>
+                        <h2>
+                            Biểu đồ doanh thu theo tháng:
+                            {{ ConvertPrice(Number(totalRevenueMonth)) }}
+                        </h2>
                         <el-tooltip content="" placement="top" disabled>
                             <div id="revenueChart" style="height: 300px"></div>
                         </el-tooltip>
@@ -80,6 +107,22 @@
                 </el-col>
             </el-row>
             <el-row :gutter="20" class="chart-row">
+                <el-col :span="24">
+                    <el-card>
+                        <h2>
+                            Biểu đồ doanh thu năm {{ yearRevenue }}:
+                            {{ ConvertPrice(Number(totalRevenueYear)) }}
+                        </h2>
+                        <el-tooltip content="" placement="top" disabled>
+                            <div
+                                id="revenueChartYear"
+                                style="height: 300px"
+                            ></div>
+                        </el-tooltip>
+                    </el-card>
+                </el-col>
+            </el-row>
+            <!-- <el-row :gutter="20" class="chart-row">
                 <el-col :span="24">
                     <el-card>
                         <h2>Biểu đồ tồn kho sản phẩm</h2>
@@ -91,7 +134,7 @@
                         </el-tooltip>
                     </el-card>
                 </el-col>
-            </el-row>
+            </el-row> -->
         </el-main>
     </el-container>
 </template>
@@ -105,10 +148,11 @@ import {
     getOverview,
     getPlaytime,
     getRevenue,
+    getRevenueWeek,
+    getRevenueYear,
 } from "~/services/statistic.service";
 import ConvertPrice from "~/utils/convertprice";
 import { apiImage } from "~/constant/request";
-import { ro } from "element-plus/es/locale";
 
 const formatCurrency = (value: any) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -119,9 +163,18 @@ const formatCurrency = (value: any) => {
 
 const summaryStats = ref<any>([]);
 
+const revenueDataWeek = ref<any>([]);
+const totalRevenueWeek = ref(0);
+
 const revenueData = ref<any>([]);
+const totalRevenueMonth = ref(0);
+
+const revenueDataYear = ref<any>([]);
+const totalRevenueYear = ref(0);
+const yearRevenue = ref(0);
 
 const playTimeData = ref<any>([]);
+const totalPlaytimeMonth = ref(0);
 
 const inventoryData = ref<any>([]);
 
@@ -177,13 +230,14 @@ const Fetchdata = async () => {
     // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
     const resRevenue = await getRevenue();
-    const dataRevenue = resRevenue.map((value: any) => {
+    const dataRevenue = resRevenue?.daily_revenue.map((value: any) => {
         return {
             date: value.date,
             revenue: value.revenue,
         };
     });
     revenueData.value = dataRevenue;
+    totalRevenueMonth.value = resRevenue?.total_revenue;
 
     const chart = echarts.init(document.getElementById("revenueChart"));
     const option = {
@@ -211,13 +265,14 @@ const Fetchdata = async () => {
 
     // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     const resPlaytime = await getPlaytime();
-    const dataPlaytime = resPlaytime.map((value: any) => {
+    const dataPlaytime = resPlaytime?.daily_revenue.map((value: any) => {
         return {
             date: value.date,
             hours_played: Math.ceil(value.hours_played),
         };
     });
     playTimeData.value = dataPlaytime;
+    totalPlaytimeMonth.value = resPlaytime?.total_revenue;
 
     const chartPlayTime = echarts.init(
         document.getElementById("playTimeChart")
@@ -289,6 +344,79 @@ const Fetchdata = async () => {
     // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     const resLowStock = await getLowStock();
     lowStockProducts.value = resLowStock;
+
+    // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    const resRevenueWeek = await getRevenueWeek();
+    const dataRevenueWeek = resRevenueWeek?.daily_revenue.map((value: any) => {
+        return {
+            date: value.date,
+            revenue: value.revenue,
+        };
+    });
+    revenueDataWeek.value = dataRevenueWeek;
+    totalRevenueWeek.value = resRevenueWeek?.total_revenue;
+
+    const chartWeek = echarts.init(document.getElementById("revenueChartWeek"));
+    const optionWeek = {
+        xAxis: {
+            type: "category",
+            data: revenueDataWeek.value.map((item: any) => item.date),
+        },
+        yAxis: { type: "value" },
+        series: [
+            {
+                data: revenueDataWeek.value.map((item: any) => item.revenue),
+                type: "line",
+                smooth: true,
+            },
+        ],
+        tooltip: {
+            trigger: "axis",
+            formatter: function (params: any) {
+                const item = params[0];
+                return `${item.axisValue}<br/>Doanh thu: ${ConvertPrice(item.data)}`;
+            },
+        },
+    };
+    chartWeek.setOption(optionWeek);
+
+    // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    const resRevenueYear = await getRevenueYear();
+    const dataRevenueYear = resRevenueYear?.monthly_revenue.map(
+        (value: any) => {
+            return {
+                date: "Tháng " + value.month,
+                revenue: value.revenue,
+            };
+        }
+    );
+    revenueDataYear.value = dataRevenueYear;
+    totalRevenueYear.value = resRevenueYear?.total_year_revenue;
+    yearRevenue.value = resRevenueYear?.year;
+
+    const chartYear = echarts.init(document.getElementById("revenueChartYear"));
+    const optionYear = {
+        xAxis: {
+            type: "category",
+            data: revenueDataYear.value.map((item: any) => item.date),
+        },
+        yAxis: { type: "value" },
+        series: [
+            {
+                data: revenueDataYear.value.map((item: any) => item.revenue),
+                type: "line",
+                smooth: true,
+            },
+        ],
+        tooltip: {
+            trigger: "axis",
+            formatter: function (params: any) {
+                const item = params[0];
+                return `${item.axisValue}<br/>Doanh thu: ${ConvertPrice(item.data)}`;
+            },
+        },
+    };
+    chartYear.setOption(optionYear);
 };
 </script>
 
