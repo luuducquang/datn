@@ -23,11 +23,13 @@ export interface Tables {
     description: string;
     table_number: number;
     table_type_id: string;
+    name: string;
+    phone: string;
     status: boolean;
     start_date?: String;
     end_date?: String;
     tabletype?: TableTypes;
-    pricingrule?: PricingRules;
+    pricingrule?: PricingRules[];
 }
 
 export interface Discounts {
@@ -91,6 +93,8 @@ export interface MenuItems {
 export interface PricingRules {
     _id?: string;
     type_table_id: string;
+    start_hour: number;
+    end_hour: number;
     rate_per_hour: number;
     tabletype?: TableTypes;
 }

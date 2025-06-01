@@ -120,6 +120,16 @@
                     HÓA ĐƠN BÀN {{ dataOrderItem?.table?.table_number }}
                 </h3>
                 <p>
+                    {{
+                        dataOrderItem?.timesession?.name
+                            ? `Khách hàng: ${dataOrderItem?.timesession?.name}`
+                            : "Khách lẻ"
+                    }}
+                </p>
+                <p v-if="dataOrderItem?.timesession?.phone">
+                    Số điện thoại {{ dataOrderItem?.timesession?.phone }}
+                </p>
+                <p>
                     Giờ bắt đầu:
                     {{ convertDate(dataOrderItem?.timesession?.start_time) }}
                 </p>

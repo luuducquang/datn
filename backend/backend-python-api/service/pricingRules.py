@@ -39,9 +39,6 @@ def ser_getbyid_pricingrule(pricingrule_id:str):
     return pricingrule
 
 def ser_insert_pricingrule(_data: PricingRules) -> str:
-    existing_tabletype = pricingrule_collection.find_one({"type_table_id": _data.type_table_id})
-    if existing_tabletype:
-        raise HTTPException(status_code=400, detail=f"tabletype '{_data.type_table_id}' already exists.")
     result = pricingrule_collection.insert_one(_data.dict(exclude={"id"}))
     return str(result.inserted_id)
 

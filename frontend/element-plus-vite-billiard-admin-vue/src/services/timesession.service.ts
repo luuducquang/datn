@@ -8,3 +8,10 @@ export const createTimeSession = async (
     const res = await apiClient?.post(`${TimeSessionUrl}/add`, data);
     return res?.data;
 };
+
+export const getCountByPhone = async (phone: string): Promise<number> => {
+    const res = await apiClient?.get(
+        `${TimeSessionUrl}/count-by-phone/` + phone
+    );
+    return res?.data;
+};

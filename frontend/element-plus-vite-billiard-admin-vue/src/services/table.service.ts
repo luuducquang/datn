@@ -1,4 +1,4 @@
-import { Tables, ResponseData } from "~/constant/api";
+import { Tables, ResponseData, TablePrice } from "~/constant/api";
 import { apiClient } from "../constant/request";
 import { TableUrl } from "~/constant/endpoints";
 
@@ -35,5 +35,10 @@ export const getbyIdTable = async (id: string): Promise<Tables> => {
 
 export const getbyAllTable = async (): Promise<Tables> => {
     const res = await apiClient?.get(`${TableUrl}/get/`);
+    return res?.data;
+};
+
+export const getTablePrice = async (id: String): Promise<TablePrice> => {
+    const res = await apiClient?.get(`${TableUrl}/calculate-bill/${id}`);
     return res?.data;
 };

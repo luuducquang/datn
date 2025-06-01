@@ -78,11 +78,22 @@ export interface Tables {
     description: string;
     table_number: number;
     table_type_id: string;
+    name: string;
+    phone: string;
     status: boolean;
     start_date?: Date | string | null | any;
     end_date?: Date | string | null | any;
     tabletype?: TableTypes;
-    pricingrule?: PricingRules;
+    pricingrule?: PricingRules[];
+}
+
+export interface TablePrice {
+    table_id: string;
+    start_time: string | null;
+    end_time: string | null;
+    total_seconds: number;
+    total_price: number;
+    display_price: string;
 }
 
 export interface Discounts {
@@ -163,6 +174,8 @@ export interface Suppliers {
 export interface PricingRules {
     _id?: string;
     type_table_id: string;
+    start_hour: number;
+    end_hour: number;
     rate_per_hour: number;
     tabletype?: TableTypes;
 }
@@ -231,6 +244,8 @@ export interface TimeSessions {
     end_time: Date | string;
     price: number;
     price_paid: number;
+    name: string;
+    phone: string;
 }
 
 export interface Products {

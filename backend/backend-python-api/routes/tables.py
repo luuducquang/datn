@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from pymongo.collection import Collection
 from config.database import database
 from schemas.schemas import Searchs, Tables
-from service.tables import ser_getbyid_table,ser_search_table,ser_get_table,ser_delete_table, ser_insert_table, ser_update_table,ser_update_tablestatus
+from service.tables import ser_getbyid_table,ser_search_table,ser_get_table,ser_delete_table, ser_insert_table, ser_update_table,ser_update_tablestatus,calculate_bill_service
 
 from socketio_server import sio
 
@@ -54,3 +54,7 @@ async def edit_tablestatus(table_id: str):
 def remove_table(table_id: str):
     response = ser_delete_table(table_id, table_collection)
     return response
+
+@router.get("/tables/calculate-bill/{table_id}")
+def calculate_bill(table_id: str):
+    return calculate_bill_service(table_id)

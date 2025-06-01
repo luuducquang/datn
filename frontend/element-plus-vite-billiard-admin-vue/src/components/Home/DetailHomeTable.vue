@@ -15,6 +15,7 @@
                                 v-model="customerForm.fullname"
                                 placeholder="Nhập tên khách hàng"
                                 size="large"
+                                @blur="onChangeForm"
                             />
                         </el-descriptions-item>
                         <el-descriptions-item label="Số điện thoại">
@@ -22,6 +23,7 @@
                                 v-model="customerForm.phone"
                                 placeholder="Nhập số điện thoại"
                                 size="large"
+                                @blur="onChangeForm"
                             />
                         </el-descriptions-item>
 
@@ -31,20 +33,32 @@
                             }}</span>
                         </el-descriptions-item>
                         <el-descriptions-item label="Thời gian sử dụng">
-                            {{ formatTime(timeElapsed) }}
-                        </el-descriptions-item>
-                        <el-descriptions-item label="Giá 1h">
                             {{
-                                ConvertPrice(
-                                    Number(
-                                        dataDetailTable?.pricingrule
-                                            ?.rate_per_hour
-                                    ) || 0
-                                )
+                                dataPriceTable?.total_seconds
+                                    ? formatTime(
+                                          Number(dataPriceTable?.total_seconds)
+                                      )
+                                    : "0p"
                             }}
                         </el-descriptions-item>
+                        <el-descriptions-item
+                            v-for="(
+                                rule, index
+                            ) in dataDetailTable?.pricingrule"
+                            :key="index"
+                            :label="index === 0 ? 'Giá theo giờ' : ''"
+                        >
+                            {{ rule.start_hour }}h - {{ rule.end_hour }}h:
+                            {{ ConvertPrice(Number(rule.rate_per_hour)) }}
+                        </el-descriptions-item>
                         <el-descriptions-item label="Tiền giờ chơi">
-                            {{ ConvertPriceToK(Number(totalPrice)) }}
+                            {{
+                                dataPriceTable?.total_price
+                                    ? ConvertPriceToK(
+                                          Number(dataPriceTable?.total_price)
+                                      )
+                                    : ConvertPriceToK(0)
+                            }}
                         </el-descriptions-item>
                         <el-descriptions-item label="Tiền dịch vụ">
                             {{ ConvertPrice(Number(service_price)) }}
@@ -53,7 +67,24 @@
                             v-if="voucherCode && Number(discountAmount) > 0"
                             label="Giảm giá"
                         >
-                            -{{ ConvertPriceToK(Number(discountPrice)) }}
+                            -{{ ConvertPriceToK(Number(discountPrice)) }}({{
+                                discountAmount
+                            }}%)
+                        </el-descriptions-item>
+
+                        <el-descriptions-item
+                            v-if="
+                                discountLoyalCustomer &&
+                                Number(discountLoyalCustomer) > 0
+                            "
+                            label="Giảm giá hội viên thân thiết"
+                        >
+                            -{{
+                                ConvertPriceToK(
+                                    Number(discountPriceLoyalCustomer)
+                                )
+                            }}
+                            ({{ discountLoyalCustomer }}%)
                         </el-descriptions-item>
 
                         <el-descriptions-item
@@ -74,6 +105,7 @@
                                         Number(service_price) +
                                             Number(totalPrice) -
                                             Number(discountPrice) -
+                                            Number(discountPriceLoyalCustomer) -
                                             Number(moneyPaid)
                                     )
                                 }}
@@ -387,9 +419,12 @@
             </h3>
             <p>Giờ bắt đầu: {{ convertDate(dataDetailTable?.start_date) }}</p>
             <p>Giờ kết thúc: {{ convertDate(getLocalISOString()) }}</p>
-            <p>Thời gian sử dụng: {{ formatTime(timeElapsed) }}</p>
-            <p v-if="customerForm.fullname">
-                Khách hàng: {{ customerForm.fullname }}
+            <p>
+                Thời gian sử dụng:
+                {{ formatTime(Number(dataPriceTable?.total_seconds)) }}
+            </p>
+            <p>
+             {{ customerForm.fullname ? "Khách hàng: "+ customerForm.fullname:"Khách lẻ" }}
             </p>
             <p v-if="customerForm.phone">
                 Số điện thoại: {{ customerForm.phone }}
@@ -433,28 +468,40 @@
                     Giảm giá {{ discountAmount }}%:
                     {{ ConvertPriceToK(Number(discountPrice)) }}
                 </p>
+                <p
+                    v-if="
+                        discountLoyalCustomer &&
+                        Number(discountLoyalCustomer) > 0
+                    "
+                >
+                    Hội viên thân thiết giảm {{ discountLoyalCustomer }}%:
+                    {{ ConvertPriceToK(Number(discountPriceLoyalCustomer)) }}
+                </p>
                 <p v-if="moneyPaid > 0">
                     Đã thanh toán khi đặt bàn: {{ ConvertPriceToK(moneyPaid) }}
                 </p>
                 <p class="total">
-                    Thanh toán:
+                    Cần thanh toán:
                     {{
                         ConvertPriceToK(
                             Number(totalPrice) +
                                 Number(service_price) -
                                 Number(discountPrice) -
+                                Number(discountPriceLoyalCustomer) -
                                 Number(moneyPaid)
                         )
                     }}
                 </p>
-                <p>
-                    Giá giờ:
-                    {{
-                        ConvertPrice(
-                            Number(dataDetailTable?.pricingrule?.rate_per_hour)
-                        ) || "Chưa có dữ liệu"
-                    }}
-                </p>
+                <div v-if="dataDetailTable?.pricingrule?.length">
+                    <p
+                        v-for="(rule, index) in dataDetailTable.pricingrule"
+                        :key="index"
+                    >
+                        Giá giờ {{ rule.start_hour }}h - {{ rule.end_hour }}h:
+                        {{ ConvertPrice(Number(rule.rate_per_hour)) }}
+                    </p>
+                </div>
+                <p v-else>Chưa có dữ liệu</p>
                 <p>Nhân viên: {{ userStore?.user?.fullname }}</p>
             </div>
 
@@ -490,6 +537,7 @@ import {
     OptionSelect,
     StockUpdateItem,
     TableMenuItems,
+    TablePrice,
     Tables,
 } from "~/constant/api";
 import {
@@ -510,7 +558,10 @@ import ConvertPrice from "~/utils/convertprice";
 import { apiImage } from "~/constant/request";
 import { useUserStore } from "~/store";
 import { createOrderItem } from "~/services/orderitem.service";
-import { createTimeSession } from "~/services/timesession.service";
+import {
+    createTimeSession,
+    getCountByPhone,
+} from "~/services/timesession.service";
 import router from "~/router";
 import { getAllDiscount, getDiscountByCode } from "~/services/discount.service";
 import {
@@ -518,16 +569,15 @@ import {
     getBookingByIDTable,
 } from "~/services/booking.service";
 import { getBookingItemByIDBooking } from "~/services/bookingitem.service";
+import { getTablePrice } from "~/services/table.service";
+import { DiscountLoyalCustomer } from "~/utils/loyalcustomer";
 
 const route = useRoute();
 const dataDetailTable = ref<Tables | null>(null);
 const userStore = useUserStore();
+let intervalId: ReturnType<typeof setInterval> | undefined;
 
-const timeElapsed = ref(0);
 const startTime = ref<string | null>(null);
-let timer: NodeJS.Timeout | null = null;
-
-const isPrepareBill = ref(true);
 
 const ruleFormRef = ref<FormInstance>();
 
@@ -538,6 +588,7 @@ const dialogVisiblePay = ref(false);
 const formLabelWidth = "140px";
 
 const tableDataMenuItem = ref<TableMenuItems[]>([]);
+const dataPriceTable = ref<TablePrice>();
 
 const customerForm = reactive({
     fullname: "",
@@ -547,6 +598,7 @@ const customerForm = reactive({
 const dataVoucher = ref<Discounts[]>([]);
 const voucherCode = ref("");
 const discountAmount = ref<number | null>(null);
+const discountLoyalCustomer = ref<number | null>(null);
 const voucherError = ref("");
 
 const dataBookings = ref<Bookings[]>([]);
@@ -606,6 +658,23 @@ const rules = reactive<FormRules>({
     ],
 });
 
+const onChangeForm = async () => {
+    await updateTable({
+        _id: String(route.params.id),
+        table_number: Number(dataDetailTable.value?.table_number),
+        table_type_id: String(dataDetailTable.value?.table_type_id),
+        status: Boolean(dataDetailTable.value?.status),
+        start_date: String(dataDetailTable?.value?.start_date),
+        end_date: String(dataDetailTable.value?.start_date),
+        description: String(dataDetailTable?.value?.description),
+        booking_id: String(dataDetailTable?.value?.booking_id),
+        name: customerForm.fullname,
+        phone: customerForm.phone,
+    });
+    const resCountPhone = await getCountByPhone(String(customerForm.phone));
+    discountLoyalCustomer.value = DiscountLoyalCustomer(Number(resCountPhone));
+};
+
 const bookingTitleTooltip = computed(() => {
     if (!selectedBookingId.value) return "";
 
@@ -649,6 +718,8 @@ const handleBookingChange = async (id: string) => {
         start_date: String(dataDetailTable?.value?.start_date),
         end_date: String(dataDetailTable.value?.start_date),
         description: String(dataDetailTable?.value?.description),
+        name: String(selected?.name),
+        phone: String(selected?.phone),
         booking_id: selected?._id ? String(selected._id) : "",
     });
     if (selectedBookingId.value === "") {
@@ -744,9 +815,12 @@ const PayAndPrintInvoice = async () => {
                     Number(totalPrice.value) +
                         Number(service_price.value) -
                         Number(discountPrice.value) -
+                        Number(discountPriceLoyalCustomer.value) -
                         Number(moneyPaid.value)
                 ).toFixed(0)
             ),
+            name: customerForm.fullname,
+            phone: customerForm.phone,
         });
 
         await createOrderItem({
@@ -762,9 +836,11 @@ const PayAndPrintInvoice = async () => {
             table_number: Number(dataDetailTable.value?.table_number),
             table_type_id: String(dataDetailTable.value?.table_type_id),
             status: Boolean(!dataDetailTable.value?.status),
-            start_date: String(startTime.value),
-            end_date: String(startTime.value),
+            start_date: String(dataPriceTable?.value?.start_time),
+            end_date: String(dataPriceTable?.value?.end_time),
             description: String(dataDetailTable?.value?.description),
+            name: "",
+            phone: "",
             booking_id: "",
         });
 
@@ -878,11 +954,6 @@ const submitFormMenuItem = async (formEl: FormInstance | undefined) => {
     }
 };
 
-const resetForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
-    formEl.resetFields();
-};
-
 function getLocalISOString() {
     const now = new Date();
     const year = now.getFullYear();
@@ -899,15 +970,7 @@ async function toggleTimer() {
         const tableDetail = await getbyIdTable(String(route.params.id));
 
         if (!tableDetail.status) {
-            if (timer) {
-                clearInterval(timer);
-                timer = null;
-                startTime.value = null;
-            } else {
-                startTime.value = getLocalISOString();
-                timer = setInterval(updateElapsed, 1000);
-            }
-
+            startTime.value = getLocalISOString();
             await updateTable({
                 _id: String(route.params.id),
                 table_number: Number(dataDetailTable.value?.table_number),
@@ -916,8 +979,12 @@ async function toggleTimer() {
                 start_date: String(startTime.value),
                 end_date: String(getLocalISOString()),
                 description: String(dataDetailTable?.value?.description),
+                name: String(customerForm.fullname),
+                phone: String(customerForm.phone),
                 booking_id: "",
             });
+            const resPriceTable = await getTablePrice(String(route.params.id));
+            dataPriceTable.value = resPriceTable;
             await fetchById(String(route.params.id));
         } else {
             Notification("Bàn này đã được dùng", "warning");
@@ -928,19 +995,23 @@ async function toggleTimer() {
     }
 }
 
-function updateElapsed() {
-    if (startTime.value) {
-        const start = new Date(startTime.value).getTime();
-        timeElapsed.value = Math.floor((Date.now() - start) / 1000);
-    }
-}
-
 const formatTime = (s: number): string => {
+    if (s < 60) {
+        return "1p";
+    }
+
     const hours = Math.floor(s / 3600);
     const minutes = Math.floor((s % 3600) / 60);
-    const seconds = s % 60;
 
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    if (hours === 0) {
+        return `${minutes}p`;
+    }
+
+    if (minutes === 0) {
+        return `${hours}h`;
+    }
+
+    return `${hours}h${minutes}p`;
 };
 
 function convertDate(inputDate: string | Date | any) {
@@ -963,8 +1034,23 @@ function convertDate(inputDate: string | Date | any) {
 const fetchById = async (id: string) => {
     const resIdTable = await getbyIdTable(id);
     dataDetailTable.value = resIdTable;
+    customerForm.fullname =
+        String(dataDetailTable?.value?.name) != "null"
+            ? String(dataDetailTable?.value?.name)
+            : "";
+    customerForm.phone =
+        String(dataDetailTable?.value?.phone) != "null"
+            ? String(dataDetailTable?.value?.phone)
+            : "";
 
     selectedBookingId.value = String(dataDetailTable?.value?.booking_id);
+
+    if (customerForm.phone != "") {
+        const resCountPhone = await getCountByPhone(String(customerForm.phone));
+        discountLoyalCustomer.value = DiscountLoyalCustomer(
+            Number(resCountPhone)
+        );
+    }
 
     if (
         dataDetailTable.value?.booking_id != "" &&
@@ -986,20 +1072,6 @@ const fetchById = async (id: string) => {
 
     dataBookings.value = await getBookingByIDTable(id);
 
-    if (dataDetailTable.value?.status === true) {
-        startTime.value = String(dataDetailTable.value?.start_date);
-        if (isPrepareBill.value) {
-            timer = setInterval(async () => {
-                updateElapsed();
-            }, 1000);
-        } else {
-            if (timer) {
-                clearInterval(timer);
-                timer = null;
-            }
-            updateElapsed();
-        }
-    }
     const resListMenuItem = await getAllMenuItem();
     optionListMenuItems.value = resListMenuItem
         ?.filter(function (item) {
@@ -1014,10 +1086,15 @@ const fetchById = async (id: string) => {
         });
 };
 
+const fetchPrice = async () => {
+    if (dataDetailTable.value?.status === true) {
+        const resPriceTable = await getTablePrice(String(route.params.id));
+        dataPriceTable.value = resPriceTable;
+    }
+};
+
 const totalPrice = computed(() => {
-    const ratePerHour = dataDetailTable.value?.pricingrule?.rate_per_hour || 0;
-    const timeInHours = timeElapsed.value / 3600;
-    return (ratePerHour * timeInHours).toFixed(2);
+    return dataPriceTable?.value?.total_price || 0;
 });
 
 const service_price = computed(() => {
@@ -1034,18 +1111,29 @@ const discountPrice = computed(() => {
     return price * (Number(discountAmount.value || 0) / 100);
 });
 
+const discountPriceLoyalCustomer = computed(() => {
+    const price =
+        Number(service_price.value || 0) + Number(totalPrice.value || 0);
+    return price * (Number(discountLoyalCustomer.value || 0) / 100);
+});
+
 const StartAndPay = async () => {
+    fetchPrice();
     dialogVisiblePay.value = true;
 };
 
-onMounted(() => {
+onMounted(async () => {
     if (route.params.id) {
-        fetchById(String(route.params.id));
+        await fetchById(String(route.params.id));
+        await fetchPrice();
+        intervalId = setInterval(() => {
+            fetchPrice();
+        }, 60000);
     }
 });
 
 onUnmounted(() => {
-    if (timer) clearInterval(timer);
+    if (intervalId) clearInterval(intervalId);
 });
 </script>
 

@@ -395,22 +395,7 @@
                                     v-if="startTime && endTime"
                                 >
                                     Thời gian chơi:
-                                    {{ formatDuration(duration) }} ({{
-                                        ConvertPrice(
-                                            Number(
-                                                dataDetailTable?.pricingrule
-                                                    ?.rate_per_hour
-                                            )
-                                        ) || "Chưa có dữ liệu"
-                                    }}/h) =
-                                    {{
-                                        ConvertPrice(
-                                            Number(
-                                                dataDetailTable?.pricingrule
-                                                    ?.rate_per_hour
-                                            ) * Number(duration / 3600)
-                                        ) || "Chưa có dữ liệu"
-                                    }}
+                                    {{ formatDuration(duration) }}
                                 </p>
 
                                 <p class="form-label fw-bold mb-3">
@@ -419,7 +404,7 @@
                                 </p>
 
                                 <p class="form-label fw-bold mb-3">
-                                    Giảm giá giờ chơi thành viên hạng
+                                    Giảm giá thành viên hạng
                                     {{
                                         getMembershipRank(
                                             dataCustomer?.loyalty_points
@@ -435,8 +420,9 @@
                                         ConvertPrice(
                                             Number(
                                                 Number(
-                                                    dataDetailTable?.pricingrule
-                                                        ?.rate_per_hour
+                                                    dataDetailTable
+                                                        ?.pricingrule?.[0]
+                                                        ?.rate_per_hour ?? 0
                                                 ) * Number(duration / 3600)
                                             ) *
                                                 (Number(
@@ -455,13 +441,14 @@
                                 >
                                     Đã áp dụng mã:
                                     <strong>{{ voucherCode }}</strong> – Giảm
-                                    {{ discountAmount }}% giờ chơi =
+                                    {{ discountAmount }}% =
                                     {{
                                         ConvertPrice(
                                             (Number(
                                                 Number(
-                                                    dataDetailTable?.pricingrule
-                                                        ?.rate_per_hour
+                                                    dataDetailTable
+                                                        ?.pricingrule?.[0]
+                                                        ?.rate_per_hour ?? 0
                                                 ) * Number(duration / 3600)
                                             ) *
                                                 Number(discountAmount)) /
@@ -471,10 +458,33 @@
                                 </p>
 
                                 <p class="form-label fw-bold mb-3">
-                                    Tổng tiền :
+                                    Ước tính :
                                     {{
                                         ConvertPrice(
-                                            totalPricePaid + getTotalAmount()
+                                            totalPricePaid +
+                                                getTotalAmount() +
+                                                Number(
+                                                    Number(
+                                                        dataDetailTable
+                                                            ?.pricingrule?.[0]
+                                                            ?.rate_per_hour ?? 0
+                                                    ) * Number(duration / 3600)
+                                                ) *
+                                                    (Number(
+                                                        getMembershipRank(
+                                                            dataCustomer?.loyalty_points
+                                                        ).voucher
+                                                    ) /
+                                                        100) +
+                                                (Number(
+                                                    Number(
+                                                        dataDetailTable
+                                                            ?.pricingrule?.[0]
+                                                            ?.rate_per_hour ?? 0
+                                                    ) * Number(duration / 3600)
+                                                ) *
+                                                    Number(discountAmount)) /
+                                                    100
                                         )
                                     }}
                                 </p>
@@ -575,6 +585,26 @@
                         </div>
 
                         <div class="col-12 col-lg-4 p-4 bg-light">
+                            <h5 class="fw-bold mb-3">Ưu đãi</h5>
+                            <div v-if="dataDetailTable?.pricingrule?.length">
+                                <div
+                                    v-for="(
+                                        rule, index
+                                    ) in dataDetailTable.pricingrule"
+                                    :key="index"
+                                >
+                                    <p>
+                                        Khung giờ: {{ rule.start_hour }}h -
+                                        {{ rule.end_hour }}h — Giá:
+                                        {{
+                                            rule.rate_per_hour.toLocaleString(
+                                                "vi-VN"
+                                            )
+                                        }}
+                                        ₫/giờ
+                                    </p>
+                                </div>
+                            </div>
                             <h5 class="fw-bold mb-3">Danh sách đặt bàn</h5>
                             <div
                                 v-if="
@@ -729,7 +759,16 @@ const openModal = async (id: string, status: boolean) => {
 
     const resIdTable = await getTableById(id);
     dataDetailTable.value = resIdTable;
-    isStatusTable.value = status;
+
+    if (resIdTable?.status === true) {
+        startHour.value = getRoundedUpTimeWithOffset(5);
+        endHour.value = getRoundedUpTimeWithOffset(6);
+    } else {
+        startHour.value = getRoundedUpTimeWithOffset(1);
+        endHour.value = getRoundedUpTimeWithOffset(2);
+    }
+
+    isStatusTable.value = dataDetailTable.value?.status;
 };
 
 const closeModal = async () => {
@@ -770,7 +809,7 @@ async function applyVoucher() {
 
 const totalPricePaid = computed(() => {
     const tableRate = Number(
-        dataDetailTable?.value?.pricingrule?.rate_per_hour || 0
+        dataDetailTable?.value?.pricingrule?.[0]?.rate_per_hour ?? 0
     );
     const timeCost = tableRate * (duration.value / 3600);
     const discountPercent =
@@ -887,7 +926,10 @@ const handleSuccess = async () => {
         money_paid: Number(
             Number(
                 getTotalAmount() +
-                    Number(dataDetailTable.value?.pricingrule?.rate_per_hour) *
+                    Number(
+                        dataDetailTable?.value?.pricingrule?.[0]
+                            ?.rate_per_hour ?? 0
+                    ) *
                         Number(duration.value / 3600) *
                         (1 -
                             (Number(discountAmount.value) +
@@ -1158,16 +1200,6 @@ const getRoundedUpTimeWithOffset = (offsetHours: number) => {
 
     return `${formattedHour}:${formattedMinutes}`;
 };
-
-watch(isStatusTable, (newVal, oldVal) => {
-    if (newVal === true) {
-        startHour.value = getRoundedUpTimeWithOffset(5);
-        endHour.value = getRoundedUpTimeWithOffset(6);
-    } else {
-        startHour.value = getRoundedUpTimeWithOffset(1);
-        endHour.value = getRoundedUpTimeWithOffset(2);
-    }
-});
 
 onMounted(async () => {
     const customerData = Cookies.get("customer");

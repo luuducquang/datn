@@ -14,7 +14,6 @@
                     v-model="ruleForm.type_table_id"
                     filterable
                     placeholder="Vui lòng chọn"
-                    :disabled="Boolean(route.params.id)"
                 >
                     <el-option
                         v-for="item in optionsTableType"
@@ -23,6 +22,26 @@
                         :value="item.value"
                     />
                 </el-select>
+            </el-form-item>
+
+            <el-form-item label="Giờ bắt đầu" prop="start_hour">
+                <el-input-number
+                    v-model="ruleForm.start_hour"
+                    :min="0"
+                    :max="23"
+                    controls-position="right"
+                    placeholder="0 - 23"
+                />
+            </el-form-item>
+
+            <el-form-item label="Giờ kết thúc" prop="end_hour">
+                <el-input-number
+                    v-model="ruleForm.end_hour"
+                    :min="0"
+                    :max="23"
+                    controls-position="right"
+                    placeholder="0 - 23"
+                />
             </el-form-item>
 
             <el-form-item label="Giá chơi trong 1 giờ" prop="rate_per_hour">
@@ -42,7 +61,6 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
-import { Plus } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import router from "~/router";
 import { useRoute } from "vue-router";
@@ -52,7 +70,6 @@ import {
     getbyIdPricingRule,
     updatePricingRule,
 } from "~/services/pricingrule.service";
-import { ExecException } from "child_process";
 import axios from "axios";
 import { getAllTableType } from "~/services/tabletype.service";
 
@@ -72,6 +89,8 @@ const Notification = (
 
 const ruleForm = reactive<PricingRules>({
     type_table_id: "",
+    start_hour: 0,
+    end_hour: 0,
     rate_per_hour: 0,
 });
 
@@ -79,19 +98,21 @@ const rules = reactive<FormRules>({
     type_table_id: [
         {
             required: true,
-            message: "Vui chọn loại bàn",
+            message: "Vui lòng chọn loại bàn",
             trigger: "blur",
         },
     ],
-    rate_per_minute: [
+    start_hour: [
         {
             required: true,
-            message: "Vui lòng nhập giá chơi trong 1 phút",
+            message: "Vui lòng nhập giờ bắt đầu",
             trigger: "blur",
         },
+    ],
+    end_hour: [
         {
-            pattern: /^[0-9]+$/,
-            message: "Vui lòng nhập số tự nhiên",
+            required: true,
+            message: "Vui lòng nhập giờ kết thúc",
             trigger: "blur",
         },
     ],
@@ -126,6 +147,8 @@ const fetchById = async (id: string) => {
     const resId = await getbyIdPricingRule(id);
     ruleForm.type_table_id = resId?.type_table_id;
     ruleForm.rate_per_hour = resId?.rate_per_hour;
+    ruleForm.start_hour = resId?.start_hour;
+    ruleForm.end_hour = resId?.end_hour;
 };
 
 onMounted(() => {
@@ -141,13 +164,16 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     try {
         const valid = await formEl.validate();
         if (valid) {
+            const data = {
+                type_table_id: ruleForm.type_table_id,
+                rate_per_hour: ruleForm.rate_per_hour,
+                start_hour: ruleForm.start_hour,
+                end_hour: ruleForm.end_hour,
+            };
+
             if (route.params.id) {
                 try {
-                    await updatePricingRule({
-                        _id: String(route.params.id),
-                        type_table_id: ruleForm.type_table_id,
-                        rate_per_hour: ruleForm.rate_per_hour,
-                    });
+                    await updatePricingRule({ _id: String(route.params.id), ...data });
                     Notification("Cập nhật thành công", "success");
                     router.push("/pricingrule");
                 } catch (error) {
@@ -157,10 +183,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 }
             } else {
                 try {
-                    await createPricingRule({
-                        type_table_id: ruleForm.type_table_id,
-                        rate_per_hour: ruleForm.rate_per_hour,
-                    });
+                    await createPricingRule(data);
                     Notification("Thêm thành công", "success");
                     router.push("/pricingrule");
                 } catch (error) {
@@ -171,7 +194,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
             }
         } else {
             Notification("Bạn cần điền đủ thông tin", "warning");
-            console.log("error submit!");
         }
     } catch (fields) {
         Notification("Bạn cần điền đủ thông tin", "warning");

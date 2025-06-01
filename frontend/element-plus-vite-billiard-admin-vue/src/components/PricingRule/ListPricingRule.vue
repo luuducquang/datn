@@ -13,8 +13,20 @@
                 prop="tabletype.table_type_name"
             />
 
+            <el-table-column label="Giờ bắt đầu" align="center">
+                <template #default="scope">
+                    {{ scope.row.start_hour.toString().padStart(2, "0") }}:00
+                </template>
+            </el-table-column>
+
+            <el-table-column label="Giờ kết thúc" align="center">
+                <template #default="scope">
+                    {{ scope.row.end_hour.toString().padStart(2, "0") }}:00
+                </template>
+            </el-table-column>
+
             <el-table-column
-                label="Giá chơi 1 giờ"
+                label="Giá chơi"
                 align="center"
                 prop="rate_per_hour"
             >
@@ -105,6 +117,8 @@ const fetchData = async () => {
                 _id: value._id,
                 type_table_id: value.type_table_id,
                 rate_per_hour: value.rate_per_hour,
+                start_hour: value.start_hour,
+                end_hour: value.end_hour,
                 tabletype: value.tabletype,
             };
         });

@@ -39,6 +39,10 @@ class StockUpdateItem(BaseModel):
     item_id: str
     quantity: int
 
+class TimeRange(BaseModel):
+    start_time: datetime
+    end_time: datetime
+
 class Users(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     email: EmailStr
@@ -114,6 +118,8 @@ class Tables(BaseModel):
     status: Optional[bool]
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
+    name: Optional[str] = None
+    phone: Optional[str]= None
 
 class TableMenuItems(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
@@ -197,12 +203,16 @@ class TimeSessions(BaseModel):
     end_time: datetime
     price: Optional[int]
     price_paid: Optional[int]
+    name: Optional[str] = None
+    phone: Optional[str]= None
 
 
 class PricingRules(BaseModel):
-    id: Optional[str] = Field(None, alias="_id")  
+    id: Optional[str] = Field(None, alias="_id")
     type_table_id: str
-    rate_per_hour: int
+    start_hour: int
+    end_hour: int   
+    rate_per_hour: int 
 
 class ImportItems(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  

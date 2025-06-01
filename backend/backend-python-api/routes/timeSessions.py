@@ -27,3 +27,8 @@ def edit_timesession(_data: TimeSessions):
 def remove_timesession(timesession_id: str):
     response = ser_delete_timesession(timesession_id, timesession_collection)
     return response
+
+@router.get("/timesessions/count-by-phone/{phone}")
+def count_timesessions_by_phone(phone: str) -> int:
+    count = timesession_collection.count_documents({"phone": phone})
+    return count

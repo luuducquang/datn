@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from bson import ObjectId
 from fastapi import HTTPException
 from pymongo.collection import Collection
@@ -40,13 +41,15 @@ def ser_getbyid_table(table_id:str):
         tabletype_data["_id"] = str(tabletype_data["_id"])  
         table["tabletype"] = tabletype_data  
 
-        pricingrule_data = pricingrule_collection.find_one({"type_table_id": tabletype_data["_id"]})
-        if(pricingrule_data):
-            pricingrule_data["_id"] = str(pricingrule_data["_id"])  
-            table["pricingrule"] = pricingrule_data  
-        else:
-            table["pricingrule"] = None 
-            print(f"No pricing rule found for table type ID: {tabletype_data['_id']}")
+        pricingrule_cursor  = pricingrule_collection.find({"type_table_id": tabletype_data["_id"]})
+        pricingrule_list = []
+
+        for rule in pricingrule_cursor:
+            rule["_id"] = str(rule["_id"])
+            rule["type_table_id"] = str(rule["type_table_id"])
+            pricingrule_list.append(rule)
+
+        table["pricingrule"] = pricingrule_list
     else:
         table["tabletype"] = None  
     return table
@@ -164,3 +167,65 @@ def ser_delete_table(table_id: str, table_collection: Collection):
         raise HTTPException(status_code=404, detail="table not found")
     
     return {"message": "table deleted successfully"}
+
+
+def calculate_bill_service(table_id: str):
+    if not ObjectId.is_valid(table_id):
+        raise HTTPException(status_code=400, detail="Invalid ID format")
+
+    table = table_collection.find_one({"_id": ObjectId(table_id)})
+    if not table:
+        raise HTTPException(status_code=404, detail="Table not found")
+
+    if not table.get("start_date"):
+        raise HTTPException(status_code=400, detail="Start time is missing")
+
+    start_time = table["start_date"]
+    end_time = datetime.now()
+
+    total_seconds = int((end_time - start_time).total_seconds())
+
+    table_type_id = table["table_type_id"]
+    pricing_rules = list(pricingrule_collection.find({"type_table_id": table_type_id}))
+
+    if not pricing_rules:
+        raise HTTPException(status_code=404, detail="No pricing rules found")
+
+    min_price_rule = min(pricing_rules, key=lambda r: r["rate_per_hour"])
+
+    total_price = 0
+    current_time = start_time
+
+    while current_time < end_time:
+        hour = current_time.hour
+        matched_rule = None
+
+        for rule in pricing_rules:
+            start_hour = int(rule["start_hour"])
+            end_hour = int(rule["end_hour"])
+
+            if start_hour < end_hour:
+                if start_hour <= hour < end_hour:
+                    matched_rule = rule
+                    break
+            else:
+                if hour >= start_hour or hour < end_hour:
+                    matched_rule = rule
+                    break
+
+        if matched_rule is None:
+            matched_rule = min_price_rule 
+
+        rate_per_hour = matched_rule["rate_per_hour"]
+        rate_per_minute = rate_per_hour / 60
+        total_price += rate_per_minute
+        current_time += timedelta(minutes=1)
+
+    return {
+        "table_id": str(table["_id"]),
+        "start_time": start_time,
+        "end_time": end_time,
+        "total_seconds": total_seconds,
+        "total_price": round(total_price, 2),
+        "display_price": f"{round(total_price):,} ₫"
+    }

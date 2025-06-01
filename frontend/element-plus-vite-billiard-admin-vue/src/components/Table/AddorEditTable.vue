@@ -81,6 +81,8 @@ const ruleForm = reactive<Tables>({
     status: false,
     description: "",
     booking_id: "",
+    name: "",
+    phone: "",
     start_date: null,
     end_date: null,
 });
@@ -158,6 +160,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                         table_number: ruleForm.table_number,
                         description: ruleForm.description,
                         table_type_id: ruleForm.table_type_id,
+                        name: ruleForm.name,
+                        phone: ruleForm.phone,
                         status: ruleForm.status,
                         booking_id: String(ruleForm.booking_id),
                         start_date: ruleForm.start_date ?? null,
