@@ -424,7 +424,11 @@
                 {{ formatTime(Number(dataPriceTable?.total_seconds)) }}
             </p>
             <p>
-             {{ customerForm.fullname ? "Khách hàng: "+ customerForm.fullname:"Khách lẻ" }}
+                {{
+                    customerForm.fullname
+                        ? "Khách hàng: " + customerForm.fullname
+                        : "Khách lẻ"
+                }}
             </p>
             <p v-if="customerForm.phone">
                 Số điện thoại: {{ customerForm.phone }}
@@ -528,7 +532,7 @@
 <script lang="ts" setup>
 import axios from "axios";
 import { ElMessage, FormInstance, FormRules } from "element-plus";
-import { nextTick, onMounted, onUnmounted } from "vue";
+import { nextTick, onMounted, onUnmounted, watch } from "vue";
 import { ref, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import {
@@ -658,22 +662,29 @@ const rules = reactive<FormRules>({
     ],
 });
 
-const onChangeForm = async () => {
-    await updateTable({
-        _id: String(route.params.id),
-        table_number: Number(dataDetailTable.value?.table_number),
-        table_type_id: String(dataDetailTable.value?.table_type_id),
-        status: Boolean(dataDetailTable.value?.status),
-        start_date: String(dataDetailTable?.value?.start_date),
-        end_date: String(dataDetailTable.value?.start_date),
-        description: String(dataDetailTable?.value?.description),
-        booking_id: String(dataDetailTable?.value?.booking_id),
-        name: customerForm.fullname,
-        phone: customerForm.phone,
-    });
-    const resCountPhone = await getCountByPhone(String(customerForm.phone));
-    discountLoyalCustomer.value = DiscountLoyalCustomer(Number(resCountPhone));
-};
+const onChangeForm = async () => {};
+
+watch(
+    () => [customerForm.fullname, customerForm.phone],
+    async ([newFullname, newPhone], [oldFullname, oldPhone]) => {
+        await updateTable({
+            _id: String(route.params.id),
+            table_number: Number(dataDetailTable.value?.table_number),
+            table_type_id: String(dataDetailTable.value?.table_type_id),
+            status: Boolean(dataDetailTable.value?.status),
+            start_date: String(dataDetailTable?.value?.start_date),
+            end_date: String(dataDetailTable.value?.start_date),
+            description: String(dataDetailTable?.value?.description),
+            booking_id: String(dataDetailTable?.value?.booking_id),
+            name: newFullname,
+            phone: newPhone,
+        });
+        const resCountPhone = await getCountByPhone(String(newPhone));
+        discountLoyalCustomer.value = DiscountLoyalCustomer(
+            Number(resCountPhone)
+        );
+    }
+);
 
 const bookingTitleTooltip = computed(() => {
     if (!selectedBookingId.value) return "";

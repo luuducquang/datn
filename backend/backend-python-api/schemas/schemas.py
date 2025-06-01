@@ -38,11 +38,7 @@ class Roles(BaseModel):
 class StockUpdateItem(BaseModel):
     item_id: str
     quantity: int
-
-class TimeRange(BaseModel):
-    start_time: datetime
-    end_time: datetime
-
+    
 class Users(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  
     email: EmailStr
