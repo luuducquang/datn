@@ -23,7 +23,7 @@
                     </el-select>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="Tên khách hàng" required>
+                    <el-form-item label="Tên khách hàng">
                         <el-input
                             v-model="form.customerName"
                             placeholder="Nhập tên khách hàng"
@@ -32,7 +32,7 @@
                 </el-col>
 
                 <el-col :span="12">
-                    <el-form-item label="Số điện thoại" required>
+                    <el-form-item label="Số điện thoại">
                         <el-input
                             v-model="form.customerPhone"
                             placeholder="Nhập số điện thoại"
@@ -166,11 +166,8 @@ const handleConfirm = async () => {
             !form.value.customerName.trim() ||
             !form.value.customerPhone.trim()
         ) {
-            Notification(
-                "Vui lòng nhập đầy đủ họ tên và số điện thoại khách hàng",
-                "warning"
-            );
-            return;
+            form.value.customerName = String(useStore?.user?.fullname);
+            form.value.customerPhone = String(useStore?.user?.phone);
         }
         const selectedTable = dataTable.value.find(
             (t) => String(t._id) === selectedTableId.value
