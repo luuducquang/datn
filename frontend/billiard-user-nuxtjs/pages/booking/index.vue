@@ -1054,7 +1054,7 @@ const submitBooking = async () => {
     if (isStatusTable.value && start <= fourHoursLater) {
         Swal.fire(
             "Lỗi",
-            "Thời gian bắt đầu phải sau thời điểm hiện tại ít nhất 4 giờ!",
+            "Bàn đang có người chơi nên thời gian bắt đầu phải sau thời điểm hiện tại ít nhất 4 giờ!",
             "error"
         );
         return;
@@ -1066,7 +1066,7 @@ const submitBooking = async () => {
             start_time: startTime.value,
             end_time: endTime.value,
         });
-        if (ischeckBooking) {
+        if (ischeckBooking && start >= fourHoursLater) {
             try {
                 if (paymentMethod.value === "wallet") {
                     const dataUser = await getInformation(

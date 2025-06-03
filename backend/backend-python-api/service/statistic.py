@@ -327,7 +327,7 @@ def generate_playtime_data() -> List[Dict]:
 
         results.append({
             "date": day_str,
-            "hours_played": total_hours
+            "hours_played": total_hours 
         })
 
     return {
@@ -447,3 +447,39 @@ def get_low_stock_products():
     ]
 
     return product_data + menuitem_data
+
+
+def get_imports_by_current_year_service():
+    current_year = datetime.now().year
+    results = []
+    total_import_value = 0
+
+    for month in range(1, 13):
+        start_date = datetime(current_year, month, 1)
+        if month == 12:
+            end_date = datetime(current_year + 1, 1, 1)
+        else:
+            end_date = datetime(current_year, month + 1, 1)
+
+        month_imports = list(importbills_collection.aggregate([
+            {"$match": {
+                "import_date": {"$gte": start_date, "$lt": end_date}
+            }},
+            {"$group": {
+                "_id": None,
+                "total_price": {"$sum": "$total_price"}
+            }}
+        ]))
+
+        month_total = month_imports[0]["total_price"] if month_imports else 0
+        total_import_value += month_total
+
+        results.append({
+            "month": f"{month:02d}",
+            "import_value": month_total
+        })
+
+    return {
+        "monthly_imports": results,
+        "yearly_import_total": total_import_value
+    }

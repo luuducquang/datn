@@ -122,6 +122,22 @@
                     </el-card>
                 </el-col>
             </el-row>
+            <el-row :gutter="20" class="chart-row">
+                <el-col :span="24">
+                    <el-card>
+                        <h2>
+                            Biểu đồ tiền nhập năm 2025:
+                            {{ ConvertPrice(Number(totalProfitYear)) }}
+                        </h2>
+                        <el-tooltip content="" placement="top" disabled>
+                            <div
+                                id="profitChartYear"
+                                style="height: 300px"
+                            ></div>
+                        </el-tooltip>
+                    </el-card>
+                </el-col>
+            </el-row>
             <!-- <el-row :gutter="20" class="chart-row">
                 <el-col :span="24">
                     <el-card>
@@ -147,6 +163,7 @@ import {
     getLowStock,
     getOverview,
     getPlaytime,
+    getProfitYear,
     getRevenue,
     getRevenueWeek,
     getRevenueYear,
@@ -172,6 +189,10 @@ const totalRevenueMonth = ref(0);
 const revenueDataYear = ref<any>([]);
 const totalRevenueYear = ref(0);
 const yearRevenue = ref(0);
+
+const profitDataYear = ref<any>([]);
+const totalProfitYear = ref(0);
+const yearProfit = ref(0);
 
 const playTimeData = ref<any>([]);
 const totalPlaytimeMonth = ref(0);
@@ -417,6 +438,43 @@ const Fetchdata = async () => {
         },
     };
     chartYear.setOption(optionYear);
+
+    // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    const resProfitYear = await getProfitYear();
+    const dataProfitYear = resProfitYear?.monthly_imports.map((value: any) => {
+        return {
+            date: "Tháng " + value.month,
+            profit: value.import_value,
+        };
+    });
+    profitDataYear.value = dataProfitYear;
+    totalProfitYear.value = resProfitYear?.yearly_import_total;
+
+    const chartProfitYear = echarts.init(
+        document.getElementById("profitChartYear")
+    );
+    const optionProfitYear = {
+        xAxis: {
+            type: "category",
+            data: profitDataYear.value.map((item: any) => item.date),
+        },
+        yAxis: { type: "value" },
+        series: [
+            {
+                data: profitDataYear.value.map((item: any) => item.profit),
+                type: "line",
+                smooth: true,
+            },
+        ],
+        tooltip: {
+            trigger: "axis",
+            formatter: function (params: any) {
+                const item = params[0];
+                return `${item.axisValue}<br/>Tiền nhập: ${ConvertPrice(item.data)}`;
+            },
+        },
+    };
+    chartProfitYear.setOption(optionProfitYear);
 };
 </script>
 

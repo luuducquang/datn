@@ -23,6 +23,11 @@ export const getRevenueYear = async (): Promise<any> => {
     return res?.data;
 };
 
+export const getProfitYear = async (): Promise<any> => {
+    const res = await apiClient?.get(`${StatisticUrl}/imports-by-current-year`);
+    return res?.data;
+};
+
 export const getPlaytime = async (): Promise<any> => {
     const res = await apiClient?.get(`${StatisticUrl}/playtime`);
     return res?.data;

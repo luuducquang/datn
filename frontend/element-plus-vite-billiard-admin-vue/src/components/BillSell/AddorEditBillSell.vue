@@ -460,7 +460,7 @@ const PrintInvoice = async () => {
 
 const handleProductChange = (value: any) => {
     const filteredProduct = optionsProduct.value?.find(
-        (product) => product.value === value
+        (product) => product.label.toLowerCase() === value.toLowerCase()
     );
     if (filteredProduct) {
         ruleForm.unit_price = filteredProduct.gia;

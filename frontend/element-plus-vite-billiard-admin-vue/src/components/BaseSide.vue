@@ -68,7 +68,7 @@
                 <span class="fw-bold">Sản phẩm</span>
             </template>
             <router-link to="/menuitem" class="menu-link">
-                <el-menu-item index="10">Sản phẩm thuê</el-menu-item>
+                <el-menu-item index="10">Sản phẩm dịch vụ</el-menu-item>
             </router-link>
             <router-link to="/product" class="menu-link">
                 <el-menu-item index="11">Sản phẩm bán</el-menu-item>
