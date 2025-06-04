@@ -41,6 +41,7 @@
                 <el-select
                     v-model="ruleForm.status"
                     placeholder="Vui lòng chọn"
+                    :disabled="ruleForm.status === 'Hoàn tất'"
                 >
                     <el-option label="Đang xử lý" value="Đang xử lý" />
                     <el-option label="Đang giao hàng" value="Đang giao hàng" />
@@ -53,12 +54,27 @@
             </el-form-item>
 
             <el-form-item label="Thanh toán" prop="is_paid">
-                <el-tag
-                    :type="ruleForm.is_paid ? 'success' : 'danger'"
-                    effect="dark"
-                >
-                    {{ ruleForm.is_paid ? "Đã thanh toán" : "Chưa thanh toán" }}
-                </el-tag>
+                <template v-if="!route.params.id">
+                    <el-select
+                        v-model="ruleForm.is_paid"
+                        placeholder="Chọn trạng thái thanh toán"
+                    >
+                        <el-option label="Chưa thanh toán" :value="false" />
+                        <el-option label="Đã thanh toán" :value="true" />
+                    </el-select>
+                </template>
+                <template v-else>
+                    <el-tag
+                        :type="ruleForm.is_paid ? 'success' : 'danger'"
+                        effect="dark"
+                    >
+                        {{
+                            ruleForm.is_paid
+                                ? "Đã thanh toán"
+                                : "Chưa thanh toán"
+                        }}
+                    </el-tag>
+                </template>
             </el-form-item>
             <el-form-item v-if="route.params.id" label="Tuỳ chọn">
                 <el-button type="warning" @click="invoiceDialogVisible = true"
@@ -187,7 +203,13 @@
                                 "
                             >
                                 <template #reference>
-                                    <el-button size="small" type="danger">
+                                    <el-button
+                                        size="small"
+                                        type="danger"
+                                        :disabled="
+                                            ruleForm.status === 'Hoàn tất'
+                                        "
+                                    >
                                         Delete
                                     </el-button>
                                 </template>
@@ -197,10 +219,18 @@
                 </el-table>
 
                 <el-form-item class="btns_item">
-                    <el-button type="primary" @click="submitForm(ruleFormRef)">
+                    <el-button
+                        :disabled="ruleForm.status === 'Hoàn tất'"
+                        type="primary"
+                        @click="submitForm(ruleFormRef)"
+                    >
                         {{ route.params.id ? "Update" : "Create" }}
                     </el-button>
-                    <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+                    <el-button
+                        @click="resetForm(ruleFormRef)"
+                        :disabled="ruleForm.status === 'Hoàn tất'"
+                        >Reset</el-button
+                    >
                 </el-form-item>
             </el-card>
         </el-form>
@@ -515,6 +545,7 @@ const fetchById = async (id: string) => {
             address_detail: String(ruleForm.address_detail),
             total_price: ruleForm.total_price,
             status: "Huỷ đơn",
+            is_paid: ruleForm.is_paid,
         });
         for (const item of listitemDeleted) {
             if (item) {
@@ -775,8 +806,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         } else {
             Notification("Bạn cần điền đủ thông tin", "warning");
         }
-    } catch (fields) {
-        Notification("Bạn cần điền đủ thông tinn", "warning");
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            Notification(error.response?.data.detail, "warning");
+        }
     }
 };
 

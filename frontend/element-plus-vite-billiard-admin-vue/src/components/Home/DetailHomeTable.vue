@@ -4,12 +4,32 @@
             <el-col :span="10">
                 <el-card shadow="hover" class="table-info-card modern-card">
                     <el-descriptions
-                        title="Thông tin khách và bàn"
                         :column="1"
                         border
                         size="large"
                         class="mb-3"
                     >
+                        <template #title>
+                            <div
+                                class="d-flex justify-between items-center w-full"
+                            >
+                                <span>Thông tin khách và bàn</span>
+                                <el-button
+                                    v-if="dataDetailTable?.status"
+                                    type="primary"
+                                    size="small"
+                                    class="ml-5"
+                                    @click="dialogTransferTable = true"
+                                >
+                                    Chuyển bàn
+                                </el-button>
+                            </div>
+                            <AlertTransferTable
+                                v-model="dialogTransferTable"
+                                :current-table-id="String(route.params.id)"
+                                @transfer-success="fetchById"
+                            />
+                        </template>
                         <el-descriptions-item label="Tên khách hàng">
                             <el-input
                                 v-model="customerForm.fullname"
@@ -23,7 +43,7 @@
                                 v-model="customerForm.phone"
                                 placeholder="Nhập số điện thoại"
                                 size="large"
-                                @blur="onChangeForm"
+                                @input="onPhoneInput"
                             />
                         </el-descriptions-item>
 
@@ -245,7 +265,7 @@
                         >
                             <template #default="scope">
                                 <img
-                                    :src="apiImage + scope.row.menuitem.image"
+                                    :src="apiImage + scope.row?.menuitem?.image"
                                     alt="Hình ảnh sản phẩm"
                                     class="img-item"
                                 />
@@ -257,7 +277,7 @@
                             prop="unit_price"
                         >
                             <template #default="scope">
-                                <span>{{ scope.row.menuitem.name }}</span>
+                                <span>{{ scope.row?.menuitem?.name }}</span>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -575,6 +595,7 @@ import {
 import { getBookingItemByIDBooking } from "~/services/bookingitem.service";
 import { getTablePrice } from "~/services/table.service";
 import { DiscountLoyalCustomer } from "~/utils/loyalcustomer";
+import { debounce } from "lodash-es";
 
 const route = useRoute();
 const dataDetailTable = ref<Tables | null>(null);
@@ -590,6 +611,8 @@ const optionListMenuItems = ref<OptionSelect[]>();
 const dialogFormMenuItemVisible = ref(false);
 const dialogVisiblePay = ref(false);
 const formLabelWidth = "140px";
+
+const dialogTransferTable = ref(false);
 
 const tableDataMenuItem = ref<TableMenuItems[]>([]);
 const dataPriceTable = ref<TablePrice>();
@@ -664,25 +687,38 @@ const rules = reactive<FormRules>({
 
 const onChangeForm = async () => {};
 
-watch(
-    () => [customerForm.fullname, customerForm.phone],
-    async ([newFullname, newPhone], [oldFullname, oldPhone]) => {
-        await updateTable({
-            _id: String(route.params.id),
-            table_number: Number(dataDetailTable.value?.table_number),
-            table_type_id: String(dataDetailTable.value?.table_type_id),
-            status: Boolean(dataDetailTable.value?.status),
-            start_date: String(dataDetailTable?.value?.start_date),
-            end_date: String(dataDetailTable.value?.start_date),
-            description: String(dataDetailTable?.value?.description),
-            booking_id: String(dataDetailTable?.value?.booking_id),
-            name: newFullname,
-            phone: newPhone,
-        });
-        const resCountPhone = await getCountByPhone(String(newPhone));
+function onPhoneInput(value: string) {
+    customerForm.phone = value.replace(/\D/g, "");
+}
+
+const debouncedUpdate = debounce(async (fullname: string, phone: string) => {
+    await updateTable({
+        _id: String(route.params.id),
+        table_number: Number(dataDetailTable.value?.table_number),
+        table_type_id: String(dataDetailTable.value?.table_type_id),
+        status: Boolean(dataDetailTable.value?.status),
+        start_date: String(dataDetailTable?.value?.start_date),
+        end_date: String(dataDetailTable.value?.start_date),
+        description: String(dataDetailTable?.value?.description),
+        booking_id: String(dataDetailTable?.value?.booking_id),
+        name: fullname,
+        phone: phone,
+    });
+
+    try {
+        const resCountPhone = await getCountByPhone(String(phone));
         discountLoyalCustomer.value = DiscountLoyalCustomer(
             Number(resCountPhone)
         );
+    } catch (error) {
+        discountLoyalCustomer.value = 0;
+    }
+}, 1000);
+
+watch(
+    () => [customerForm.fullname, customerForm.phone],
+    ([newFullname, newPhone]) => {
+        debouncedUpdate(newFullname, newPhone);
     }
 );
 

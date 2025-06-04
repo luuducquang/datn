@@ -21,6 +21,13 @@ export const createBooking = async (
     return res?.data;
 };
 
+export const updateBooking = async (
+    data: Record<string, string | number | Boolean>
+): Promise<Bookings> => {
+    const res = await apiClient?.put(`${BookingUrl}/update`, data);
+    return res?.data;
+};
+
 export const checkBooking = async (
     data: Record<string, string | number | Boolean>
 ): Promise<Boolean> => {

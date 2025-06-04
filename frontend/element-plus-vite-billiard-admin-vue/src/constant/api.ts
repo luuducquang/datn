@@ -16,22 +16,15 @@ export interface StockUpdateItem {
     quantity: number;
 }
 
-export interface Bookings {
-    _id?: string;
-    table_id: string;
-    name: string;
-    phone: string;
-    start_time: Date;
-    end_time: Date;
-    status: Boolean;
-    money_paid: Number;
-    created_at: Date;
-    table?: Tables;
+export interface TableTransferRequest {
+    old_table_id: string;
+    new_table_id: string;
 }
 
 export interface Bookings {
     _id?: string;
     table_id: string;
+    user_id: string;
     name: string;
     phone: string;
     start_time: Date;

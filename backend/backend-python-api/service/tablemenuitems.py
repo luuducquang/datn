@@ -157,3 +157,16 @@ def ser_delete_menuitem(id: str, table_menuitem_collection: Collection, menuitem
     )
 
     return {"message": "Menuitem deleted successfully"}
+
+
+
+def transfer_table_items_service(old_table_id: str, new_table_id: str, collection :Collection):
+    result = collection.update_many(
+        {"table_id": old_table_id},
+        {"$set": {"table_id": new_table_id}}
+    )
+    return {
+        "message": "Cập nhật thành công",
+        "matched_count": result.matched_count,
+        "modified_count": result.modified_count
+    }

@@ -38,6 +38,10 @@ class Roles(BaseModel):
 class StockUpdateItem(BaseModel):
     item_id: str
     quantity: int
+
+class TableTransferRequest(BaseModel):
+    old_table_id: str
+    new_table_id: str
     
 class Users(BaseModel):
     id: Optional[str] = Field(None, alias="_id")  

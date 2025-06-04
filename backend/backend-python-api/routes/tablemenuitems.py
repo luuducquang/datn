@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from pymongo.collection import Collection
 from config.database import database
-from schemas.schemas import TableMenuItems
-from service.tablemenuitems import ser_delete_menuitem,ser_get_tablemenuitem,ser_getbyid_table_tablemenuitem,ser_delete_table_menuitem, ser_insert_table_menuitem, ser_update_table_menuitem
+from schemas.schemas import TableMenuItems, TableTransferRequest
+from service.tablemenuitems import transfer_table_items_service,ser_delete_menuitem,ser_get_tablemenuitem,ser_getbyid_table_tablemenuitem,ser_delete_table_menuitem, ser_insert_table_menuitem, ser_update_table_menuitem
 
 
 router = APIRouter()
@@ -37,3 +37,11 @@ def remove_tablemenuitem(table_id: str):
 def remove_menuitem(id: str):
     response = ser_delete_menuitem(id, tablemenuitem_collection, menuitem_collection)
     return response
+
+@router.put("/tablemenuitems/transfer")
+def transfer_table_items(data: TableTransferRequest):
+    return transfer_table_items_service(
+        data.old_table_id,
+        data.new_table_id,
+        tablemenuitem_collection
+    )

@@ -1,8 +1,5 @@
-import { TableMenuItems, Tables } from "~/constant/api";
-import {
-    TableMenuItemUrl,
-    TableUrl,
-} from "~/constant/endpoints";
+import { TableMenuItems, TableTransferRequest, Tables } from "~/constant/api";
+import { TableMenuItemUrl, TableUrl } from "~/constant/endpoints";
 import { apiClient } from "~/constant/request";
 
 export const getAllTable = async (): Promise<Tables[]> => {
@@ -40,6 +37,13 @@ export const updateTableMenuItem = async (
     data: Record<string, string | number | boolean>
 ): Promise<TableMenuItems> => {
     const res = await apiClient?.put(`${TableMenuItemUrl}/update`, data);
+    return res?.data;
+};
+
+export const updateTableMenuItemTransfer = async (
+    data: TableTransferRequest
+): Promise<TableMenuItems> => {
+    const res = await apiClient?.put(`${TableMenuItemUrl}/transfer`, data);
     return res?.data;
 };
 
