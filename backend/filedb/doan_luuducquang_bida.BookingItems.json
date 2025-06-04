@@ -1,0 +1,456 @@
+[{
+  "_id": {
+    "$oid": "681dd1443fb6ae3c8e02eb9e"
+  },
+  "booking_id": "681dd1443fb6ae3c8e02eb9d",
+  "item_id": "67643cb04d902420a592af71",
+  "name": "Bim bim Oishi bắp ngọt",
+  "image": "/static/uploads/snack-bap-ngot-oishi-goi-42g-201912050006355601_ec190e8d12594d78ab36a0a34048e162_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "681dd1443fb6ae3c8e02eb9f"
+  },
+  "booking_id": "681dd1443fb6ae3c8e02eb9d",
+  "item_id": "67643c7c4d902420a592af70",
+  "name": "Bim Bim Oishi hành",
+  "image": "/static/uploads/snack-hanh-oishi-orion-rings-goi-39g-202203281446234326_242a08e28bf04a609b8efc1b04becfe2_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 12000,
+  "total_price": 12000
+},
+{
+  "_id": {
+    "$oid": "681dd1443fb6ae3c8e02eba0"
+  },
+  "booking_id": "681dd1443fb6ae3c8e02eb9d",
+  "item_id": "67643d464d902420a592af77",
+  "name": "Chai nước ngọt 350ml - Chai nhựa đựng nước ngọt 350ml",
+  "image": "/static/uploads/chai-nuoc-ngot-350ml-chai-nuoc-c2.jpg",
+  "quantity": 1,
+  "unit_price": 7200,
+  "total_price": 7200
+},
+{
+  "_id": {
+    "$oid": "681eb4b4e7084c21fc497235"
+  },
+  "booking_id": "681eb4b4e7084c21fc497234",
+  "item_id": "67643cb04d902420a592af71",
+  "name": "Bim bim Oishi bắp ngọt",
+  "image": "/static/uploads/snack-bap-ngot-oishi-goi-42g-201912050006355601_ec190e8d12594d78ab36a0a34048e162_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "68209227d257998b3cad9a52"
+  },
+  "booking_id": "68209227d257998b3cad9a51",
+  "item_id": "67643cb04d902420a592af71",
+  "name": "Bim bim Oishi bắp ngọt",
+  "image": "/static/uploads/snack-bap-ngot-oishi-goi-42g-201912050006355601_ec190e8d12594d78ab36a0a34048e162_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "68209227d257998b3cad9a53"
+  },
+  "booking_id": "68209227d257998b3cad9a51",
+  "item_id": "67643d464d902420a592af77",
+  "name": "Chai nước ngọt 350ml - Chai nhựa đựng nước ngọt 350ml",
+  "image": "/static/uploads/chai-nuoc-ngot-350ml-chai-nuoc-c2.jpg",
+  "quantity": 1,
+  "unit_price": 7200,
+  "total_price": 7200
+},
+{
+  "_id": {
+    "$oid": "68209237d257998b3cad9a55"
+  },
+  "booking_id": "68209237d257998b3cad9a54",
+  "item_id": "67643c7c4d902420a592af70",
+  "name": "Bim Bim Oishi hành",
+  "image": "/static/uploads/snack-hanh-oishi-orion-rings-goi-39g-202203281446234326_242a08e28bf04a609b8efc1b04becfe2_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 12000,
+  "total_price": 12000
+},
+{
+  "_id": {
+    "$oid": "68209237d257998b3cad9a56"
+  },
+  "booking_id": "68209237d257998b3cad9a54",
+  "item_id": "67643d464d902420a592af77",
+  "name": "Chai nước ngọt 350ml - Chai nhựa đựng nước ngọt 350ml",
+  "image": "/static/uploads/chai-nuoc-ngot-350ml-chai-nuoc-c2.jpg",
+  "quantity": 1,
+  "unit_price": 7200,
+  "total_price": 7200
+},
+{
+  "_id": {
+    "$oid": "682092ffd257998b3cad9a59"
+  },
+  "booking_id": "682092ffd257998b3cad9a58",
+  "item_id": "6710887b9456a9b32225c7af",
+  "name": "Bim bim snack đỏ",
+  "image": "/static/uploads/vn-11134201-23030-lznrficffrov9e.jpg",
+  "quantity": 1,
+  "unit_price": 12000,
+  "total_price": 12000
+},
+{
+  "_id": {
+    "$oid": "682217fc96032428e961a4e6"
+  },
+  "booking_id": "682217fc96032428e961a4e5",
+  "item_id": "67643cb04d902420a592af71",
+  "name": "Bim bim Oishi bắp ngọt",
+  "image": "/static/uploads/snack-bap-ngot-oishi-goi-42g-201912050006355601_ec190e8d12594d78ab36a0a34048e162_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "6822191796032428e961a4e8"
+  },
+  "booking_id": "6822191796032428e961a4e7",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "68221bd796032428e961a4ea"
+  },
+  "booking_id": "68221bd796032428e961a4e9",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "68221c1e96032428e961a4ec"
+  },
+  "booking_id": "68221c1e96032428e961a4eb",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "68221c5396032428e961a4ee"
+  },
+  "booking_id": "68221c5396032428e961a4ed",
+  "item_id": "67643c7c4d902420a592af70",
+  "name": "Bim Bim Oishi hành",
+  "image": "/static/uploads/snack-hanh-oishi-orion-rings-goi-39g-202203281446234326_242a08e28bf04a609b8efc1b04becfe2_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 12000,
+  "total_price": 12000
+},
+{
+  "_id": {
+    "$oid": "68221ce796032428e961a4f0"
+  },
+  "booking_id": "68221ce796032428e961a4ef",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "68221ce796032428e961a4f1"
+  },
+  "booking_id": "68221ce796032428e961a4ef",
+  "item_id": "6710887b9456a9b32225c7af",
+  "name": "Bim bim snack đỏ",
+  "image": "/static/uploads/vn-11134201-23030-lznrficffrov9e.jpg",
+  "quantity": 1,
+  "unit_price": 12000,
+  "total_price": 12000
+},
+{
+  "_id": {
+    "$oid": "682228df5912770ac472d4a9"
+  },
+  "booking_id": "682228df5912770ac472d4a8",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "6822ba93bf26b7a43ca1570e"
+  },
+  "booking_id": "6822ba93bf26b7a43ca1570d",
+  "item_id": "6710887b9456a9b32225c7af",
+  "name": "Bim bim snack đỏ",
+  "image": "/static/uploads/vn-11134201-23030-lznrficffrov9e.jpg",
+  "quantity": 1,
+  "unit_price": 12000,
+  "total_price": 12000
+},
+{
+  "_id": {
+    "$oid": "6822bb29bf26b7a43ca15710"
+  },
+  "booking_id": "6822bb29bf26b7a43ca1570f",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "6822bb89bf26b7a43ca15712"
+  },
+  "booking_id": "6822bb89bf26b7a43ca15711",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 6000,
+  "total_price": 6000
+},
+{
+  "_id": {
+    "$oid": "6822bb89bf26b7a43ca15713"
+  },
+  "booking_id": "6822bb89bf26b7a43ca15711",
+  "item_id": "67330bd2f42c21ff9487b920",
+  "name": "Cocacola",
+  "image": "/static/uploads/5361-01.jpg",
+  "quantity": 1,
+  "unit_price": 12100,
+  "total_price": 12100
+},
+{
+  "_id": {
+    "$oid": "68287b88702b21f5f90a0c5c"
+  },
+  "booking_id": "68287b88702b21f5f90a0c5b",
+  "item_id": "67643cb04d902420a592af71",
+  "name": "Bim bim Oishi bắp ngọt",
+  "image": "/static/uploads/snack-bap-ngot-oishi-goi-42g-201912050006355601_ec190e8d12594d78ab36a0a34048e162_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 10000,
+  "total_price": 10000
+},
+{
+  "_id": {
+    "$oid": "682885c5702b21f5f90a0c5f"
+  },
+  "booking_id": "682885c5702b21f5f90a0c5e",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 13000,
+  "total_price": 13000
+},
+{
+  "_id": {
+    "$oid": "682885c5702b21f5f90a0c60"
+  },
+  "booking_id": "682885c5702b21f5f90a0c5e",
+  "item_id": "67643c7c4d902420a592af70",
+  "name": "Bim Bim Oishi hành",
+  "image": "/static/uploads/snack-hanh-oishi-orion-rings-goi-39g-202203281446234326_242a08e28bf04a609b8efc1b04becfe2_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 12000,
+  "total_price": 12000
+},
+{
+  "_id": {
+    "$oid": "682885c5702b21f5f90a0c61"
+  },
+  "booking_id": "682885c5702b21f5f90a0c5e",
+  "item_id": "67330bd2f42c21ff9487b920",
+  "name": "Cocacola",
+  "image": "/static/uploads/5361-01.jpg",
+  "quantity": 1,
+  "unit_price": 15000,
+  "total_price": 15000
+},
+{
+  "_id": {
+    "$oid": "68308716499bba8b0d37ea03"
+  },
+  "booking_id": "68308716499bba8b0d37ea02",
+  "item_id": "67643cb04d902420a592af71",
+  "name": "Bim bim Oishi bắp ngọt",
+  "image": "/static/uploads/snack-bap-ngot-oishi-goi-42g-201912050006355601_ec190e8d12594d78ab36a0a34048e162_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 10000,
+  "total_price": 10000
+},
+{
+  "_id": {
+    "$oid": "68308716499bba8b0d37ea04"
+  },
+  "booking_id": "68308716499bba8b0d37ea02",
+  "item_id": "67643c7c4d902420a592af70",
+  "name": "Bim Bim Oishi hành",
+  "image": "/static/uploads/snack-hanh-oishi-orion-rings-goi-39g-202203281446234326_242a08e28bf04a609b8efc1b04becfe2_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 12000,
+  "total_price": 12000
+},
+{
+  "_id": {
+    "$oid": "683965a698c2a3075552e26c"
+  },
+  "booking_id": "683965a698c2a3075552e26b",
+  "item_id": "67643cb04d902420a592af71",
+  "name": "Bim bim Oishi bắp ngọt",
+  "image": "/static/uploads/snack-bap-ngot-oishi-goi-42g-201912050006355601_ec190e8d12594d78ab36a0a34048e162_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 10000,
+  "total_price": 10000
+},
+{
+  "_id": {
+    "$oid": "683965a698c2a3075552e26d"
+  },
+  "booking_id": "683965a698c2a3075552e26b",
+  "item_id": "67330bd2f42c21ff9487b920",
+  "name": "pepsi",
+  "image": "/static/uploads/5361-01.jpg",
+  "quantity": 1,
+  "unit_price": 15000,
+  "total_price": 15000
+},
+{
+  "_id": {
+    "$oid": "6839695998c2a3075552e26f"
+  },
+  "booking_id": "6839695998c2a3075552e26e",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 13000,
+  "total_price": 13000
+},
+{
+  "_id": {
+    "$oid": "683c4304f0d4a1e7fa66475d"
+  },
+  "booking_id": "683c4304f0d4a1e7fa66475c",
+  "item_id": "67643cb04d902420a592af71",
+  "name": "Bim bim Oishi bắp ngọt",
+  "image": "/static/uploads/snack-bap-ngot-oishi-goi-42g-201912050006355601_ec190e8d12594d78ab36a0a34048e162_1024x1024.webp",
+  "quantity": 1,
+  "unit_price": 10000,
+  "total_price": 10000
+},
+{
+  "_id": {
+    "$oid": "683c4304f0d4a1e7fa66475e"
+  },
+  "booking_id": "683c4304f0d4a1e7fa66475c",
+  "item_id": "68234e496dc7d770a0509bf1",
+  "name": "Cơ bắn Peri ST01",
+  "image": "/static/uploads/rhino-retro-2-768x768.jpg",
+  "quantity": 1,
+  "unit_price": 30000,
+  "total_price": 30000
+},
+{
+  "_id": {
+    "$oid": "683c4304f0d4a1e7fa66475f"
+  },
+  "booking_id": "683c4304f0d4a1e7fa66475c",
+  "item_id": "67643d464d902420a592af77",
+  "name": "Chai nước ngọt 350ml - Chai nhựa đựng nước ngọt 350ml",
+  "image": "/static/uploads/chai-nuoc-ngot-350ml-chai-nuoc-c2.jpg",
+  "quantity": 1,
+  "unit_price": 8000,
+  "total_price": 8000
+},
+{
+  "_id": {
+    "$oid": "683d73e02a11970bacee473d"
+  },
+  "booking_id": "683d73e02a11970bacee473c",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 13000,
+  "total_price": 13000
+},
+{
+  "_id": {
+    "$oid": "683d73e02a11970bacee473e"
+  },
+  "booking_id": "683d73e02a11970bacee473c",
+  "item_id": "67643d464d902420a592af77",
+  "name": "Chai nước ngọt C2 350ml",
+  "image": "/static/uploads/chai-nuoc-ngot-350ml-chai-nuoc-c2.jpg",
+  "quantity": 1,
+  "unit_price": 7200,
+  "total_price": 7200
+},
+{
+  "_id": {
+    "$oid": "683ea81ee73ec4b712953826"
+  },
+  "booking_id": "683ea81ee73ec4b712953825",
+  "item_id": "67643cd54d902420a592af73",
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "quantity": 1,
+  "unit_price": 13000,
+  "total_price": 13000
+},
+{
+  "_id": {
+    "$oid": "683ea81ee73ec4b712953827"
+  },
+  "booking_id": "683ea81ee73ec4b712953825",
+  "item_id": "67643d0f4d902420a592af75",
+  "name": "Nước ngọt Sting",
+  "image": "/static/uploads/nuoc-ngot-sting.jpg",
+  "quantity": 1,
+  "unit_price": 10000,
+  "total_price": 10000
+},
+{
+  "_id": {
+    "$oid": "683ea81ee73ec4b712953828"
+  },
+  "booking_id": "683ea81ee73ec4b712953825",
+  "item_id": "68234e636dc7d770a0509bf2",
+  "name": "Gậy Fury VT06",
+  "image": "/static/uploads/FURY-TY-KNIGHT-02-2-768x768.jpg",
+  "quantity": 2,
+  "unit_price": 30000,
+  "total_price": 60000
+}]

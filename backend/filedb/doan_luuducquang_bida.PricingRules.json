@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "6710677846f7bcdf4d3329d3"
+  },
+  "type_table_id": "66f7f0c63bba28672d537139",
+  "rate_per_hour": 40000,
+  "end_hour": 20,
+  "start_hour": 8
+},
+{
+  "_id": {
+    "$oid": "683b3ae6ce2ff90cd5de0e2d"
+  },
+  "type_table_id": "66f7f0c63bba28672d537139",
+  "start_hour": 20,
+  "end_hour": 8,
+  "rate_per_hour": 60000
+}]

@@ -1,0 +1,14 @@
+[{
+  "_id": {
+    "$oid": "6738580decafb528652c090d"
+  },
+  "description": "uoi",
+  "image": "/static/uploads/banner-thế-giới-bida.jpg"
+},
+{
+  "_id": {
+    "$oid": "68308b51499bba8b0d37ea0a"
+  },
+  "description": "2",
+  "image": "/static/uploads/banner-thế-giới-bida.jpg"
+}]

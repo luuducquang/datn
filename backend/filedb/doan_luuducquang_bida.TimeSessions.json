@@ -1,0 +1,508 @@
+[{
+  "_id": {
+    "$oid": "6825ef5676a6f737b55727ba"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-04-15T20:41:46.000Z"
+  },
+  "end_time": {
+    "$date": "2025-04-15T20:42:46.000Z"
+  },
+  "price": 73059600,
+  "price_paid": 73059600
+},
+{
+  "_id": {
+    "$oid": "6825efb576a6f737b55727bd"
+  },
+  "table_id": "6732ceea52e9e56c542a2492",
+  "start_time": {
+    "$date": "2025-03-15T20:44:07.000Z"
+  },
+  "end_time": {
+    "$date": "2025-03-15T20:44:21.000Z"
+  },
+  "price": 58123145,
+  "price_paid": 58123145
+},
+{
+  "_id": {
+    "$oid": "6825f02f76a6f737b55727c0"
+  },
+  "table_id": "6732ceea52e9e56c542a2492",
+  "start_time": {
+    "$date": "2025-02-15T20:46:16.000Z"
+  },
+  "end_time": {
+    "$date": "2025-02-15T20:46:23.000Z"
+  },
+  "price": 98123167,
+  "price_paid": 98123167
+},
+{
+  "_id": {
+    "$oid": "6825f08f297b974a8b708c1b"
+  },
+  "table_id": "6732ceea52e9e56c542a2492",
+  "start_time": {
+    "$date": "2025-05-25T20:47:50.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-25T20:47:59.000Z"
+  },
+  "price": 8123171,
+  "price_paid": 8123171
+},
+{
+  "_id": {
+    "$oid": "682600e0657a0bb829b7a85c"
+  },
+  "table_id": "6732cee052e9e56c542a248e",
+  "start_time": {
+    "$date": "2025-05-26T21:57:26.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-26T21:57:36.000Z"
+  },
+  "price": 9623873,
+  "price_paid": 9623873
+},
+{
+  "_id": {
+    "$oid": "68304ad9b5d5774458368d17"
+  },
+  "table_id": "6732cee052e9e56c542a248e",
+  "start_time": {
+    "$date": "2025-05-17T19:49:55.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-23T17:15:53.000Z"
+  },
+  "price": 4242975,
+  "price_paid": 4215975
+},
+{
+  "_id": {
+    "$oid": "683052e2ce3e916f40486b0c"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-05-15T15:41:44.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-23T17:50:10.000Z"
+  },
+  "price": 5824217,
+  "price_paid": 5844217
+},
+{
+  "_id": {
+    "$oid": "6831ee9d38e5d7398340dcd3"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-05-23T18:10:40.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-24T23:06:53.000Z"
+  },
+  "price": 868108,
+  "price_paid": 868108
+},
+{
+  "_id": {
+    "$oid": "6831eea138e5d7398340dcd5"
+  },
+  "table_id": "6732cee052e9e56c542a248e",
+  "start_time": {
+    "$date": "2025-05-23T18:10:44.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-24T23:06:57.000Z"
+  },
+  "price": 868108,
+  "price_paid": 868108
+},
+{
+  "_id": {
+    "$oid": "6831eea538e5d7398340dcd7"
+  },
+  "table_id": "6732cee252e9e56c542a248f",
+  "start_time": {
+    "$date": "2025-05-23T18:10:48.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-24T23:07:01.000Z"
+  },
+  "price": 868100,
+  "price_paid": 868100
+},
+{
+  "_id": {
+    "$oid": "6831eea938e5d7398340dcd9"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "start_time": {
+    "$date": "2025-05-23T18:10:50.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-24T23:07:05.000Z"
+  },
+  "price": 868125,
+  "price_paid": 868125
+},
+{
+  "_id": {
+    "$oid": "6831eeb138e5d7398340dcdb"
+  },
+  "table_id": "6732cee752e9e56c542a2491",
+  "start_time": {
+    "$date": "2025-05-23T18:10:52.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-24T23:07:13.000Z"
+  },
+  "price": 868175,
+  "price_paid": 868175
+},
+{
+  "_id": {
+    "$oid": "6836a5567dedae505d31f3e0"
+  },
+  "table_id": "6732cee052e9e56c542a248e",
+  "start_time": {
+    "$date": "2025-05-27T23:07:20.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-27T12:55:34.000Z"
+  },
+  "price": 5174117,
+  "price_paid": 5744117
+},
+{
+  "_id": {
+    "$oid": "6836a55c7dedae505d31f3e2"
+  },
+  "table_id": "6732cee252e9e56c542a248f",
+  "start_time": {
+    "$date": "2025-05-24T23:07:22.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-29T12:55:40.000Z"
+  },
+  "price": 7574142,
+  "price_paid": 7574142
+},
+{
+  "_id": {
+    "$oid": "683712d22d5646228b059324"
+  },
+  "table_id": "6732cee752e9e56c542a2491",
+  "start_time": {
+    "$date": "2025-05-24T23:07:27.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-30T20:42:42.000Z"
+  },
+  "price": 9136778,
+  "price_paid": 9136778
+},
+{
+  "_id": {
+    "$oid": "683b3b4ece2ff90cd5de0e2f"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-05-28T12:55:28.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T00:24:30.000Z"
+  },
+  "price": 8192348,
+  "price_paid": 8192348
+},
+{
+  "_id": {
+    "$oid": "683b3b61ce2ff90cd5de0e31"
+  },
+  "table_id": "6732cee052e9e56c542a248e",
+  "start_time": {
+    "$date": "2025-05-28T12:55:43.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T00:24:49.000Z"
+  },
+  "price": 3339400,
+  "price_paid": 3339400
+},
+{
+  "_id": {
+    "$oid": "683b3b65ce2ff90cd5de0e33"
+  },
+  "table_id": "6732cee252e9e56c542a248f",
+  "start_time": {
+    "$date": "2025-05-28T12:55:44.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T00:24:53.000Z"
+  },
+  "price": 3339433,
+  "price_paid": 3339433
+},
+{
+  "_id": {
+    "$oid": "683b3b6ace2ff90cd5de0e35"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "start_time": {
+    "$date": "2025-05-24T23:07:25.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T00:24:58.000Z"
+  },
+  "price": 6771689,
+  "price_paid": 6771689
+},
+{
+  "_id": {
+    "$oid": "683b493ee87ef3465375aadc"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-06-01T00:25:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T01:23:58.000Z"
+  },
+  "price": 59000,
+  "price_paid": 74000
+},
+{
+  "_id": {
+    "$oid": "683b4940e87ef3465375aadf"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-06-01T00:25:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T01:24:00.000Z"
+  },
+  "price": 59000,
+  "price_paid": 74000
+},
+{
+  "_id": {
+    "$oid": "683b4945e87ef3465375aae2"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-06-01T00:25:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T01:24:05.000Z"
+  },
+  "price": 59000,
+  "price_paid": 74000
+},
+{
+  "_id": {
+    "$oid": "683b4ae1e87ef3465375aae5"
+  },
+  "table_id": "6732cef952e9e56c542a2496",
+  "start_time": {
+    "$date": "2025-06-01T01:30:51.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T01:30:57.000Z"
+  },
+  "price": 1000,
+  "price_paid": 1000
+},
+{
+  "_id": {
+    "$oid": "683b4af7e87ef3465375aae7"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-06-01T00:25:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T01:31:19.000Z"
+  },
+  "price": 67000,
+  "price_paid": 82000
+},
+{
+  "_id": {
+    "$oid": "683b4b14e87ef3465375aaea"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-06-01T00:25:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T01:31:48.000Z"
+  },
+  "price": 67000,
+  "price_paid": 82000
+},
+{
+  "_id": {
+    "$oid": "683b4b95e87ef3465375aaed"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-06-01T00:25:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T01:33:57.000Z"
+  },
+  "price": 69000,
+  "price_paid": 84000
+},
+{
+  "_id": {
+    "$oid": "683b51e38d56bdd4858c7d55"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-06-01T01:34:32.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T02:00:51.000Z"
+  },
+  "price": 27000,
+  "price_paid": 27000,
+  "name": "Quang",
+  "phone": "0858215216"
+},
+{
+  "_id": {
+    "$oid": "683b52d78d56bdd4858c7d57"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-06-01T02:02:30.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T02:04:55.000Z"
+  },
+  "price": 3000,
+  "price_paid": 3000,
+  "name": "",
+  "phone": ""
+},
+{
+  "_id": {
+    "$oid": "683b5c77f0d4a1e7fa664748"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "start_time": {
+    "$date": "2025-06-01T02:22:21.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T02:45:59.000Z"
+  },
+  "price": 24000,
+  "price_paid": 140720,
+  "name": "Quang",
+  "phone": "0858215219"
+},
+{
+  "_id": {
+    "$oid": "683bf39af0d4a1e7fa66474c"
+  },
+  "table_id": "6732ceed52e9e56c542a2493",
+  "start_time": {
+    "$date": "2025-05-30T15:04:25.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T13:30:50.000Z"
+  },
+  "price": 2338000,
+  "price_paid": 2338000,
+  "name": "",
+  "phone": ""
+},
+{
+  "_id": {
+    "$oid": "683bf3a0f0d4a1e7fa66474e"
+  },
+  "table_id": "6732ceea52e9e56c542a2492",
+  "start_time": {
+    "$date": "2025-05-30T14:28:20.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T13:30:56.000Z"
+  },
+  "price": 2362000,
+  "price_paid": 2402000,
+  "name": "",
+  "phone": ""
+},
+{
+  "_id": {
+    "$oid": "683bf3a5f0d4a1e7fa664753"
+  },
+  "table_id": "6732cee752e9e56c542a2491",
+  "start_time": {
+    "$date": "2025-05-28T20:42:48.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T13:31:01.000Z"
+  },
+  "price": 4498667,
+  "price_paid": 4498667,
+  "name": "",
+  "phone": ""
+},
+{
+  "_id": {
+    "$oid": "683d17e86a6546c870e02af1"
+  },
+  "table_id": "6732cef052e9e56c542a2494",
+  "start_time": {
+    "$date": "2025-06-01T13:31:13.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-02T10:18:00.000Z"
+  },
+  "price": 1071333,
+  "price_paid": 1071333,
+  "name": "",
+  "phone": ""
+},
+{
+  "_id": {
+    "$oid": "683d180c6a6546c870e02af5"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "start_time": {
+    "$date": "2025-06-01T00:25:07.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-02T10:18:36.000Z"
+  },
+  "price": 1747667,
+  "price_paid": 1786213,
+  "name": "Quang",
+  "phone": "0858215216"
+},
+{
+  "_id": {
+    "$oid": "683d79fc2a11970bacee4740"
+  },
+  "table_id": "6732ceea52e9e56c542a2492",
+  "start_time": {
+    "$date": "2025-06-01T13:31:07.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-02T17:16:28.000Z"
+  },
+  "price": 1350000,
+  "price_paid": 1323000,
+  "name": "",
+  "phone": "0858215216"
+}]

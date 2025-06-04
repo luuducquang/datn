@@ -1,0 +1,144 @@
+[{
+  "_id": {
+    "$oid": "6710887b9456a9b32225c7af"
+  },
+  "name": "Bim bim snack đỏ",
+  "image": "/static/uploads/vn-11134201-23030-lznrficffrov9e.jpg",
+  "stock_quantity": 6,
+  "price": 10000,
+  "category_id": "6703a4edb3ec6cd088b2483f",
+  "price_origin": 5000,
+  "is_rental": false
+},
+{
+  "_id": {
+    "$oid": "67643c354d902420a592af6f"
+  },
+  "name": "Snack Bim Bim tăm que Mix Thái Lan",
+  "image": "/static/uploads/New-8858223008479.jpg",
+  "stock_quantity": 186,
+  "price": 15000,
+  "category_id": "6703a4edb3ec6cd088b2483f",
+  "price_origin": 5000,
+  "is_rental": false
+},
+{
+  "_id": {
+    "$oid": "67643c7c4d902420a592af70"
+  },
+  "name": "Bim Bim Oishi hành",
+  "image": "/static/uploads/snack-hanh-oishi-orion-rings-goi-39g-202203281446234326_242a08e28bf04a609b8efc1b04becfe2_1024x1024.webp",
+  "stock_quantity": 99,
+  "price": 12000,
+  "category_id": "6703a4edb3ec6cd088b2483f",
+  "price_origin": 5000,
+  "is_rental": false
+},
+{
+  "_id": {
+    "$oid": "67643cb04d902420a592af71"
+  },
+  "name": "Bim bim Oishi bắp ngọt",
+  "image": "/static/uploads/snack-bap-ngot-oishi-goi-42g-201912050006355601_ec190e8d12594d78ab36a0a34048e162_1024x1024.webp",
+  "stock_quantity": 154,
+  "price": 10000,
+  "category_id": "6703a4edb3ec6cd088b2483f",
+  "price_origin": 5000,
+  "is_rental": false
+},
+{
+  "_id": {
+    "$oid": "67643cc54d902420a592af72"
+  },
+  "name": "Bim bim Oishi snack pho mát miếng",
+  "image": "/static/uploads/Bim-bim-Oishi-snack-pho-mát-miếng.jpeg",
+  "stock_quantity": 0,
+  "price": 10000,
+  "category_id": "6703a4edb3ec6cd088b2483f",
+  "price_origin": 5000,
+  "is_rental": false
+},
+{
+  "_id": {
+    "$oid": "67643cd54d902420a592af73"
+  },
+  "name": "Bim bim khoai tây bim bim poca lays đủ vị 35g 63g",
+  "image": "/static/uploads/3c1e732aab0987ddef9c2dba29cd7d7b.jpg",
+  "stock_quantity": 159,
+  "price": 13000,
+  "category_id": "6703a4edb3ec6cd088b2483f",
+  "price_origin": 5000,
+  "is_rental": false
+},
+{
+  "_id": {
+    "$oid": "67643cfe4d902420a592af74"
+  },
+  "name": "Nước ngọt Cocacola vị nguyên bản 320 ml",
+  "image": "/static/uploads/nuoc_ngot_cocacola_vi_nguyen_ban_320_ml_5545f89b5d434c548a8bff6118a3ed49.webp",
+  "stock_quantity": 99,
+  "price": 10000,
+  "category_id": "67108a0e9456a9b32225c7b0",
+  "price_origin": 5000,
+  "is_rental": false
+},
+{
+  "_id": {
+    "$oid": "67643d0f4d902420a592af75"
+  },
+  "name": "Nước ngọt Sting",
+  "image": "/static/uploads/nuoc-ngot-sting.jpg",
+  "stock_quantity": 143,
+  "price": 10000,
+  "category_id": "67108a0e9456a9b32225c7b0",
+  "price_origin": 5000,
+  "is_rental": false
+},
+{
+  "_id": {
+    "$oid": "67643d304d902420a592af76"
+  },
+  "name": "CQ Mart Food & Wine. Nước Ngọt Có Gas Pepsi Lon 330ml",
+  "image": "/static/uploads/0002120_nuoc-ngot-co-gas-pepsi-lon-330ml.png",
+  "stock_quantity": 145,
+  "price": 10000,
+  "category_id": "67108a0e9456a9b32225c7b0",
+  "price_origin": 5000,
+  "is_rental": false
+},
+{
+  "_id": {
+    "$oid": "67643d464d902420a592af77"
+  },
+  "name": "Chai nước ngọt C2 350ml",
+  "image": "/static/uploads/chai-nuoc-ngot-350ml-chai-nuoc-c2.jpg",
+  "stock_quantity": 150,
+  "price": 7200,
+  "category_id": "67108a0e9456a9b32225c7b0",
+  "price_origin": 6000,
+  "is_rental": false
+},
+{
+  "_id": {
+    "$oid": "68234e496dc7d770a0509bf1"
+  },
+  "category_id": "68234e306dc7d770a0509bf0",
+  "name": "Cơ bắn Peri ST01",
+  "image": "/static/uploads/rhino-retro-2-768x768.jpg",
+  "stock_quantity": 13,
+  "price_origin": 4500000,
+  "price": 30000,
+  "is_rental": true
+},
+{
+  "_id": {
+    "$oid": "68234e636dc7d770a0509bf2"
+  },
+  "category_id": "68234e306dc7d770a0509bf0",
+  "name": "Gậy Fury VT06",
+  "image": "/static/uploads/FURY-TY-KNIGHT-02-2-768x768.jpg",
+  "stock_quantity": 12,
+  "price_origin": 3000000,
+  "price": 30000,
+  "is_rental": true
+}]

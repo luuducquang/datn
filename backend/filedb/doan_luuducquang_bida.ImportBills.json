@@ -1,0 +1,188 @@
+[{
+  "_id": {
+    "$oid": "6762f3b0abc80fda99db9149"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "supplier_id": "6762c1d104b0eb68e11f96bb",
+  "import_date": {
+    "$date": "2025-05-13T20:53:00.000Z"
+  },
+  "total_price": 138500000,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "6762f449abc80fda99db914d"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "supplier_id": "6762f424abc80fda99db914b",
+  "import_date": {
+    "$date": "2025-01-18T23:11:00.000Z"
+  },
+  "total_price": 151456245
+},
+{
+  "_id": {
+    "$oid": "6762f557abc80fda99db914f"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "supplier_id": "6762f424abc80fda99db914b",
+  "import_date": {
+    "$date": "2025-02-18T23:11:00.000Z"
+  },
+  "total_price": 253456213,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "67643d7c4d902420a592af78"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "supplier_id": "6762f424abc80fda99db914b",
+  "import_date": {
+    "$date": "2025-03-18T23:11:00.000Z"
+  },
+  "total_price": 377582224
+},
+{
+  "_id": {
+    "$oid": "67643d8e4d902420a592af7a"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "supplier_id": "6762f43aabc80fda99db914c",
+  "import_date": {
+    "$date": "2025-02-18T23:11:00.000Z"
+  },
+  "total_price": 254098324
+},
+{
+  "_id": {
+    "$oid": "67643d9c4d902420a592af7c"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "supplier_id": "6762f424abc80fda99db914b",
+  "import_date": {
+    "$date": "2025-04-18T23:11:00.000Z"
+  },
+  "total_price": 169445422
+},
+{
+  "_id": {
+    "$oid": "67643ddf4d902420a592af7f"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "supplier_id": "67643dc84d902420a592af7e",
+  "import_date": {
+    "$date": "2025-05-23T13:46:00.000Z"
+  },
+  "total_price": 500000,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "67643df54d902420a592af81"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "supplier_id": "6762c1d104b0eb68e11f96bb",
+  "import_date": {
+    "$date": "2025-05-23T13:46:00.000Z"
+  },
+  "total_price": 69800000,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "67643e064d902420a592af83"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "supplier_id": "6762c1d104b0eb68e11f96bb",
+  "import_date": {
+    "$date": "2025-05-23T13:46:00.000Z"
+  },
+  "total_price": 24600000,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "67643e134d902420a592af85"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "supplier_id": "6762c1d104b0eb68e11f96bb",
+  "import_date": {
+    "$date": "2025-05-23T13:46:00.000Z"
+  },
+  "total_price": 302306400,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "67643e214d902420a592af87"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "supplier_id": "6762c1d104b0eb68e11f96bb",
+  "import_date": {
+    "$date": "2025-05-23T13:46:00.000Z"
+  },
+  "total_price": 942500,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "67643e334d902420a592af89"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "supplier_id": "6762c1d104b0eb68e11f96bb",
+  "import_date": {
+    "$date": "2025-05-23T13:46:00.000Z"
+  },
+  "total_price": 900000,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "6764404a4d902420a592af94"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "supplier_id": "6762c1d104b0eb68e11f96bb",
+  "import_date": {
+    "$date": "2025-05-23T13:46:00.000Z"
+  },
+  "total_price": 148500000,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "67651eb496a0403e77e716c4"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "supplier_id": "6762c1d104b0eb68e11f96bb",
+  "import_date": {
+    "$date": "2025-05-23T13:46:00.000Z"
+  },
+  "total_price": 100000,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "682338eb11484051ef18709e"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "supplier_id": "6762c1d104b0eb68e11f96bb",
+  "import_date": {
+    "$date": "2025-05-23T13:46:00.000Z"
+  },
+  "total_price": 24000,
+  "import_items": null
+},
+{
+  "_id": {
+    "$oid": "6823392111484051ef1870a0"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "supplier_id": "6762c1d104b0eb68e11f96bb",
+  "import_date": {
+    "$date": "2025-06-01T13:46:00.000Z"
+  },
+  "total_price": 12384882,
+  "import_items": null
+}]

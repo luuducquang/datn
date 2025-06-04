@@ -1,0 +1,410 @@
+[{
+  "_id": {
+    "$oid": "6762ee7f94b12d6ddef52ce5"
+  },
+  "import_id": "6762ee7f94b12d6ddef52ce4",
+  "item_id": "6710887b9456a9b32225c7af",
+  "quantity": 2,
+  "unit_price": 10000,
+  "total_price": 20000
+},
+{
+  "_id": {
+    "$oid": "6762eebb4d5d496f6f3bceaa"
+  },
+  "import_id": "6762eebb4d5d496f6f3bcea9",
+  "item_id": "6710887b9456a9b32225c7af",
+  "quantity": 2,
+  "unit_price": 10000,
+  "total_price": 20000
+},
+{
+  "_id": {
+    "$oid": "6762eebb4d5d496f6f3bceab"
+  },
+  "import_id": "6762eebb4d5d496f6f3bcea9",
+  "item_id": "67330bd2f42c21ff9487b920",
+  "quantity": 2,
+  "unit_price": 10000,
+  "total_price": 20000
+},
+{
+  "_id": {
+    "$oid": "6762f03d650f57eec23bcdaa"
+  },
+  "import_id": "6762f03d650f57eec23bcda9",
+  "item_id": "67330bd2f42c21ff9487b920",
+  "quantity": 2,
+  "unit_price": 10000,
+  "total_price": 20000
+},
+{
+  "_id": {
+    "$oid": "6762f073947327006f7a4433"
+  },
+  "import_id": "6762f073947327006f7a4432",
+  "item_id": "67348ac300b08b54fe07fa86",
+  "quantity": 2,
+  "unit_price": 2000000,
+  "total_price": 4000000
+},
+{
+  "_id": {
+    "$oid": "6762f073947327006f7a4434"
+  },
+  "import_id": "6762f073947327006f7a4432",
+  "item_id": "67330bd2f42c21ff9487b920",
+  "quantity": 2,
+  "unit_price": 10000,
+  "total_price": 20000
+},
+{
+  "_id": {
+    "$oid": "6762f14121544733ae8e1264"
+  },
+  "import_id": "6762f14121544733ae8e1263",
+  "item_id": "67348ac300b08b54fe07fa86",
+  "quantity": 2,
+  "unit_price": 2000000,
+  "total_price": 4000000
+},
+{
+  "_id": {
+    "$oid": "6762f14121544733ae8e1265"
+  },
+  "import_id": "6762f14121544733ae8e1263",
+  "item_id": "67330bd2f42c21ff9487b920",
+  "quantity": 2,
+  "unit_price": 10000,
+  "total_price": 20000
+},
+{
+  "_id": {
+    "$oid": "6762f1c9d1c12a943272ce4d"
+  },
+  "import_id": "6762f1c9d1c12a943272ce4c",
+  "item_id": "67348ac300b08b54fe07fa86",
+  "quantity": 2,
+  "unit_price": 2000000,
+  "total_price": 4000000
+},
+{
+  "_id": {
+    "$oid": "6762f1c9d1c12a943272ce4e"
+  },
+  "import_id": "6762f1c9d1c12a943272ce4c",
+  "item_id": "67330bd2f42c21ff9487b920",
+  "quantity": 2,
+  "unit_price": 10000,
+  "total_price": 20000
+},
+{
+  "_id": {
+    "$oid": "6762f232abc80fda99db9147"
+  },
+  "import_id": "6762f232abc80fda99db9146",
+  "item_id": "67348ac300b08b54fe07fa86",
+  "quantity": 2,
+  "unit_price": 2000000,
+  "total_price": 4000000
+},
+{
+  "_id": {
+    "$oid": "6762f232abc80fda99db9148"
+  },
+  "import_id": "6762f232abc80fda99db9146",
+  "item_id": "67330bd2f42c21ff9487b920",
+  "quantity": 2,
+  "unit_price": 10000,
+  "total_price": 20000
+},
+{
+  "_id": {
+    "$oid": "6762f3b0abc80fda99db914a"
+  },
+  "import_id": "6762f3b0abc80fda99db9149",
+  "item_id": "67348ac300b08b54fe07fa86",
+  "quantity": 5,
+  "unit_price": 2200000,
+  "total_price": 11000000
+},
+{
+  "_id": {
+    "$oid": "6762f449abc80fda99db914e"
+  },
+  "import_id": "6762f449abc80fda99db914d",
+  "item_id": "67348ac300b08b54fe07fa86",
+  "quantity": 1,
+  "unit_price": 2420000,
+  "total_price": 2420000
+},
+{
+  "_id": {
+    "$oid": "6762f8b9391d6295ccdc83a5"
+  },
+  "import_id": "6762f557abc80fda99db914f",
+  "item_id": "67348b606ad45a91cc960feb",
+  "quantity": 5,
+  "unit_price": 2650000,
+  "total_price": 13250000
+},
+{
+  "_id": {
+    "$oid": "6763b45f43c384d34c7653da"
+  },
+  "import_id": "6762f557abc80fda99db914f",
+  "item_id": "67348ac300b08b54fe07fa86",
+  "quantity": 2,
+  "unit_price": 2928200,
+  "total_price": 5856400
+},
+{
+  "_id": {
+    "$oid": "67643d7c4d902420a592af79"
+  },
+  "import_id": "67643d7c4d902420a592af78",
+  "item_id": "67643c354d902420a592af6f",
+  "quantity": 200,
+  "unit_price": 5000,
+  "total_price": 1000000
+},
+{
+  "_id": {
+    "$oid": "67643d8e4d902420a592af7b"
+  },
+  "import_id": "67643d8e4d902420a592af7a",
+  "item_id": "67643c7c4d902420a592af70",
+  "quantity": 100,
+  "unit_price": 10000,
+  "total_price": 1000000
+},
+{
+  "_id": {
+    "$oid": "67643d9c4d902420a592af7d"
+  },
+  "import_id": "67643d9c4d902420a592af7c",
+  "item_id": "67643cb04d902420a592af71",
+  "quantity": 150,
+  "unit_price": 10000,
+  "total_price": 1500000
+},
+{
+  "_id": {
+    "$oid": "67643ddf4d902420a592af80"
+  },
+  "import_id": "67643ddf4d902420a592af7f",
+  "item_id": "67643cb04d902420a592af71",
+  "quantity": 100,
+  "unit_price": 5000,
+  "total_price": 500000
+},
+{
+  "_id": {
+    "$oid": "67643df54d902420a592af82"
+  },
+  "import_id": "67643df54d902420a592af81",
+  "item_id": "67643cd54d902420a592af73",
+  "quantity": 160,
+  "unit_price": 5000,
+  "total_price": 800000
+},
+{
+  "_id": {
+    "$oid": "67643e064d902420a592af84"
+  },
+  "import_id": "67643e064d902420a592af83",
+  "item_id": "67643cfe4d902420a592af74",
+  "quantity": 100,
+  "unit_price": 6000,
+  "total_price": 600000
+},
+{
+  "_id": {
+    "$oid": "67643e134d902420a592af86"
+  },
+  "import_id": "67643e134d902420a592af85",
+  "item_id": "67643d0f4d902420a592af75",
+  "quantity": 147,
+  "unit_price": 6000,
+  "total_price": 882000
+},
+{
+  "_id": {
+    "$oid": "67643e214d902420a592af88"
+  },
+  "import_id": "67643e214d902420a592af87",
+  "item_id": "67643d304d902420a592af76",
+  "quantity": 145,
+  "unit_price": 6500,
+  "total_price": 942500
+},
+{
+  "_id": {
+    "$oid": "67643e334d902420a592af8a"
+  },
+  "import_id": "67643e334d902420a592af89",
+  "item_id": "67643d464d902420a592af77",
+  "quantity": 150,
+  "unit_price": 6000,
+  "total_price": 900000
+},
+{
+  "_id": {
+    "$oid": "67643f524d902420a592af8f"
+  },
+  "import_id": "67643e134d902420a592af85",
+  "item_id": "67383ddae9884380091f07d0",
+  "quantity": 11,
+  "unit_price": 24000000,
+  "total_price": 264000000
+},
+{
+  "_id": {
+    "$oid": "67643fa04d902420a592af90"
+  },
+  "import_id": "67643e134d902420a592af85",
+  "item_id": "67383e54e9884380091f07d1",
+  "quantity": 13,
+  "unit_price": 2878800,
+  "total_price": 37424400
+},
+{
+  "_id": {
+    "$oid": "67643fe44d902420a592af91"
+  },
+  "import_id": "67643e064d902420a592af83",
+  "item_id": "6738407ae9884380091f07d2",
+  "quantity": 10,
+  "unit_price": 2400000,
+  "total_price": 24000000
+},
+{
+  "_id": {
+    "$oid": "6764400e4d902420a592af92"
+  },
+  "import_id": "67643df54d902420a592af81",
+  "item_id": "67348ac300b08b54fe07fa86",
+  "quantity": 10,
+  "unit_price": 3500000,
+  "total_price": 35000000
+},
+{
+  "_id": {
+    "$oid": "6764401f4d902420a592af93"
+  },
+  "import_id": "67643df54d902420a592af81",
+  "item_id": "67383e54e9884380091f07d1",
+  "quantity": 10,
+  "unit_price": 3400000,
+  "total_price": 34000000
+},
+{
+  "_id": {
+    "$oid": "6764404a4d902420a592af95"
+  },
+  "import_id": "6764404a4d902420a592af94",
+  "item_id": "673840b5e9884380091f07d3",
+  "quantity": 10,
+  "unit_price": 4450000,
+  "total_price": 44500000
+},
+{
+  "_id": {
+    "$oid": "6764404a4d902420a592af96"
+  },
+  "import_id": "6764404a4d902420a592af94",
+  "item_id": "673840efe9884380091f07d4",
+  "quantity": 10,
+  "unit_price": 4350000,
+  "total_price": 43500000
+},
+{
+  "_id": {
+    "$oid": "6764404a4d902420a592af97"
+  },
+  "import_id": "6764404a4d902420a592af94",
+  "item_id": "673841e9e9884380091f07d5",
+  "quantity": 10,
+  "unit_price": 2250000,
+  "total_price": 22500000
+},
+{
+  "_id": {
+    "$oid": "6764404a4d902420a592af98"
+  },
+  "import_id": "6764404a4d902420a592af94",
+  "item_id": "6738425ee9884380091f07d6",
+  "quantity": 10,
+  "unit_price": 3800000,
+  "total_price": 38000000
+},
+{
+  "_id": {
+    "$oid": "67651eb496a0403e77e716c5"
+  },
+  "import_id": "67651eb496a0403e77e716c4",
+  "item_id": "6710887b9456a9b32225c7af",
+  "quantity": 10,
+  "unit_price": 10000,
+  "total_price": 100000
+},
+{
+  "_id": {
+    "$oid": "682338eb11484051ef18709f"
+  },
+  "import_id": "682338eb11484051ef18709e",
+  "item_id": "6710887b9456a9b32225c7af",
+  "quantity": 2,
+  "unit_price": 12000,
+  "total_price": 24000
+},
+{
+  "_id": {
+    "$oid": "6823392111484051ef1870a1"
+  },
+  "import_id": "6823392111484051ef1870a0",
+  "item_id": "6710887b9456a9b32225c7af",
+  "quantity": 10,
+  "unit_price": 5000,
+  "total_price": 50000
+},
+{
+  "_id": {
+    "$oid": "68233a71de526a5b9e604a1f"
+  },
+  "import_id": "6762f3b0abc80fda99db9149",
+  "item_id": "67348b606ad45a91cc960feb",
+  "quantity": 1,
+  "unit_price": 2500000,
+  "total_price": 2500000
+},
+{
+  "_id": {
+    "$oid": "682340cd78287a9529b9fd38"
+  },
+  "import_id": "6762f3b0abc80fda99db9149",
+  "item_id": "67383d7be9884380091f07cf",
+  "quantity": 10,
+  "unit_price": 5000000,
+  "total_price": 50000000
+},
+{
+  "_id": {
+    "$oid": "68234edf6dc7d770a0509bf6"
+  },
+  "import_id": "6762f3b0abc80fda99db9149",
+  "item_id": "68234e496dc7d770a0509bf1",
+  "quantity": 10,
+  "unit_price": 4500000,
+  "total_price": 45000000
+},
+{
+  "_id": {
+    "$oid": "68234eeb6dc7d770a0509bf7"
+  },
+  "import_id": "6762f3b0abc80fda99db9149",
+  "item_id": "68234e636dc7d770a0509bf2",
+  "quantity": 10,
+  "unit_price": 3000000,
+  "total_price": 30000000
+}]

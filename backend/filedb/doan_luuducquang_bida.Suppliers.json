@@ -1,0 +1,32 @@
+[{
+  "_id": {
+    "$oid": "6762c1d104b0eb68e11f96bb"
+  },
+  "name": "KiotViet",
+  "phone": "0123456789",
+  "address": "Hà Nội"
+},
+{
+  "_id": {
+    "$oid": "6762f424abc80fda99db914b"
+  },
+  "name": "Cookcook",
+  "phone": "01231231414",
+  "address": "Hà Nội"
+},
+{
+  "_id": {
+    "$oid": "6762f43aabc80fda99db914c"
+  },
+  "name": "MumMum",
+  "phone": "0123123123",
+  "address": "Hà Nội"
+},
+{
+  "_id": {
+    "$oid": "67643dc84d902420a592af7e"
+  },
+  "name": "Oishi",
+  "phone": "0155151500",
+  "address": "Hà Nội"
+}]

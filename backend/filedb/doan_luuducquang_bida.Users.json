@@ -1,0 +1,80 @@
+[{
+  "_id": {
+    "$oid": "6804adfc832c1ccd40e7b73f"
+  },
+  "email": "luuquang654321@gmail.com",
+  "password": "$2b$12$nDqm.AqAQtT/WwcL3HfyBOEObqP783QjlezwVAvBX6UfytiJEQoGO",
+  "fullname": "Lưu Đức Quanggg",
+  "phone": "09123133133",
+  "address": "Hưng Yênnnnnn",
+  "avatar": "/static/uploads/anh fb 11.jpg",
+  "role_name": "USER",
+  "is_verified": true,
+  "otp": null,
+  "otp_expires_at": null,
+  "created_at": {
+    "$date": "2025-04-20T15:19:08.585Z"
+  },
+  "loyalty_points": 2602200,
+  "wallet": 18144000
+},
+{
+  "_id": {
+    "$oid": "6831805738e5d7398340dcd1"
+  },
+  "email": "admin@gmail.com",
+  "password": "$2b$12$nMjK0cPjf3yKDFSYsgIgk.Xuk2EFheXJR/Z9GPXoNQzhSBn.ia5/a",
+  "fullname": "Lưu Đức Quang(admin)",
+  "phone": "0123123112",
+  "address": "HY",
+  "avatar": "/static/uploads/hoang-4-1677741996-600-width740height626.jpg",
+  "loyalty_points": 0,
+  "wallet": 0,
+  "role_name": "ADMIN",
+  "is_verified": true,
+  "otp": null,
+  "otp_expires_at": null,
+  "created_at": {
+    "$date": "2025-05-24T15:16:23.088Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68387a0cb77b4a914919e72c"
+  },
+  "email": "employee@gmail.com",
+  "password": "$2b$12$pRQsVSGVvoQV58GKFS.ReeIZ9518cwPkNOBiHmd0DQGv4NUUtjGl6",
+  "fullname": "Lưu Đức Quang(employee)",
+  "phone": "0192313131",
+  "address": "HY",
+  "avatar": "/static/uploads/ss_351313604_1059.jpg",
+  "loyalty_points": 0,
+  "wallet": 0,
+  "role_name": "EMPLOYEE",
+  "is_verified": true,
+  "otp": null,
+  "otp_expires_at": null,
+  "created_at": {
+    "$date": "2025-05-29T22:15:24.011Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ea72ae73ec4b712953823"
+  },
+  "email": "luuquang987654321@gmail.com",
+  "password": "$2b$12$WAcDNsc1TCOGRzIlLFpgF.gl9atawn2HjjyzMkD5SwZjkYTizLo5.",
+  "fullname": "Lưu Đức Quang",
+  "phone": "",
+  "address": "",
+  "avatar": "/static/uploads/user.jpg",
+  "loyalty_points": 0,
+  "wallet": 0,
+  "role_name": "USER",
+  "is_verified": true,
+  "otp": null,
+  "otp_expires_at": null,
+  "created_at": {
+    "$date": "2025-06-03T14:41:30.135Z"
+  }
+}]

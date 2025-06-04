@@ -1,0 +1,30 @@
+[{
+  "_id": {
+    "$oid": "6703a523b3ec6cd088b24841"
+  },
+  "category_name": "Cơ bắn"
+},
+{
+  "_id": {
+    "$oid": "670a0cb79d8567061a8e0483"
+  },
+  "category_name": "Cơ phá"
+},
+{
+  "_id": {
+    "$oid": "670a0dee9d8567061a8e0487"
+  },
+  "category_name": "Bao tay"
+},
+{
+  "_id": {
+    "$oid": "67348ae500b08b54fe07fa87"
+  },
+  "category_name": "Túi đựng"
+},
+{
+  "_id": {
+    "$oid": "673849b3e9884380091f07e4"
+  },
+  "category_name": "Cơ carbon"
+}]

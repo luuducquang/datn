@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "6703a4edb3ec6cd088b2483f"
+  },
+  "category_name": "bim bim"
+},
+{
+  "_id": {
+    "$oid": "67108a0e9456a9b32225c7b0"
+  },
+  "category_name": "nước uống"
+},
+{
+  "_id": {
+    "$oid": "68234e306dc7d770a0509bf0"
+  },
+  "category_name": "gậy thuê"
+}]

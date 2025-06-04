@@ -1,0 +1,1240 @@
+[{
+  "_id": {
+    "$oid": "68209227d257998b3cad9a51"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quangg",
+  "phone": "0858215219",
+  "start_time": {
+    "$date": "2025-05-11T20:03:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-11T21:03:00.000Z"
+  },
+  "money_paid": 43200,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-11T19:03:51.715Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68209237d257998b3cad9a54"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-11T20:03:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-11T21:03:00.000Z"
+  },
+  "money_paid": 49200,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-11T19:04:07.904Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68209253d257998b3cad9a57"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-11T20:04:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-11T21:04:00.000Z"
+  },
+  "money_paid": 30000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-11T19:04:35.988Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682092ffd257998b3cad9a58"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Huy",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-11T22:07:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-11T23:07:00.000Z"
+  },
+  "money_paid": 42000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-11T19:07:27.052Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68218839b792d169764670b5"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-12T13:33:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-12T14:33:00.000Z"
+  },
+  "money_paid": 30000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-12T12:33:45.984Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68218856b792d169764670b6"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "21213",
+  "phone": "123123",
+  "start_time": {
+    "$date": "2025-05-12T13:34:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-12T14:34:00.000Z"
+  },
+  "money_paid": 30000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-12T12:34:14.355Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682189b4b792d169764670b7"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "22",
+  "phone": "2",
+  "start_time": {
+    "$date": "2025-05-12T16:39:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-12T19:39:00.000Z"
+  },
+  "money_paid": 90000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-12T12:40:04.872Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682217fc96032428e961a4e5"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0123456789",
+  "start_time": {
+    "$date": "2025-05-12T23:44:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T01:44:00.000Z"
+  },
+  "money_paid": 66000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-12T22:47:08.779Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6822191796032428e961a4e7"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-12T23:51:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T00:51:00.000Z"
+  },
+  "money_paid": 36000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-12T22:51:51.657Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68221bd796032428e961a4e9"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-13T00:03:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T01:03:00.000Z"
+  },
+  "money_paid": 36000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-12T23:03:35.038Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68221c1e96032428e961a4eb"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-13T00:03:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T01:03:00.000Z"
+  },
+  "money_paid": 36000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-12T23:04:46.926Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68221c5396032428e961a4ed"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-13T00:05:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T01:05:00.000Z"
+  },
+  "money_paid": 42000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-12T23:05:39.983Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68221ce796032428e961a4ef"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "123456",
+  "start_time": {
+    "$date": "2025-05-13T00:07:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T03:07:00.000Z"
+  },
+  "money_paid": 108000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-12T23:08:07.587Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682228df5912770ac472d4a8"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-13T00:59:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T01:59:00.000Z"
+  },
+  "money_paid": 36000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-12T23:59:11.100Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682229145912770ac472d4aa"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-13T00:59:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T01:59:00.000Z"
+  },
+  "money_paid": 30000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-13T00:00:04.474Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682230ceb06b492f60f55f23"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-13T01:32:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T02:32:00.000Z"
+  },
+  "money_paid": 30000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-13T00:33:02.207Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6822311bb06b492f60f55f24"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "12123",
+  "phone": "123123123",
+  "start_time": {
+    "$date": "2025-05-13T01:33:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T02:33:00.000Z"
+  },
+  "money_paid": 30000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-13T00:34:19.963Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682232dcb06b492f60f55f25"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-13T01:41:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T02:41:00.000Z"
+  },
+  "money_paid": 28500,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-13T00:41:48.222Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682232f2b06b492f60f55f26"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "01231341114",
+  "start_time": {
+    "$date": "2025-05-13T01:42:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T02:42:00.000Z"
+  },
+  "money_paid": 22500,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-13T00:42:10.274Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6822333db06b492f60f55f27"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "012313411",
+  "start_time": {
+    "$date": "2025-05-13T01:43:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T02:43:00.000Z"
+  },
+  "money_paid": 24000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-13T00:43:25.132Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68223353b06b492f60f55f28"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-13T01:43:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T02:43:00.000Z"
+  },
+  "money_paid": 28500,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-13T00:43:47.248Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6822ba93bf26b7a43ca1570d"
+  },
+  "table_id": "6732cee052e9e56c542a248e",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-13T15:20:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T16:20:00.000Z"
+  },
+  "money_paid": 33000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-13T10:20:51.710Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6822bb29bf26b7a43ca1570f"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "123456780",
+  "start_time": {
+    "$date": "2025-05-13T11:22:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T12:22:00.000Z"
+  },
+  "money_paid": 27000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-13T10:23:21.083Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6822bb89bf26b7a43ca15711"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang2",
+  "phone": "11234545745",
+  "start_time": {
+    "$date": "2025-05-13T14:24:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-13T18:24:00.000Z"
+  },
+  "money_paid": 102100,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-13T10:24:57.966Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682597215e8b0d0c58e1cae8"
+  },
+  "table_id": "6732ceea52e9e56c542a2492",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0123123123",
+  "start_time": {
+    "$date": "2025-05-15T19:25:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-15T21:25:00.000Z"
+  },
+  "money_paid": 74000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-15T14:26:25.439Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682707254c7c51d7480d8f75"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "11",
+  "phone": "01231341114",
+  "start_time": {
+    "$date": "2025-05-16T17:36:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-16T18:36:00.000Z"
+  },
+  "money_paid": 27000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-16T16:36:37.369Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68287b88702b21f5f90a0c5b"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "012313411",
+  "start_time": {
+    "$date": "2025-05-17T23:10:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-18T00:10:00.000Z"
+  },
+  "money_paid": 37000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-17T19:05:28.688Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682885c5702b21f5f90a0c5e"
+  },
+  "table_id": "6732cee052e9e56c542a248e",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "quang",
+  "phone": "12123123",
+  "start_time": {
+    "$date": "2025-05-17T20:50:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-17T21:50:00.000Z"
+  },
+  "money_paid": 67000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-17T19:49:09.638Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68301a4b45ec61581f33d49e"
+  },
+  "table_id": "6732cee252e9e56c542a248f",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "09121231411",
+  "start_time": {
+    "$date": "2025-05-23T15:48:38.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-23T17:48:38.000Z"
+  },
+  "money_paid": 0,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-23T13:48:43.822Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68308716499bba8b0d37ea02"
+  },
+  "table_id": "6732ceed52e9e56c542a2493",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "01231239123",
+  "start_time": {
+    "$date": "2025-05-23T22:30:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-23T23:30:00.000Z"
+  },
+  "money_paid": 46000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-23T21:32:54.026Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6831ed1638e5d7398340dcd2"
+  },
+  "table_id": "6732cef052e9e56c542a2494",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0912338841",
+  "start_time": {
+    "$date": "2025-05-25T00:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-25T01:00:00.000Z"
+  },
+  "money_paid": 27000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-24T23:00:22.354Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683715e52d5646228b059326"
+  },
+  "table_id": "6732ceed52e9e56c542a2493",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "01231313123",
+  "start_time": {
+    "$date": "2025-05-28T22:55:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-28T23:55:00.000Z"
+  },
+  "money_paid": 24000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-28T20:55:49.028Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683716232d5646228b059327"
+  },
+  "table_id": "6732ceed52e9e56c542a2493",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0123123131",
+  "start_time": {
+    "$date": "2025-05-28T22:56:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-28T23:56:00.000Z"
+  },
+  "money_paid": 24000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-28T20:56:51.570Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683718d12d5646228b059328"
+  },
+  "table_id": "6732cef052e9e56c542a2494",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang Tèo",
+  "phone": "01231231321",
+  "start_time": {
+    "$date": "2025-05-29T23:06:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-30T12:02:00.000Z"
+  },
+  "money_paid": 310400,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-28T21:08:17.222Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683719352d5646228b059329"
+  },
+  "table_id": "6732cef052e9e56c542a2494",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "012391231",
+  "start_time": {
+    "$date": "2025-05-28T22:09:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-29T23:09:00.000Z"
+  },
+  "money_paid": 600000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-28T21:09:57.321Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683719ca2d5646228b05932a"
+  },
+  "table_id": "6732cef352e9e56c542a2495",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quangg",
+  "phone": "01239131",
+  "start_time": {
+    "$date": "2025-05-28T22:12:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-29T23:12:00.000Z"
+  },
+  "money_paid": 600000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-28T21:12:26.154Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68371a052d5646228b05932b"
+  },
+  "table_id": "6732cef952e9e56c542a2496",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "01923131",
+  "start_time": {
+    "$date": "2025-05-28T22:13:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-29T23:13:00.000Z"
+  },
+  "money_paid": 600000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-28T21:13:25.450Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68371ad02d5646228b05932c"
+  },
+  "table_id": "6732cef352e9e56c542a2495",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "01921213",
+  "start_time": {
+    "$date": "2025-05-30T22:16:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T23:16:00.000Z"
+  },
+  "money_paid": 600000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-28T21:16:48.679Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68371b232d5646228b05932d"
+  },
+  "table_id": "6732ceea52e9e56c542a2492",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0192312313",
+  "start_time": {
+    "$date": "2025-05-29T22:17:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-30T23:17:00.000Z"
+  },
+  "money_paid": 600000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-28T21:18:11.251Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68395d5498c2a3075552e266"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Kiên",
+  "phone": "01242424242",
+  "start_time": {
+    "$date": "2025-05-30T19:24:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-30T20:24:00.000Z"
+  },
+  "money_paid": 27000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-30T14:25:08.375Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683965a698c2a3075552e26b"
+  },
+  "table_id": "6732ceed52e9e56c542a2493",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0123344455",
+  "start_time": {
+    "$date": "2025-05-30T16:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-30T17:00:00.000Z"
+  },
+  "money_paid": 52000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-30T15:00:38.067Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6839695998c2a3075552e26e"
+  },
+  "table_id": "6732ceed52e9e56c542a2493",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0123456789",
+  "start_time": {
+    "$date": "2025-05-30T20:15:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-30T22:15:00.000Z"
+  },
+  "money_paid": 61000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-05-30T15:16:25.430Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ab36e9beb24752d2dd703"
+  },
+  "table_id": "6732cee752e9e56c542a2491",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "09123123131",
+  "start_time": {
+    "$date": "2025-05-31T19:44:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T22:44:00.000Z"
+  },
+  "money_paid": 81000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-31T14:44:46.720Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ab3ad9beb24752d2dd704"
+  },
+  "table_id": "6732cef052e9e56c542a2494",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "09123123131",
+  "start_time": {
+    "$date": "2025-05-31T15:45:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T16:45:00.000Z"
+  },
+  "money_paid": 27000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-31T14:45:49.853Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ab4339beb24752d2dd705"
+  },
+  "table_id": "6732cef352e9e56c542a2495",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "012391239191",
+  "start_time": {
+    "$date": "2025-05-31T15:47:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T16:47:00.000Z"
+  },
+  "money_paid": 27000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-31T14:48:03.567Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ab5659beb24752d2dd706"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "131313131313",
+  "start_time": {
+    "$date": "2025-05-31T19:52:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T20:52:00.000Z"
+  },
+  "money_paid": 27000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-31T14:53:09.506Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ab5659beb24752d2dd707"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "131313131313",
+  "start_time": {
+    "$date": "2025-05-31T19:52:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T20:52:00.000Z"
+  },
+  "money_paid": 27000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-31T14:53:09.717Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ab6619beb24752d2dd708"
+  },
+  "table_id": "6732cef952e9e56c542a2496",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-31T15:55:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T16:55:00.000Z"
+  },
+  "money_paid": 27000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-31T14:57:21.477Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ab6ce9beb24752d2dd709"
+  },
+  "table_id": "6732cf0052e9e56c542a2497",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-31T15:58:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T16:58:00.000Z"
+  },
+  "money_paid": 27000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-31T14:59:10.575Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683abe919beb24752d2dd70b"
+  },
+  "table_id": "6732cf0052e9e56c542a2497",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "1",
+  "phone": "1",
+  "start_time": {
+    "$date": "2025-05-31T17:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T18:00:00.000Z"
+  },
+  "money_paid": 0,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-31T15:32:17.028Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683abef79beb24752d2dd70c"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "a",
+  "phone": "09123123131",
+  "start_time": {
+    "$date": "2025-05-31T21:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-05-31T22:00:00.000Z"
+  },
+  "money_paid": 0,
+  "status": true,
+  "created_at": {
+    "$date": "2025-05-31T15:33:59.331Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683b53018d56bdd4858c7d59"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "user_id": "6831805738e5d7398340dcd1",
+  "name": "Quang",
+  "phone": "0858215219",
+  "start_time": {
+    "$date": "2025-06-01T04:05:24.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T06:05:24.000Z"
+  },
+  "money_paid": 20000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-06-01T02:05:37.211Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683bfb3bf0d4a1e7fa664755"
+  },
+  "table_id": "6732cef952e9e56c542a2496",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0858215216",
+  "start_time": {
+    "$date": "2025-06-01T15:30:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T18:00:00.000Z"
+  },
+  "money_paid": 85000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-06-01T14:03:23.919Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683bfb54f0d4a1e7fa664756"
+  },
+  "table_id": "6732cee552e9e56c542a2490",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0858215216",
+  "start_time": {
+    "$date": "2025-06-01T19:30:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T20:30:00.000Z"
+  },
+  "money_paid": 34000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-06-01T14:03:48.129Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683c4304f0d4a1e7fa66475c"
+  },
+  "table_id": "6732cef952e9e56c542a2496",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0858215216",
+  "start_time": {
+    "$date": "2025-06-01T20:30:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-01T21:30:00.000Z"
+  },
+  "money_paid": 84000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-06-01T19:09:40.949Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683d73e02a11970bacee473c"
+  },
+  "table_id": "6732cf0552e9e56c542a2498",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang ",
+  "phone": "0858215216",
+  "start_time": {
+    "$date": "2025-06-03T08:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-03T12:00:00.000Z"
+  },
+  "money_paid": 164200,
+  "status": true,
+  "created_at": {
+    "$date": "2025-06-02T16:50:24.509Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683d79792a11970bacee473f"
+  },
+  "table_id": "6732cf0052e9e56c542a2497",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "q",
+  "phone": "08582152126",
+  "start_time": {
+    "$date": "2025-06-02T18:30:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-02T19:30:00.000Z"
+  },
+  "money_paid": 36000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-06-02T17:14:17.071Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683d7a532a11970bacee4742"
+  },
+  "table_id": "6732cef952e9e56c542a2496",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "q",
+  "phone": "0858215216",
+  "start_time": {
+    "$date": "2025-06-02T18:30:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-02T19:30:00.000Z"
+  },
+  "money_paid": 36000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-06-02T17:17:55.177Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683d7a992a11970bacee4743"
+  },
+  "table_id": "6732cef952e9e56c542a2496",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "q",
+  "phone": "0858215216",
+  "start_time": {
+    "$date": "2025-06-02T20:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-02T22:00:00.000Z"
+  },
+  "money_paid": 72000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-06-02T17:19:05.590Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ea81ee73ec4b712953825"
+  },
+  "table_id": "6732cee752e9e56c542a2491",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0858215216",
+  "start_time": {
+    "$date": "2025-06-03T19:30:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-03T22:00:00.000Z"
+  },
+  "money_paid": 173000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-06-03T14:45:34.198Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ea81fe73ec4b712953829"
+  },
+  "table_id": "6732cee752e9e56c542a2491",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "",
+  "phone": "",
+  "start_time": {
+    "$date": "2025-06-03T16:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-03T17:00:00.000Z"
+  },
+  "money_paid": 36000,
+  "status": false,
+  "created_at": {
+    "$date": "2025-06-03T14:45:35.147Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683ea968e73ec4b71295382a"
+  },
+  "table_id": "6732cee752e9e56c542a2491",
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "name": "Quang",
+  "phone": "0858215216",
+  "start_time": {
+    "$date": "2025-06-03T22:00:00.000Z"
+  },
+  "end_time": {
+    "$date": "2025-06-03T23:00:00.000Z"
+  },
+  "money_paid": 36000,
+  "status": true,
+  "created_at": {
+    "$date": "2025-06-03T14:51:04.244Z"
+  }
+}]

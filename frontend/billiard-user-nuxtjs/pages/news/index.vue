@@ -61,11 +61,11 @@
 import { ref, onMounted } from "vue";
 import { type News } from "~/constant/api";
 import { getNews } from "~/services/new.service";
-import { useHead } from '@unhead/vue'
+import { useHead } from "@unhead/vue";
 
 useHead({
-  title: 'Tin tức'
-})
+    title: "Tin tức",
+});
 
 const currentPage = ref(1);
 const totalPages = ref(1);
@@ -78,7 +78,7 @@ const fetchNews = async (page: number) => {
             pageSize: 6,
         });
 
-        news.value = res.data;
+        news.value = res.data.filter((value) => value.status === true);
         totalPages.value = Math.ceil(res.totalItems / 6);
         console.log(news.value);
     } catch (error) {

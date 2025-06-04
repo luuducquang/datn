@@ -1,0 +1,24 @@
+[{
+  "_id": {
+    "$oid": "6707ecfa32b517795bc51a17"
+  },
+  "name": "Fury",
+  "phone": "0982731731",
+  "address": "Trung Quốc"
+},
+{
+  "_id": {
+    "$oid": "6738434ee9884380091f07d8"
+  },
+  "name": "Peri",
+  "phone": "0123465788",
+  "address": "Trung Quốc"
+},
+{
+  "_id": {
+    "$oid": "6738482de9884380091f07e0"
+  },
+  "name": "Cuppa",
+  "phone": "0123456758",
+  "address": "Trung Quốc"
+}]

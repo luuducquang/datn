@@ -41,7 +41,14 @@
                     }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="Giá" align="center" prop="price">
+            <el-table-column label="Giá nhập" align="center" prop="price_origin">
+                <template #default="scope">
+                    <span class="name_item">{{
+                        ConvertPrice(scope.row.price_origin)
+                    }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="Giá bán" align="center" prop="price">
                 <template #default="scope">
                     <span class="name_item">{{
                         ConvertPrice(scope.row.price)

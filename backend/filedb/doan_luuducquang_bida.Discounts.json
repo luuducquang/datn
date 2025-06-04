@@ -1,0 +1,33 @@
+[{
+  "_id": {
+    "$oid": "68220e24a7f9489d81462aad"
+  },
+  "code": "giamgia10",
+  "discount_value": 10,
+  "decription": "Giảm giá 10 % nhé anh em",
+  "quantity": 98,
+  "used_count": 5,
+  "status": false
+},
+{
+  "_id": {
+    "$oid": "6822201396032428e961a4f2"
+  },
+  "code": "giamgia20",
+  "discount_value": 20,
+  "decription": "Giảm giá 20 % nhé anh em",
+  "quantity": 90,
+  "used_count": 10,
+  "status": false
+},
+{
+  "_id": {
+    "$oid": "6822201a96032428e961a4f3"
+  },
+  "code": "giamgia5",
+  "discount_value": 5,
+  "decription": "Giảm giá 5 % nhé anh em",
+  "quantity": 98,
+  "used_count": 2,
+  "status": true
+}]

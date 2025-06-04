@@ -1,0 +1,568 @@
+[{
+  "_id": {
+    "$oid": "6759a2f250d3ad0b4806bbdb"
+  },
+  "user_id": "675843fd9b0d901f90eb92d5",
+  "sell_date": {
+    "$date": "2024-12-11T21:34:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang203@gmail.com",
+  "phone": "0912313313",
+  "address": "Thành phố Hải Phòng-Quận Hồng Bàng-Phường Thượng Lý",
+  "address_detail": "Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 26680000,
+  "status": "Đang xử lý"
+},
+{
+  "_id": {
+    "$oid": "6759a57e50d3ad0b4806bbe1"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "sell_date": {
+    "$date": "2024-12-19T22:57:00.000Z"
+  },
+  "name": "Nguyễn Thị Nụ",
+  "email": "admin@gmail.com",
+  "phone": "0912313313",
+  "address": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 6779000,
+  "status": "Đổi hàng",
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "675e83cdc150d66045386b71"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "sell_date": {
+    "$date": "2024-12-19T22:57:00.000Z"
+  },
+  "name": "Lương Tiến Đạt",
+  "email": "luuquang203@gmail.com",
+  "phone": "0912313313",
+  "address": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 5480000,
+  "status": "Trả hàng",
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "676272f204b0eb68e11f96b9"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "sell_date": {
+    "$date": "2024-12-19T22:21:00.000Z"
+  },
+  "name": "Nguyễn Văn Tú",
+  "email": "tu@gmail.com",
+  "phone": "01354485451",
+  "address": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 11200000,
+  "status": "Đang giao hàng",
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "67643eee4d902420a592af8c"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "sell_date": {
+    "$date": "2024-12-19T22:42:00.000Z"
+  },
+  "name": "Nguyễn Văn Bi",
+  "email": "bi@gmail.com",
+  "phone": "0121315555",
+  "address": " Nguyễn Xá -Hưng Hà - Thái Bình",
+  "address_detail": " Nguyễn Xá -Hưng Hà - Thái Bình",
+  "total_price": 6163840,
+  "status": "Đang xử lý"
+},
+{
+  "_id": {
+    "$oid": "676440b64d902420a592af99"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "sell_date": {
+    "$date": "2024-12-19T22:58:00.000Z"
+  },
+  "name": "Nguyễn Thị Thu",
+  "email": "thu@gmail.com",
+  "phone": "0121551515",
+  "address": "Nguyễn Xá - Nhân Hoà - Mỹ Hào - Hưng Yên",
+  "address_detail": "Nguyễn Xá - Nhân Hoà - Mỹ Hào - Hưng Yên",
+  "total_price": 4200000,
+  "status": "Đã giao hàng",
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "6764424b4d902420a592af9b"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "sell_date": {
+    "$date": "2024-12-19T22:57:00.000Z"
+  },
+  "name": "Nguyễn Ba",
+  "email": "ba@gmail.com",
+  "phone": "012121555",
+  "address": "Nguyễn Xá - Nhân Hoà - Mỹ Hào - Hưng Yên",
+  "address_detail": "Nguyễn Xá - Nhân Hoà - Mỹ Hào - Hưng Yên",
+  "total_price": 4200000,
+  "status": "Huỷ đơn",
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "67651e6896a0403e77e716c2"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "sell_date": {
+    "$date": "2025-01-20T23:00:00.000Z"
+  },
+  "name": "1",
+  "email": "1",
+  "phone": "1",
+  "address": "1",
+  "address_detail": "1",
+  "total_price": 56200000,
+  "status": "Đang xử lý",
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "6803c89777018163eba65685"
+  },
+  "user_id": "6801d0dca0743a59bfd8b136",
+  "sell_date": {
+    "$date": "2025-04-19T23:00:00.000Z"
+  },
+  "name": "Lưu Đức Quanggg",
+  "email": "luuquang203@gmail.com",
+  "phone": "0912313313",
+  "address": "undefined-undefined-undefined",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 4230000,
+  "status": "Đang xử lý",
+  "is_paid": false,
+  "created_at": {
+    "$date": "2025-04-19T23:00:23.668Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6803caea77018163eba65688"
+  },
+  "user_id": "670f17f5279b5da63b9bdc7a",
+  "sell_date": {
+    "$date": "2025-05-13T20:15:00.000Z"
+  },
+  "name": "Lưu Đức Quanggg",
+  "email": "luuquang203@gmail.com",
+  "phone": "091231331",
+  "address": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 41310000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": null,
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "6803cb4177018163eba6568b"
+  },
+  "user_id": "6801d0dca0743a59bfd8b136",
+  "sell_date": {
+    "$date": "2025-04-19T23:11:00.000Z"
+  },
+  "name": "Lưu Đức Quanggg",
+  "email": "luuquang203@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Vĩnh Phúc-Thành phố Phúc Yên-Xã Ngọc Thanh",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 4230000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-04-19T23:11:45.311Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6804baba832c1ccd40e7b744"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-04-20T16:13:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Hưng Yên-Huyện Tiên Lữ-Xã Hưng Đạo",
+  "address_detail": "Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 4230000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-04-20T16:13:30.978Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820d9541c9fef6ccd91ed6e"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-12T00:07:00.000Z"
+  },
+  "name": "1",
+  "email": "luuquang654321@gmail.com",
+  "phone": "1",
+  "address": "Tỉnh Lạng Sơn-Huyện Hữu Lũng-Xã Minh Sơn",
+  "address_detail": "11",
+  "total_price": 4230000,
+  "status": "Đang xử lý",
+  "is_paid": false,
+  "created_at": {
+    "$date": "2025-05-12T00:07:32.526Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820d9fe1c9fef6ccd91ed71"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-12T00:10:00.000Z"
+  },
+  "name": "1",
+  "email": "luuquang654321@gmail.com",
+  "phone": "1",
+  "address": "Tỉnh Cao Bằng-Huyện Hà Quảng-Xã Trường Hà",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": -348000,
+  "status": "Huỷ đơn",
+  "is_paid": false,
+  "created_at": null,
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "6820db101c9fef6ccd91ed74"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-12T00:14:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang203@gmail.com",
+  "phone": "1",
+  "address": "Tỉnh Phú Thọ-Huyện Thanh Thuỷ-Xã Bảo Yên",
+  "address_detail": "1",
+  "total_price": 3810000,
+  "status": "Đang xử lý",
+  "is_paid": false,
+  "created_at": {
+    "$date": "2025-05-12T00:14:56.103Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820ddf91c9fef6ccd91ed77"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-12T00:27:00.000Z"
+  },
+  "name": "1",
+  "email": "1",
+  "phone": "1",
+  "address": "Tỉnh Phú Thọ-Huyện Thanh Thuỷ-Xã Đồng Trung",
+  "address_detail": "1",
+  "total_price": 8430000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-05-12T00:27:21.579Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820df0d1c9fef6ccd91ed7a"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-12T00:31:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Vĩnh Phúc-Huyện Bình Xuyên-Thị trấn Hương Canh",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 3390000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-05-12T00:31:57.536Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820df9d1c9fef6ccd91ed7d"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-12T00:34:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Bắc Ninh-Huyện Yên Phong-Xã Văn Môn",
+  "address_detail": "1",
+  "total_price": 3390000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-05-12T00:34:21.184Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68223631b06b492f60f55f29"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-13T00:56:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Vĩnh Phúc-Huyện Yên Lạc-Xã Liên Châu",
+  "address_detail": "11",
+  "total_price": 4020000,
+  "status": "Đang xử lý",
+  "is_paid": false,
+  "created_at": {
+    "$date": "2025-05-13T00:56:01.624Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6822369db06b492f60f55f2c"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-13T00:57:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Hải Dương-Thành phố Chí Linh-Phường Văn Đức",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 3180000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-05-13T00:57:49.804Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6822bbefbf26b7a43ca15715"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-13T10:26:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "09837817823",
+  "address": "Tỉnh Quảng Ninh-Huyện Vân Đồn-Xã Hạ Long",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 2970000,
+  "status": "Huỷ đơn",
+  "is_paid": false,
+  "created_at": null,
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "6836a92b7dedae505d31f3e4"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-28T13:11:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang203@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Phú Thọ-Huyện Thanh Thuỷ-Xã Thạch Đồng",
+  "address_detail": "0",
+  "total_price": 3810000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-05-28T13:11:55.244Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6836a9b47dedae505d31f3e7"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-28T13:14:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Vĩnh Phúc-Thành phố Phúc Yên-Phường Hùng Vương",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 3810000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-05-28T13:14:12.708Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6836a9fc7dedae505d31f3ea"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-28T13:15:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Hà Giang-Huyện Đồng Văn-Xã Lũng Thầu",
+  "address_detail": "111111",
+  "total_price": 3810000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-05-28T13:15:24.410Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6836abd07dedae505d31f3ed"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-28T13:23:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Bắc Giang-Thành phố Bắc Giang-Xã Quỳnh Sơn",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 3810000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-05-28T13:23:12.217Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6836abfe7dedae505d31f3f0"
+  },
+  "user_id": "68387a0cb77b4a914919e72c",
+  "sell_date": {
+    "$date": "2025-05-29T22:47:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 3810000,
+  "status": "Đang giao hàng",
+  "is_paid": true,
+  "created_at": null,
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "6836acbe7dedae505d31f3f3"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-28T13:27:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Phú Thọ-Huyện Thanh Thuỷ-Xã Đào Xá",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 3810000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-05-28T13:27:10.730Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6836b0187dedae505d31f3ff"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-28T13:41:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Quảng Ninh-Huyện Ba Chẽ-Thị trấn Ba Chẽ",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 3810000,
+  "status": "Huỷ đơn",
+  "is_paid": false,
+  "created_at": null,
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "683969c798c2a3075552e270"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-30T15:18:00.000Z"
+  },
+  "name": "Lưu Đức Quang",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0858215216",
+  "address": "Tỉnh Quảng Ninh-Thành phố Móng Cái-Xã Hải Xuân",
+  "address_detail": "HY",
+  "total_price": 3810000,
+  "status": "Huỷ đơn",
+  "is_paid": true,
+  "created_at": null,
+  "sell_items": null
+},
+{
+  "_id": {
+    "$oid": "683a985f9beb24752d2dd701"
+  },
+  "user_id": "6804adfc832c1ccd40e7b73f",
+  "sell_date": {
+    "$date": "2025-05-31T12:49:00.000Z"
+  },
+  "name": "Lưu Đức Quanggg",
+  "email": "luuquang654321@gmail.com",
+  "phone": "0912313313",
+  "address": "Tỉnh Bắc Giang-Huyện Yên Thế-Xã Canh Nậu",
+  "address_detail": "Thôn Dung - Hưng Đạo - Tiên Lữ - Hưng Yên",
+  "total_price": 3810000,
+  "status": "Đang xử lý",
+  "is_paid": true,
+  "created_at": {
+    "$date": "2025-05-31T12:49:19.904Z"
+  }
+}]

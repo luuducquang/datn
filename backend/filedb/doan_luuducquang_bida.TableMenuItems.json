@@ -1,0 +1,50 @@
+[{
+  "_id": {
+    "$oid": "683b59b0f0d4a1e7fa664745"
+  },
+  "table_id": "6732cee052e9e56c542a248e",
+  "item_id": "67330bd2f42c21ff9487b920",
+  "quantity": 1,
+  "unit_price": 15000,
+  "total_price": 15000
+},
+{
+  "_id": {
+    "$oid": "683c07fcf0d4a1e7fa664757"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "item_id": "6710887b9456a9b32225c7af",
+  "quantity": 1,
+  "unit_price": 10000,
+  "total_price": 10000
+},
+{
+  "_id": {
+    "$oid": "683c07fff0d4a1e7fa664758"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "item_id": "67643c354d902420a592af6f",
+  "quantity": 1,
+  "unit_price": 15000,
+  "total_price": 15000
+},
+{
+  "_id": {
+    "$oid": "683c0802f0d4a1e7fa664759"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "item_id": "67643d0f4d902420a592af75",
+  "quantity": 1,
+  "unit_price": 10000,
+  "total_price": 10000
+},
+{
+  "_id": {
+    "$oid": "683c0807f0d4a1e7fa66475a"
+  },
+  "table_id": "6732cedd52e9e56c542a248d",
+  "item_id": "68234e636dc7d770a0509bf2",
+  "quantity": 1,
+  "unit_price": 30000,
+  "total_price": 30000
+}]
