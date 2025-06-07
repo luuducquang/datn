@@ -214,11 +214,11 @@ def ser_insert_booking(_data: Bookings) -> str:
     
     vietnam_now = datetime.now()
     
-    if start_time < vietnam_now + timedelta(minutes=29):
-        raise HTTPException(status_code=400, detail="Vui lòng chọn thời gian bắt đầu sau hiện tại 30 phút để chúng tôi chuẩn bị.")
+    if start_time < vietnam_now + timedelta(minutes=0):
+        raise HTTPException(status_code=400, detail="Vui lòng chọn thời gian bắt đầu sau hiện tại.")
     
-    if end_time <= start_time + timedelta(minutes=29):
-        raise HTTPException(status_code=400, detail="Vui lòng chọn thời gian kết thúc sau thời gian bắt đầu ít nhất 30 phút.")
+    if end_time <= start_time + timedelta(minutes=0):
+        raise HTTPException(status_code=400, detail="Vui lòng chọn thời gian kết thúc sau thời gian bắt đầu ít nhất 1 phút.")
     
     booking_data["created_at"] = vietnam_now
     
@@ -277,3 +277,38 @@ def ser_update_booking_status(booking_id: str, booking_collection: Collection):
         raise HTTPException(status_code=404, detail="Booking not found or status already false")
     
     return {"message": "Booking status updated to false successfully"}
+
+
+def find_available_table(start_time, end_time, tables_collection, booking_collection) -> str:
+    try:
+        start_dt = datetime.fromisoformat(start_time).replace(tzinfo=None)
+        end_dt = datetime.fromisoformat(end_time).replace(tzinfo=None)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid datetime format")
+
+    if start_dt >= end_dt:
+        raise HTTPException(status_code=400, detail="Start time must be before end time")
+
+    all_tables = list(tables_collection.find({}, {"_id": 1}))  
+    print("all_tables:", all_tables)
+    all_table_ids = [str(t["_id"]) for t in all_tables if "_id" in t]
+
+    if not all_table_ids:
+        raise HTTPException(status_code=404, detail="No tables found")
+
+    booked_tables = list(booking_collection.find({
+        "status": True,
+        "$and": [
+            {"start_time": {"$lt": end_dt}},
+            {"end_time": {"$gt": start_dt}}
+        ]
+    }, {"_id": 0, "table_id": 1}))
+
+    booked_table_ids = [b["table_id"] for b in booked_tables]
+
+    available_table_ids = [tid for tid in all_table_ids if tid not in booked_table_ids]
+
+    if not available_table_ids:
+        raise HTTPException(status_code=404, detail="No available table found")
+
+    return available_table_ids[0]

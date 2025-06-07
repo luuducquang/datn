@@ -38,6 +38,13 @@ export const checkBooking = async (
     return res?.data;
 };
 
+export const checkAvailableTables = async (
+    data: Record<string, string | number | Boolean>
+): Promise<string> => {
+    const res = await apiClient?.post(`${BookingUrl}/available`, data);
+    return res?.data;
+};
+
 export const setFalseStatusBooking = async (id: string): Promise<Bookings> => {
     const res = await apiClient?.put(`${BookingUrl}/false-status/${id}`);
     return res?.data;

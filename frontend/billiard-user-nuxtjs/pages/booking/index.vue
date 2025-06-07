@@ -1066,7 +1066,11 @@ const submitBooking = async () => {
             start_time: startTime.value,
             end_time: endTime.value,
         });
-        if (ischeckBooking && start >= fourHoursLater) {
+        if (
+            ischeckBooking && isStatusTable.value
+                ? start >= fourHoursLater
+                : ischeckBooking
+        ) {
             try {
                 if (paymentMethod.value === "wallet") {
                     const dataUser = await getInformation(

@@ -5,55 +5,91 @@
         width="600px"
         @close="handleClose"
     >
-        <el-form :model="form" label-position="top" label-width="100%">
+        <el-form :model="form" label-position="top">
+            <el-form-item label="Chọn bàn">
+                <el-select
+                    v-model="selectedTableId"
+                    placeholder="-- Chọn bàn --"
+                    size="large"
+                    class="w-full"
+                >
+                    <el-option
+                        v-for="table in dataTable"
+                        :key="table._id"
+                        :label="`Bàn số ${table.table_number} ${table.description ? `- ${table.description}` : ''} - ${table.status ? 'Đang sử dụng' : 'Đang trống'}`"
+                        :value="String(table._id)"
+                    />
+                </el-select>
+            </el-form-item>
+
             <el-row :gutter="20">
-                <el-col>
-                    <el-select
-                        v-model="selectedTableId"
-                        placeholder="-- Chọn bàn --"
-                        size="large"
-                        class="full-width mb-3"
-                    >
-                        <el-option
-                            v-for="table in dataTable"
-                            :key="table._id"
-                            :label="`Bàn số ${table?.table_number} ${table?.description ? `- ${table?.description}` : ``} - ${table?.status ? `Đang sử dụng` : `Đang trống`}`"
-                            :value="String(table?._id)"
-                        />
-                    </el-select>
-                </el-col>
                 <el-col :span="12">
                     <el-form-item label="Tên khách hàng">
                         <el-input
                             v-model="form.customerName"
                             placeholder="Nhập tên khách hàng"
+                            size="large"
                         />
                     </el-form-item>
                 </el-col>
-
                 <el-col :span="12">
                     <el-form-item label="Số điện thoại">
                         <el-input
                             v-model="form.customerPhone"
                             placeholder="Nhập số điện thoại"
                             type="tel"
+                            size="large"
                         />
                     </el-form-item>
                 </el-col>
             </el-row>
 
             <el-row :gutter="20">
-                <el-col>
-                    <el-form-item label="Thời gian sử dụng" required>
+                <el-col :span="12">
+                    <el-form-item label="Thời gian bắt đầu">
                         <el-date-picker
-                            v-model="dateRange"
-                            type="datetimerange"
-                            start-placeholder="Thời gian bắt đầu"
-                            end-placeholder="Thời gian kết thúc"
-                            format="DD-MM-YYYY HH:mm"
-                            value-format="YYYY-MM-DDTHH:mm:ss"
-                            style="width: 100%"
+                            v-model="startDate"
+                            type="date"
+                            placeholder="Chọn ngày"
+                            format="YYYY-MM-DD"
+                            class="w-full"
                         />
+                        <el-select
+                            v-model="startHour"
+                            placeholder="Chọn giờ"
+                            class="w-full mt-2"
+                        >
+                            <el-option
+                                v-for="time in timeSlots"
+                                :key="time"
+                                :label="time"
+                                :value="time"
+                            />
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                    <el-form-item label="Thời gian kết thúc">
+                        <el-date-picker
+                            v-model="endDate"
+                            type="date"
+                            placeholder="Chọn ngày"
+                            format="YYYY-MM-DD"
+                            class="w-full"
+                        />
+                        <el-select
+                            v-model="endHour"
+                            placeholder="Chọn giờ"
+                            class="w-full mt-2"
+                        >
+                            <el-option
+                                v-for="time in timeSlots"
+                                :key="time"
+                                :label="time"
+                                :value="time"
+                            />
+                        </el-select>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -69,9 +105,13 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ElMessage } from "element-plus";
-import { watch, ref, onMounted } from "vue";
+import { watch, ref, onMounted, computed } from "vue";
 import { Tables } from "~/constant/api";
-import { checkBooking, createBooking } from "~/services/booking.service";
+import {
+    checkAvailableTables,
+    checkBooking,
+    createBooking,
+} from "~/services/booking.service";
 import { getAllTable } from "~/services/home.service";
 import { useUserStore } from "~/store";
 
@@ -85,6 +125,11 @@ const visible = ref(false);
 const selectedTableId = ref("");
 const dataTable = ref<Tables[]>([]);
 const useStore = useUserStore();
+
+const startDate = ref("");
+const endDate = ref("");
+const startHour = ref("");
+const endHour = ref("");
 
 const Notification = (
     message: string,
@@ -103,59 +148,57 @@ watch(
     }
 );
 
-function getVietnamDate(offsetHours = 0): Date {
-    const nowUTC = new Date();
-    const vietnamTime = new Date(
-        nowUTC.getTime() + 7 * 60 * 60 * 1000 + offsetHours * 60 * 60 * 1000
-    );
-    return vietnamTime;
-}
+const timeSlots = computed(() => {
+    const times = [];
+    for (let hour = 0; hour < 24; hour++) {
+        for (let minute of [0, 30]) {
+            const h = hour.toString().padStart(2, "0");
+            const m = minute.toString().padStart(2, "0");
+            times.push(`${h}:${m}`);
+        }
+    }
+    return times;
+});
 
-function toISOStringWithoutMs(date: Date): string {
-    return date.toISOString().split(".")[0];
-}
+const startDateTime = computed(() => {
+    return startDate.value && startHour.value
+        ? `${startDate.value}T${startHour.value}:00`
+        : "";
+});
 
-const dateRange = ref<[string, string]>([
-    toISOStringWithoutMs(getVietnamDate(1)),
-    toISOStringWithoutMs(getVietnamDate(3)),
-]);
+const endDateTime = computed(() => {
+    return endDate.value && endHour.value
+        ? `${endDate.value}T${endHour.value}:00`
+        : "";
+});
+
+watch([startDateTime, endDateTime], async ([start, end]) => {
+    const resAvailableTable = await checkAvailableTables({
+        start_time: start,
+        end_time: end,
+    });
+    selectedTableId.value = resAvailableTable;
+    console.log(resAvailableTable);
+});
 
 const form = ref({
     customerName: "",
     customerPhone: "",
-    startTime: dateRange.value[0],
-    endTime: dateRange.value[1],
-});
-
-watch(dateRange, (val) => {
-    form.value.startTime = val?.[0] || "";
-    form.value.endTime = val?.[1] || "";
-});
-
-watch(visible, (val) => {
-    if (val) {
-        dateRange.value = [
-            toISOStringWithoutMs(getVietnamDate(1)),
-            toISOStringWithoutMs(getVietnamDate(3)),
-        ];
-    }
+    startTime: "",
+    endTime: "",
 });
 
 watch(selectedTableId, (val) => {
     const selectedTable = dataTable.value.find((t) => String(t._id) === val);
     if (selectedTable) {
         const offset = selectedTable.status ? 4 : 1;
-        const newStart = toISOStringWithoutMs(getVietnamDate(offset + 1));
-        const newEnd = toISOStringWithoutMs(getVietnamDate(offset + 3));
-
-        dateRange.value = [newStart, newEnd];
     }
 });
 
 const handleClose = () => {
     visible.value = false;
     selectedTableId.value = "";
-    form.value.customerPhone = "";
+    form.value.customerName = "";
     form.value.customerPhone = "";
     emit("update:modelValue", false);
 };
@@ -179,7 +222,7 @@ const handleConfirm = async () => {
         }
 
         const currentTime = new Date().getTime();
-        const selectedStartTime = new Date(form.value.startTime).getTime();
+        const selectedStartTime = new Date(startDateTime.value).getTime();
         const diffInHours =
             (selectedStartTime - currentTime) / (1000 * 60 * 60);
 
@@ -193,8 +236,8 @@ const handleConfirm = async () => {
 
         const ischeckBooking = await checkBooking({
             table_id: selectedTableId.value,
-            start_time: form.value.startTime,
-            end_time: form.value.endTime,
+            start_time: startDateTime.value,
+            end_time: endDateTime.value,
         });
 
         if (!ischeckBooking) {
@@ -207,8 +250,8 @@ const handleConfirm = async () => {
             user_id: String(useStore?.user?._id),
             name: form.value.customerName,
             phone: form.value.customerPhone,
-            start_time: form.value.startTime,
-            end_time: form.value.endTime,
+            start_time: startDateTime.value,
+            end_time: endDateTime.value,
             money_paid: 0,
             status: true,
         });
@@ -226,6 +269,19 @@ const handleConfirm = async () => {
 const fetchData = async () => {
     const resTable = await getAllTable();
     dataTable.value = resTable;
+
+    const now = new Date();
+
+    const start = new Date(now.getTime() + 60 * 60 * 1000);
+    startDate.value = start.toISOString().slice(0, 10);
+    startHour.value = `${start.getHours().toString().padStart(2, "0")}:${start.getMinutes() < 30 ? "30" : "00"}`;
+
+    const end = new Date(now.getTime() + 120 * 60 * 1000);
+    endDate.value = end.toISOString().slice(0, 10);
+    endHour.value = `${end.getHours().toString().padStart(2, "0")}:${end.getMinutes() < 30 ? "30" : "00"}`;
+
+    // startDateTime.value = `${startDate.value}T${startHour.value}:00`;
+    // endDateTime.value = `${endDate.value}T${endHour.value}:00`;
 };
 
 onMounted(() => {

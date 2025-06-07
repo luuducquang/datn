@@ -587,7 +587,11 @@ import {
     getCountByPhone,
 } from "~/services/timesession.service";
 import router from "~/router";
-import { getAllDiscount, getDiscountByCode } from "~/services/discount.service";
+import {
+    getAllDiscount,
+    getDiscountByCode,
+    getDiscountUseCode,
+} from "~/services/discount.service";
 import {
     getBookingByIDBooking,
     getBookingByIDTable,
@@ -891,6 +895,10 @@ const PayAndPrintInvoice = async () => {
             booking_id: "",
         });
 
+        if (voucherCode.value) {
+            await getDiscountUseCode(voucherCode.value);
+        }
+
         await fetchById(String(route.params.id));
 
         if (listOrderMenuItem.length > 0) {
@@ -1111,7 +1119,8 @@ const fetchById = async (id: string) => {
 
     const listVoucher = await getAllDiscount();
     dataVoucher.value = listVoucher.filter(
-        (voucher: Discounts) => voucher.status === true
+        (voucher: Discounts) =>
+            voucher.status === true && Number(voucher.quantity) > 0
     );
 
     const resTableMenuItem = await getbyIdTableMenuItem(id);
