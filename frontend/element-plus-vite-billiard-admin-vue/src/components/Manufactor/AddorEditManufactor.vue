@@ -23,9 +23,9 @@
 
             <el-form-item>
                 <el-button type="primary" @click="submitForm(ruleFormRef)">
-                    {{ route.params.id ? "Update" : "Create" }}
+                    {{ route.params.id ? "Chỉnh sửa" : "Thêm" }}
                 </el-button>
-                <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+                <el-button @click="resetForm(ruleFormRef)">Làm mới</el-button>
             </el-form-item>
         </el-form>
     </el-card>
@@ -55,7 +55,6 @@ import axios from "axios";
 const formSize = ref<ComponentSize>("default");
 const ruleFormRef = ref<FormInstance>();
 const route = useRoute();
-
 
 const Notification = (
     message: string,

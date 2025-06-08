@@ -30,12 +30,9 @@
             <el-table-column label="Trạng thái" align="center" prop="status">
                 <template #default="scope">
                     <div :class="scope.row.status ? 'unpaid' : 'paid'">
-                        <p
-                        >
+                        <p>
                             {{
-                                scope.row.status
-                                    ? "Đang sử dụng"
-                                    : "Đang trống"
+                                scope.row.status ? "Đang sử dụng" : "Đang trống"
                             }}
                         </p>
                     </div>
@@ -54,7 +51,7 @@
                         size="small"
                         @click="handleEdit(scope.$index, scope.row)"
                     >
-                        Edit
+                        Sửa
                     </el-button>
                     <el-popconfirm
                         confirm-button-text="Yes"
@@ -65,7 +62,7 @@
                     >
                         <template #reference>
                             <el-button size="small" type="danger">
-                                Delete
+                                Xoá
                             </el-button>
                         </template>
                     </el-popconfirm>

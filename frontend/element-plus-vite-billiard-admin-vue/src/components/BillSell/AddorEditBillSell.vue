@@ -190,7 +190,7 @@
                                 size="small"
                                 @click="handleEdit(scope.$index, scope.row)"
                             >
-                                Edit
+                                Sửa
                             </el-button> -->
                             <el-popconfirm
                                 v-if="checkIsAdmin()"
@@ -210,7 +210,7 @@
                                             ruleForm.status === 'Hoàn tất'
                                         "
                                     >
-                                        Delete
+                                        Xoá
                                     </el-button>
                                 </template>
                             </el-popconfirm>
@@ -224,12 +224,12 @@
                         type="primary"
                         @click="submitForm(ruleFormRef)"
                     >
-                        {{ route.params.id ? "Update" : "Create" }}
+                        {{ route.params.id ? "Chỉnh sửa" : "Thêm" }}
                     </el-button>
                     <el-button
                         @click="resetForm(ruleFormRef)"
                         :disabled="ruleForm.status === 'Hoàn tất'"
-                        >Reset</el-button
+                        >Làm mới</el-button
                     >
                 </el-form-item>
             </el-card>

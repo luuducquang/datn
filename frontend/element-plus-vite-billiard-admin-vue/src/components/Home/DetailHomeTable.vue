@@ -1133,10 +1133,10 @@ const fetchById = async (id: string) => {
         ?.filter(function (item) {
             return item?.stock_quantity > 0;
         })
-        ?.map(function ({ _id, name, price }) {
+        ?.map(function ({ _id, name, price, stock_quantity }) {
             return {
                 value: _id || 0,
-                label: name || "",
+                label: `${name} (${stock_quantity})` || "",
                 price: price || 0,
             };
         });

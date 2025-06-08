@@ -415,7 +415,7 @@
                                             dataCustomer?.loyalty_points
                                         ).voucher
                                     }}
-                                    % =
+                                    % giờ chơi =
                                     {{
                                         ConvertPrice(
                                             Number(
@@ -432,7 +432,7 @@
                                                 ) /
                                                     100)
                                         )
-                                    }}
+                                    }} 
                                 </p>
 
                                 <p
@@ -441,7 +441,7 @@
                                 >
                                     Đã áp dụng mã:
                                     <strong>{{ voucherCode }}</strong> – Giảm
-                                    {{ discountAmount }}% =
+                                    {{ discountAmount }}% giờ chơi =
                                     {{
                                         ConvertPrice(
                                             (Number(

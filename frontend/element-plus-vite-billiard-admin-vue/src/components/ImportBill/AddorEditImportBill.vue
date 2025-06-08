@@ -140,7 +140,7 @@
                                 size="small"
                                 @click="handleEdit(scope.$index, scope.row)"
                             >
-                                Edit
+                                Sửa
                             </el-button> -->
                             <el-popconfirm
                                 confirm-button-text="Yes"
@@ -153,7 +153,7 @@
                             >
                                 <template #reference>
                                     <el-button size="small" type="danger">
-                                        Delete
+                                        Xoá
                                     </el-button>
                                 </template>
                             </el-popconfirm>
@@ -163,9 +163,11 @@
 
                 <el-form-item class="btns_item">
                     <el-button type="primary" @click="submitForm(ruleFormRef)">
-                        {{ route.params.id ? "Update" : "Create" }}
+                        {{ route.params.id ? "Chỉnh sửa" : "Thêm" }}
                     </el-button>
-                    <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+                    <el-button @click="resetForm(ruleFormRef)"
+                        >Làm mới</el-button
+                    >
                 </el-form-item>
             </el-card>
         </el-form>

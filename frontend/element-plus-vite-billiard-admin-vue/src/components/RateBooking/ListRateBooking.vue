@@ -49,7 +49,11 @@
                 <template #default="scope">
                     <p>
                         {{
-                            scope.row?.booking?.created_at ? convertDate(String(scope.row?.booking?.created_at)): ""
+                            scope.row?.booking?.created_at
+                                ? convertDate(
+                                      String(scope.row?.booking?.created_at)
+                                  )
+                                : ""
                         }}
                     </p>
                 </template>
@@ -74,7 +78,7 @@
                         size="small"
                         @click="handleEdit(scope.$index, scope.row)"
                     >
-                        Edit
+                        Sửa
                     </el-button>
                     <!-- <el-popconfirm
                         confirm-button-text="Yes"
@@ -85,7 +89,7 @@
                     >
                         <template #reference>
                             <el-button size="small" type="danger">
-                                Delete
+                                Xoá
                             </el-button>
                         </template>
                     </el-popconfirm> -->

@@ -30,18 +30,18 @@
                     }}</span>
                 </template>
             </el-table-column>
-            <el-table-column
-                label="Loại"
-                align="center"
-                prop="is_rental"
-            >
+            <el-table-column label="Loại" align="center" prop="is_rental">
                 <template #default="scope">
                     <span class="name_item">{{
                         scope.row.is_rental ? "Thuê" : "Bán"
                     }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="Giá nhập" align="center" prop="price_origin">
+            <el-table-column
+                label="Giá nhập"
+                align="center"
+                prop="price_origin"
+            >
                 <template #default="scope">
                     <span class="name_item">{{
                         ConvertPrice(scope.row.price_origin)
@@ -68,7 +68,7 @@
                         size="small"
                         @click="handleEdit(scope.$index, scope.row)"
                     >
-                        Edit
+                        Sửa
                     </el-button>
                     <el-popconfirm
                         v-if="checkIsAdmin()"
@@ -80,7 +80,7 @@
                     >
                         <template #reference>
                             <el-button size="small" type="danger">
-                                Delete
+                                Xoá
                             </el-button>
                         </template>
                     </el-popconfirm>

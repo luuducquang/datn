@@ -35,7 +35,7 @@
                         size="small"
                         @click="handleEdit(scope.$index, scope.row)"
                     >
-                        Edit
+                        Sửa
                     </el-button>
                     <el-popconfirm
                         v-if="checkIsAdmin()"
@@ -47,7 +47,7 @@
                     >
                         <template #reference>
                             <el-button size="small" type="danger">
-                                Delete
+                                Xoá
                             </el-button>
                         </template>
                     </el-popconfirm>

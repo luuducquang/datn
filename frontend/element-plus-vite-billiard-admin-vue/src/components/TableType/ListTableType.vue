@@ -29,7 +29,7 @@
                         size="small"
                         @click="handleEdit(scope.$index, scope.row)"
                     >
-                        Edit
+                        Sửa
                     </el-button>
                     <el-popconfirm
                         confirm-button-text="Yes"
@@ -40,7 +40,7 @@
                     >
                         <template #reference>
                             <el-button size="small" type="danger">
-                                Delete
+                                Xoá
                             </el-button>
                         </template>
                     </el-popconfirm>
@@ -64,10 +64,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { CirclePlus, StarFilled } from "@element-plus/icons-vue";
 import debounce from "~/utils/debounce";
 import { TableTypes } from "~/constant/api";
-import {
-    deleteTableType,
-    searchTableType,
-} from "~/services/tabletype.service";
+import { deleteTableType, searchTableType } from "~/services/tabletype.service";
 import router from "~/router";
 import { ElMessage } from "element-plus";
 import axios from "axios";
