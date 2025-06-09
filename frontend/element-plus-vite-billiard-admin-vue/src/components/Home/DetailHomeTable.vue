@@ -157,6 +157,38 @@
                 </el-card>
             </el-col>
 
+            <el-dialog
+                v-model="dialogVisible"
+                title="Xác nhận sử dụng bàn"
+                width="400px"
+                :before-close="() => (dialogVisible = false)"
+                center
+                :modal-class="'centered-dialog'"
+            >
+                <div class="text-center">
+                    <el-icon color="#E6A23C" size="30">
+                        <WarningFilled />
+                    </el-icon>
+                    <p class="mt-4">
+                        Bàn này sẽ được
+                        <strong>đặt vào lúc {{ formattedTime }}</strong
+                        >.<br />
+                        Bạn có chắc chắn muốn sử dụng bàn không?
+                    </p>
+                </div>
+
+                <template #footer>
+                    <div class="dialog-footer-space">
+                        <el-button @click="dialogVisible = false"
+                            >Huỷ</el-button
+                        >
+                        <el-button type="primary" @click="handleConfirm"
+                            >Đồng ý</el-button
+                        >
+                    </div>
+                </template>
+            </el-dialog>
+
             <el-col :span="14">
                 <el-card>
                     <el-row class="voucher-row" :gutter="10">
@@ -636,6 +668,10 @@ const dataBookings = ref<Bookings[]>([]);
 const selectedBookingId = ref("");
 const moneyPaid = ref(0);
 
+const dialogVisible = ref(false);
+const formattedTime = ref("");
+const onConfirmed = ref<() => void>();
+
 const Notification = (
     message: string,
     type: "success" | "warning" | "error"
@@ -803,13 +839,17 @@ const handleBookingChange = async (id: string) => {
 
 const formatDate = (date: Date | string): string => {
     const d = new Date(date);
-    return d.toLocaleString("vi-VN", {
-        hour: "2-digit",
-        minute: "2-digit",
+    const datePart = d.toLocaleDateString("vi-VN", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
     });
+    const timePart = d.toLocaleTimeString("vi-VN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+    });
+    return `${datePart} | ${timePart}`;
 };
 
 const handleVoucherChange = () => {
@@ -1020,27 +1060,64 @@ function getLocalISOString() {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+function showCustomConfirm(time: string, callback: () => void) {
+    formattedTime.value = time;
+    dialogVisible.value = true;
+    onConfirmed.value = callback;
+}
+
+function handleConfirm() {
+    dialogVisible.value = false;
+    onConfirmed.value?.();
+}
+
+async function proceedToUseTable() {
+    startTime.value = getLocalISOString();
+    await updateTable({
+        _id: String(route.params.id),
+        table_number: Number(dataDetailTable.value?.table_number),
+        table_type_id: String(dataDetailTable.value?.table_type_id),
+        status: !dataDetailTable.value?.status,
+        start_date: String(startTime.value),
+        end_date: String(getLocalISOString()),
+        description: String(dataDetailTable?.value?.description),
+        name: String(customerForm.fullname),
+        phone: String(customerForm.phone),
+        booking_id: "",
+    });
+    const resPriceTable = await getTablePrice(String(route.params.id));
+    dataPriceTable.value = resPriceTable;
+    await fetchById(String(route.params.id));
+}
+
 async function toggleTimer() {
     try {
         const tableDetail = await getbyIdTable(String(route.params.id));
 
         if (!tableDetail.status) {
-            startTime.value = getLocalISOString();
-            await updateTable({
-                _id: String(route.params.id),
-                table_number: Number(dataDetailTable.value?.table_number),
-                table_type_id: String(dataDetailTable.value?.table_type_id),
-                status: !dataDetailTable.value?.status,
-                start_date: String(startTime.value),
-                end_date: String(getLocalISOString()),
-                description: String(dataDetailTable?.value?.description),
-                name: String(customerForm.fullname),
-                phone: String(customerForm.phone),
-                booking_id: "",
-            });
-            const resPriceTable = await getTablePrice(String(route.params.id));
-            dataPriceTable.value = resPriceTable;
-            await fetchById(String(route.params.id));
+            const resBooking = await getBookingByIDTable(
+                String(route.params.id)
+            );
+            console.log(resBooking);
+
+            if (resBooking.length > 0 && resBooking[0].start_time) {
+                const bookingTime = new Date(
+                    resBooking[0].start_time
+                ).getTime();
+                const now = new Date().getTime();
+                const diffInHours = (bookingTime - now) / (1000 * 60 * 60);
+
+                if (diffInHours <= 2) {
+                    showCustomConfirm(
+                        formatDate(resBooking[0].start_time),
+                        async () => {
+                            await proceedToUseTable();
+                        }
+                    );
+                    return;
+                }
+            }
+            await proceedToUseTable();
         } else {
             Notification("Bàn này đã được dùng", "warning");
         }
@@ -1336,5 +1413,24 @@ table th {
 .voucher-row {
     margin-bottom: 12px;
     align-items: center;
+}
+
+.dialog-footer {
+    padding-top: 10px;
+    border-top: 1px solid #ebeef5;
+    margin-top: 20px;
+}
+
+.custom-center-dialog .el-dialog {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+}
+
+.dialog-footer-space {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
 }
 </style>

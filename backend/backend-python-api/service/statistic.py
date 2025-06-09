@@ -186,7 +186,7 @@ def generate_revenue_data() -> List[Dict]:
     for day in range(1, last_day_of_month + 1):
         date = first_day_of_month.replace(day=day)
         next_date = date + timedelta(days=1)
-        day_str = date.strftime("%Y-%m-%d")
+        day_str = date.strftime("%d-%m-%Y")
 
         orderitems_revenue = list(orderitems_collection.aggregate([
             {"$match": {"pay_date": {"$gte": date, "$lt": next_date}}},
@@ -242,7 +242,7 @@ def generate_weekly_revenue_data() -> Dict:
         date = date.replace(hour=0, minute=0, second=0, microsecond=0)
         next_date = date + timedelta(days=1)
 
-        day_str = date.strftime("%Y-%m-%d")
+        day_str = date.strftime("%d-%m-%Y")
 
         orderitems_revenue = list(orderitems_collection.aggregate([
             {"$match": {"pay_date": {"$gte": date, "$lt": next_date}}},
@@ -308,7 +308,7 @@ def generate_playtime_data() -> List[Dict]:
     for day in range(1, last_day + 1):
         start_day = first_day.replace(day=day)
         end_day = start_day + timedelta(days=1)
-        day_str = start_day.strftime("%Y-%m-%d")
+        day_str = start_day.strftime("%d-%m-%Y")
 
         sessions = list(timesessions_collection.find({
             "end_time": {"$gte": start_day, "$lt": end_day}

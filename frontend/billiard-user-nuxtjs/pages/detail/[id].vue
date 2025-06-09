@@ -13,226 +13,131 @@
             }}</NuxtLink>
         </div>
     </div>
-    <div class="container">
-        <div class="row gy-3">
-            <div class="col-lg-5 col-md-6 col-sm-6">
-                <span class="product-item-img"
-                    ><img
-                        :src="apiImage + productDetail?.image"
-                        alt="anh san pham"
-                /></span>
-                <div class="miror"></div>
+    <div class="container product-detail-container">
+        <div class="row product-detail-content">
+            <div class="col-lg-5 col-md-6 col-12 product-image-section">
+                <img
+                    :src="apiImage + productDetail?.image"
+                    alt="ảnh sản phẩm"
+                    class="img-fluid rounded"
+                />
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <table>
-                    <tr>
-                        <td>
-                            <div class="product-item-name">
-                                {{ productDetail?.item_name }}
-                            </div>
-                        </td>
-                    </tr>
 
-                    <tr>
-                        <td>
-                            <div class="product-item_price">
-                                <span class="product-item_price_old">{{
-                                    Number(productDetail?.price) > 0
-                                        ? productDetail?.price.toLocaleString(
-                                              "de-DE"
-                                          )
-                                        : ""
-                                }}</span
-                                ><sup>đ</sup>
-                                <span class="product-item_price_current">{{
-                                    Number(productDetail?.price_reduction) > 0
-                                        ? productDetail?.price_reduction.toLocaleString(
-                                              "de-DE"
-                                          )
-                                        : ""
-                                }}</span
-                                ><sup>đ</sup>
-                                <span class="VAT">(Đã bao gồm VAT)</span>
-                            </div>
-                        </td>
-                    </tr>
+            <div class="col-lg-4 col-md-6 col-12 product-info-section">
+                <h2 class="product-title">{{ productDetail?.item_name }}</h2>
+                <div class="product-pricing">
+                    <span class="old-price" v-if="productDetail?.price"
+                        >{{ productDetail?.price.toLocaleString("de-DE")
+                        }}<sup>đ</sup></span
+                    >
+                    <span class="sale-price"
+                        >{{
+                            productDetail?.price_reduction?.toLocaleString(
+                                "de-DE"
+                            )
+                        }}<sup>đ</sup></span
+                    >
+                    <span class="vat-note">(Đã bao gồm VAT)</span>
+                </div>
+                <p class="product-status">
+                    Tình trạng:
+                    <span
+                        :class="{
+                            'text-danger':
+                                Number(productDetail?.quantity_available) <= 0,
+                            'text-success':
+                                Number(productDetail?.quantity_available) > 0,
+                        }"
+                    >
+                        {{
+                            Number(productDetail?.quantity_available) > 0
+                                ? "Còn hàng"
+                                : "Hết hàng"
+                        }}
+                    </span>
+                </p>
+                <p class="product-views">
+                    Lượt xem: {{ productDetail?.view?.toLocaleString("de-DE") }}
+                </p>
+                <p class="product-sold" v-if="productDetail?.sales">
+                    Đã bán: {{ productDetail.sales.toLocaleString("de-DE") }}
+                </p>
+                <p class="product-origin">
+                    Xuất xứ: {{ productDetail?.origin }}
+                </p>
 
-                    <tr>
-                        <td>
-                            <div class="status">
-                                Tình trạng :
-                                <span
-                                    :style="{
-                                        color:
-                                            Number(
-                                                productDetail?.quantity_available
-                                            ) <=0
-                                                ? '#FF3300'
-                                                : '#33CC00',
-                                    }"
-                                    >{{
-                                        Number(
-                                            productDetail?.quantity_available
-                                        ) > 0
-                                            ? Number(
-                                                  productDetail?.quantity_available
-                                              ) <=0
-                                                ? "Hết hàng"
-                                                : "Còn hàng"
-                                            : "Hết hàng"
-                                    }}</span
-                                >
-                            </div>
-                        </td>
-                    </tr>
+                <div class="product-quantity">
+                    <label>Số lượng:</label>
+                    <div class="quantity-control d-flex align-items-center">
+                        <span
+                            class="btn btn-light"
+                            @click="amountProduct > 1 && amountProduct--"
+                            >-</span
+                        >
+                        <input
+                            type="text"
+                            class="form-control text-center mx-2"
+                            v-model="amountProduct"
+                            @input="validateAmount"
+                            style="width: 60px"
+                        />
+                        <span class="btn btn-light" @click="amountProduct++"
+                            >+</span
+                        >
+                    </div>
+                </div>
 
-                    <tr>
-                        <td>
-                            Lượt xem :
-                            {{
-                                Number(productDetail?.view) > 0
-                                    ? Number(
-                                          productDetail?.view
-                                      ).toLocaleString("de-DE")
-                                    : ""
-                            }}
-                        </td>
-                    </tr>
+                <div class="product-buttons mt-3">
+                    <button class="btn btn-danger w-100 mb-2" @click="addCart">
+                        THÊM VÀO GIỎ HÀNG
+                    </button>
+                    <button class="btn btn-warning w-100" @click="buyNow">
+                        MUA NGAY
+                    </button>
+                </div>
 
-                    <tr v-if="Number(productDetail?.sales) > 0">
-                        <td>
-                            Đã bán :
-                            {{
-                                Number(productDetail?.sales) > 0
-                                    ? Number(
-                                          productDetail?.sales
-                                      ).toLocaleString("de-DE")
-                                    : ""
-                            }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <span class="origin">Xuất xứ : </span>
-                            <span class="country-origin">{{
-                                productDetail?.origin
-                            }}</span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="product-amount-item">Số lượng :</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="buy-amount-product d-flex">
-                                <span
-                                    class="fa-solid fa-minus minus_btn"
-                                    @click="
-                                        () => {
-                                            if (amountProduct > 1) {
-                                                amountProduct--;
-                                            }
-                                        }
-                                    "
-                                ></span>
-                                <input
-                                    type="text"
-                                    min="1"
-                                    class="amount"
-                                    v-model="amountProduct"
-                                    @input="validateAmount"
-                                />
-                                <span
-                                    @click="amountProduct++"
-                                    class="fa-solid fa-plus plus_btn"
-                                ></span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button class="add-item" @click="addCart">
-                                THÊM VÀO GIỎ HÀNG
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button @click="buyNow" class="buy-now">
-                                MUA NGAY
-                            </button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="call">
-                                <div class="fa-solid fa-phone-volume"></div>
-                                <span class="Hotline"
-                                    >Hotline :
-                                    <a
-                                        href="tel:012.3456.789"
-                                        title="tel:012.3456.789"
-                                    >
-                                        <span>012.3456.789</span>
-                                    </a>
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                <div class="hotline mt-3">
+                    <i class="fa-solid fa-phone-volume me-1"></i>
+                    Hotline: <a href="tel:0123456789">012.3456.789</a>
+                </div>
             </div>
-            <div class="about_policy col-lg-3">
-                <table>
-                    <tr>
-                        <th>CAM KẾT VỚI KHÁCH HÀNG</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="font15 fa-solid fa-shield-halved"></i>Hàng
-                            chính hãng 100%
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="font15 fa-solid fa-thumbs-up"></i>Uy tín
-                            chất lượng
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="font15 fa-solid fa-gears"></i>Hỗ trợ liên
-                            tục trong quá trình sử dụng sản phẩm
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="font15 fa-sharp fa-solid fa-rotate"></i
-                            >Chính sách đổi trả rõ ràng
-                        </td>
-                    </tr>
-                </table>
+
+            <div class="col-lg-3 col-12 mt-4 mt-lg-0 policy-section">
+                <h5 class="fw-bold">CAM KẾT VỚI KHÁCH HÀNG</h5>
+                <ul class="list-unstyled mt-3">
+                    <li>
+                        <i class="fa-solid fa-shield-halved me-2"></i> Hàng
+                        chính hãng 100%
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-thumbs-up me-2"></i> Uy tín chất
+                        lượng
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-gears me-2"></i> Hỗ trợ sau bán
+                        hàng
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-rotate me-2"></i> Đổi trả rõ ràng
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="bind_html" v-html="productDetail?.description_detail"></div>
-        <div class="recomend">
-            <h1>Sản phẩm cùng loại</h1>
-            <div class="list_item_recomend">
-                <div class="row justify-content-center">
-                    <div
-                        class="col-lg-2 col-md-4 col-sm-6 col-6"
-                        v-for="product in productRecomend"
-                        :key="product._id"
-                    >
-                        <item-product-recomend
-                            :product="product"
-                            :isSale="true"
-                        />
-                    </div>
+
+        <div
+            class="product-description mt-5"
+            v-html="productDetail?.description_detail"
+        ></div>
+
+        <div class="recommend-section mt-5">
+            <h3 class="text-center mb-4">Sản phẩm cùng loại</h3>
+            <div class="row">
+                <div
+                    class="col-lg-2 col-md-4 col-sm-6 col-6"
+                    v-for="product in productRecomend"
+                    :key="product._id"
+                >
+                    <item-product-recomend :product="product" :isSale="true" />
                 </div>
             </div>
         </div>
@@ -483,223 +388,47 @@ const buyNow = async () => {
     margin: 0 8px;
 }
 
-.product-item-img {
-    overflow: hidden;
-}
-
-.product-item-img img {
-    width: 100%;
-    object-fit: cover;
-    background-size: cover;
-    transition: all 0.2s linear;
-    padding: 7px 0;
-}
-
-.product-item-name {
-    font-size: 20px;
-    font-weight: 600;
+.product-title {
+    font-size: 24px;
+    font-weight: bold;
     color: #6d4137;
 }
 
-.product-item_price_old,
-.product-item_price_current {
-    font-size: 20px;
-    color: var(--color-sale);
-    font-weight: 600;
-}
-
-.product-item_price sup {
-    color: var(--color-sale);
-}
-
-.product-item_price .product-item_price_old {
+.product-pricing .old-price {
     text-decoration: line-through;
+    color: gray;
+    font-size: 18px;
+    margin-right: 10px;
 }
 
-/* .capacity-name,
-.product-amount-item {
+.product-pricing .sale-price {
+    color: var(--color-sale);
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.product-pricing .vat-note {
+    font-size: 13px;
+    display: block;
+    color: #888;
+}
+
+.product-quantity label {
     font-weight: 600;
-    color: var(--font-color);
-} */
-
-.minus_btn {
-    height: 30px;
-    width: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    outline: none;
-    background-color: #ddd;
-    border: none;
-    cursor: pointer;
+    margin-bottom: 5px;
 }
 
-.plus_btn {
-    height: 30px;
-    width: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    outline: none;
-    background-color: #ddd;
-    border: none;
-    cursor: pointer;
+.policy-section ul li {
+    margin-bottom: 10px;
+    color: #333;
 }
 
-.amount {
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    border: none;
+.hotline {
+    font-weight: 600;
+    color: #d33;
 }
 
-.add-item {
-    width: 100%;
-    min-height: 50px;
-    display: block;
-    background-color: transparent;
-    border-radius: 10px;
-    color: #fff;
-    overflow: hidden;
-    cursor: pointer;
-    font-size: 20px;
-    border: none;
-    margin: 5px 0;
-    position: relative;
-    z-index: 1;
-    outline: none;
-}
-
-.add-item::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: -2;
-    background-color: red;
-    outline: none;
-    border: none;
-}
-
-.add-item::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 0;
-    z-index: -1;
-    /* background-color:#FF9900; */
-    background-color: #fff;
-    color: black;
-    transition: width 0.5s ease;
-    outline: none;
-    border: none;
-}
-
-.add-item:hover::before {
-    width: 100%;
-    outline: none;
-    border: none;
-}
-
-.add-item:hover {
-    color: red;
-    border: solid 1px red;
-}
-
-.minus_btn:hover,
-.plus_btn:hover {
-    background-color: #bbb;
-}
-
-.buy-now {
-    width: 80%;
-    min-height: 50px;
-    display: block;
-    background: #f78608;
-    background-color: transparent;
-    border-radius: 10px;
-    color: white;
-    overflow: hidden;
-    cursor: pointer;
-    font-size: 20px;
-    border: none;
-    margin: 5px 0;
-    z-index: 1;
-    position: relative;
-}
-
-.buy-now::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: #f78608;
-    z-index: -2;
-    transition: width 0.5s linear;
-}
-
-.buy-now::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 0;
-    /* background-color: #BB0000; */
-    background-color: #fff;
-    z-index: -1;
-    transition: width 0.5s ease;
-}
-
-.buy-now:hover::before {
-    width: 100%;
-}
-.buy-now:hover {
-    color: #f78608;
-    border: solid 1px #f78608;
-}
-.about_policy tr td i {
-    font-size: 15px;
-    padding-right: 10px;
-    color: #009a82;
-}
-
-.bind_html {
-    overflow: hidden;
-    margin-top: 20px;
-}
-
-.recomend > h1 {
-    font-size: 30px;
-    text-align: center;
-    text-transform: uppercase;
-    margin: 0;
-    padding-bottom: 10px;
-    color: var(--color-primary);
-}
-
-.alert-success {
-    position: fixed;
-    right: 20px;
-    top: 70px;
-    z-index: 999;
-    transition: all 0.3s ease-in-out;
-}
-
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-    transition: all 0.5s ease;
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-    transform: translateY(-20px);
-    opacity: 0;
+.product-detail-container {
+    padding-top: 20px;
 }
 </style>

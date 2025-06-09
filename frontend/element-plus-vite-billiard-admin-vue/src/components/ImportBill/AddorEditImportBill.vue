@@ -309,8 +309,9 @@ async function fetchProduct() {
         return {
             id: value._id,
             name: value.item_name,
-            price: value.price_reduction,
+            price: value.price_origin,
             image: value.image,
+            quantity: value.quantity_available,
         };
     });
 
@@ -318,8 +319,9 @@ async function fetchProduct() {
         return {
             id: value._id,
             name: value.name,
-            price: value.price,
+            price: value.price_origin,
             image: value.image,
+            quantity: value.stock_quantity,
         };
     });
 
@@ -327,10 +329,11 @@ async function fetchProduct() {
     ruleForm.item_id = String(res[0]?.id);
     ruleForm.unit_price = Number(res[0]?.price);
     ruleForm.total_price_item = Number(res[0]?.price);
+    console.log(res);
     optionsProduct.value = res.map(function (value: any) {
         return {
             value: value.id,
-            label: value.name,
+            label: `${value.name} (${value.quantity})`,
             gia: value.price,
             hinhAnh: value.image,
         };
@@ -342,7 +345,7 @@ onMounted(() => {
 
 const handleProductChange = (value: any) => {
     const filteredProduct = optionsProduct.value?.find(
-        (product) => product.label.toLowerCase() === value.toLowerCase()
+        (product) => product.value === value
     );
     if (filteredProduct) {
         ruleForm.unit_price = filteredProduct.gia;

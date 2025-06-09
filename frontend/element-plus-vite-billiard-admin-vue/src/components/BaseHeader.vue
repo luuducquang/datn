@@ -20,9 +20,9 @@
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item :icon="Setting">
+                        <!-- <el-dropdown-item :icon="Setting">
                             Cài đặt
-                        </el-dropdown-item>
+                        </el-dropdown-item> -->
                         <router-link to="/login">
                             <el-dropdown-item
                                 :icon="CaretRight"

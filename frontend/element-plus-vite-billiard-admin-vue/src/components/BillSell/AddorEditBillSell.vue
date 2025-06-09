@@ -463,7 +463,7 @@ async function fetchProduct() {
     optionsProduct.value = res.map(function (value: any) {
         return {
             value: value._id,
-            label: value.item_name,
+            label: `${value.item_name} (${value.quantity_available})`,
             gia: value.price_reduction,
             hinhAnh: value.image,
         };
@@ -490,7 +490,7 @@ const PrintInvoice = async () => {
 
 const handleProductChange = (value: any) => {
     const filteredProduct = optionsProduct.value?.find(
-        (product) => product.label.toLowerCase() === value.toLowerCase()
+        (product) => product.value === value
     );
     if (filteredProduct) {
         ruleForm.unit_price = filteredProduct.gia;
