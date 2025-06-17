@@ -432,7 +432,7 @@
                                                 ) /
                                                     100)
                                         )
-                                    }} 
+                                    }}
                                 </p>
 
                                 <p
@@ -916,82 +916,98 @@ const formatDuration = (seconds: number) => {
 
 const customerData = Cookies.get("customer");
 const handleSuccess = async () => {
-    const bookingData = {
+    const now = new Date();
+    const start = new Date(startTime.value);
+    const fourHoursLater = new Date(now.getTime() + 4 * 60 * 60 * 1000);
+    const ischeckBooking = await checkBooking({
         table_id: selectedTableId.value,
-        user_id: dataCustomer?.value?._id,
-        name: customerName.value,
-        phone: customerPhone.value,
         start_time: startTime.value,
         end_time: endTime.value,
-        money_paid: Number(
-            Number(
-                getTotalAmount() +
-                    Number(
-                        dataDetailTable?.value?.pricingrule?.[0]
-                            ?.rate_per_hour ?? 0
-                    ) *
-                        Number(duration.value / 3600) *
-                        (1 -
-                            (Number(discountAmount.value) +
-                                Number(
-                                    getMembershipRank(
-                                        dataCustomer?.value?.loyalty_points
-                                    ).voucher
-                                )) /
-                                100)
-            )
-        ),
-        status: true,
-    };
+    });
+    if (
+        ischeckBooking && isStatusTable.value
+            ? start >= fourHoursLater
+            : ischeckBooking
+    ) {
+        const bookingData = {
+            table_id: selectedTableId.value,
+            user_id: dataCustomer?.value?._id,
+            name: customerName.value,
+            phone: customerPhone.value,
+            start_time: startTime.value,
+            end_time: endTime.value,
+            money_paid: Number(
+                Number(
+                    getTotalAmount() +
+                        Number(
+                            dataDetailTable?.value?.pricingrule?.[0]
+                                ?.rate_per_hour ?? 0
+                        ) *
+                            Number(duration.value / 3600) *
+                            (1 -
+                                (Number(discountAmount.value) +
+                                    Number(
+                                        getMembershipRank(
+                                            dataCustomer?.value?.loyalty_points
+                                        ).voucher
+                                    )) /
+                                    100)
+                )
+            ),
+            status: true,
+        };
 
-    if (Number(discountAmount.value) > 0) {
-        await getDiscountUseCode(voucherCode.value);
+        if (Number(discountAmount.value) > 0) {
+            await getDiscountUseCode(voucherCode.value);
+        }
+        const rescreateBooking = await createBooking(bookingData);
+
+        idCreatedBooking.value = String(rescreateBooking?._id);
+
+        const listBookingItem = addedServices.value.map((service) => ({
+            booking_id: idCreatedBooking.value,
+            item_id: String(service.item_id),
+            image: String(service.image),
+            quantity: Number(service.quantity),
+            unit_price: Number(service.unit_price),
+            total_price: Number(service.unit_price) * Number(service.quantity),
+            name: String(service.name),
+        }));
+
+        for (const element of listBookingItem) {
+            await createBookingItem(element);
+        }
+
+        const customerData = Cookies.get("customer");
+        if (customerData) {
+            const customer = JSON.parse(customerData);
+            const dataUser = await getInformation(customer._id);
+            await updateInformationWalletPoint({
+                _id: customer._id,
+                username: customer.username,
+                password: customer.password,
+                fullname: customer.fullname,
+                email: customer.email,
+                phone: customer.phone,
+                address: customer.address,
+                avatar: customer.avatar,
+                loyalty_points:
+                    dataUser.loyalty_points + totalPricePaid.value * 0.2,
+                wallet: Number(dataUser.wallet),
+                role_name: customer.role_name,
+            });
+
+            const res = await login({
+                email: String(dataUser.email),
+                password: String(customer.password),
+            });
+            Cookies.set("customer", JSON.stringify(res), { expires: 1 });
+        }
+        closeModal();
+        Swal.fire("Thông Báo", "Đặt bàn thành công !", "success");
+    } else {
+        Swal.fire("Thất bại", "Thời gian này đã có khách đặt!", "warning");
     }
-    const rescreateBooking = await createBooking(bookingData);
-
-    idCreatedBooking.value = String(rescreateBooking?._id);
-
-    const listBookingItem = addedServices.value.map((service) => ({
-        booking_id: idCreatedBooking.value,
-        item_id: String(service.item_id),
-        image: String(service.image),
-        quantity: Number(service.quantity),
-        unit_price: Number(service.unit_price),
-        total_price: Number(service.unit_price) * Number(service.quantity),
-        name: String(service.name),
-    }));
-
-    for (const element of listBookingItem) {
-        await createBookingItem(element);
-    }
-
-    const customerData = Cookies.get("customer");
-    if (customerData) {
-        const customer = JSON.parse(customerData);
-        const dataUser = await getInformation(customer._id);
-        await updateInformationWalletPoint({
-            _id: customer._id,
-            username: customer.username,
-            password: customer.password,
-            fullname: customer.fullname,
-            email: customer.email,
-            phone: customer.phone,
-            address: customer.address,
-            avatar: customer.avatar,
-            loyalty_points:
-                dataUser.loyalty_points + totalPricePaid.value * 0.2,
-            wallet: Number(dataUser.wallet),
-            role_name: customer.role_name,
-        });
-
-        const res = await login({
-            email: String(dataUser.email),
-            password: String(customer.password),
-        });
-        Cookies.set("customer", JSON.stringify(res), { expires: 1 });
-    }
-    closeModal();
-    Swal.fire("Thông Báo", "Đặt bàn thành công !", "success");
 };
 
 async function createMoMoPayment() {

@@ -163,6 +163,7 @@ const ruleForm = reactive<Products>({
     price_reduction: 0,
     quantity_available: 0,
     view: 0,
+    sales: 0,
     origin: "",
     description: "",
     description_detail: "",

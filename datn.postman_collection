@@ -169,7 +169,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"_id\":  \"66eec81c1999583a731922ad\",\r\n    \"username\": \"quang\",\r\n    \"password\": \"123\",\r\n    \"email\": \"quang@123\",\r\n    \"phone\": \"0912312313\",\r\n    \"address\": \"HY\",\r\n    \"loyalty_points\": 10,\r\n    \"role_name\": \"ADMIN\"\r\n}",
+							"raw": "{\r\n  \"_id\": \"6804adfc832c1ccd40e7b73f\",\r\n  \"fullname\": \"Lưu Đức Quanggg\",\r\n  \"email\": \"luuquang654321@gmail.com\",\r\n  \"password\": \"1\",\r\n  \"phone\": \"09123133134\",\r\n  \"address\": \"Hưng Yênnnnn\",\r\n  \"avatar\": \"/static/uploads/anh fb 11.jpg\",\r\n  \"role_name\": \"USER\",\r\n  \"loyalty_points\": 1500000,\r\n  \"wallet\": 9000000\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1076,6 +1076,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "checkavailabletable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"start_time\": \"2025-06-08T20:19\",\r\n    \"end_time\": \"2025-06-08T23:19\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/bookings/available",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"bookings",
+								"available"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1807,14 +1834,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/tables/get/6732cedd52e9e56c542a248d",
+							"raw": "{{host}}/tables/get/6732cef352e9e56c542a2495",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"tables",
 								"get",
-								"6732cedd52e9e56c542a248d"
+								"6732cef352e9e56c542a2495"
 							]
 						}
 					},
@@ -1861,6 +1888,25 @@
 								"tables",
 								"updatestatus",
 								"6732cee752e9e56c542a2491"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "calculateTable",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/tables/calculate-bill/6732cedd52e9e56c542a248d",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tables",
+								"calculate-bill",
+								"6732cedd52e9e56c542a248d"
 							]
 						}
 					},
@@ -2390,13 +2436,23 @@
 					"response": []
 				},
 				{
-					"name": "searchRentalItem",
+					"name": "searchProduct",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg4MDk4OTIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZV9uYW1lIjoiQURNSU4ifQ.8UcX1OFSNMahqQKJKLrU5qQIn1Yf_MxerZisqEzzS9k",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10,\r\n    \"category_name\":\"bim bim\"\r\n}",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2404,12 +2460,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/rentalitems/search",
+							"raw": "{{host}}/products/search",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"rentalitems",
+								"products",
 								"search"
 							]
 						}
@@ -3133,6 +3189,25 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "getCountByPhone",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/timesessions/count-by-phone/0858215219",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"timesessions",
+								"count-by-phone",
+								"0858215219"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -3597,6 +3672,33 @@
 								"tablemenuitems",
 								"get",
 								"6759a2f250d3ad0b4806bbdb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateManyTableMenuItems",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"old_table_id\":\"6732cee052e9e56c542a248e\",\r\n    \"new_table_id\":\"6732cef952e9e56c542a2496\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/tablemenuitems/transfer",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"tablemenuitems",
+								"transfer"
 							]
 						}
 					},
@@ -4455,6 +4557,95 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "getLowStock",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg4MDk4OTIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZV9uYW1lIjoiQURNSU4ifQ.8UcX1OFSNMahqQKJKLrU5qQIn1Yf_MxerZisqEzzS9k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"page\":1,\r\n    \"pageSize\":10\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/statistic/low-stock",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"statistic",
+								"low-stock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRevenueWeek",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/statistic/weekly-revenue",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"statistic",
+								"weekly-revenue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRevenueYear",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/statistic/yearly-revenue",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"statistic",
+								"yearly-revenue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getProfit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/statistic/imports-by-current-year",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"statistic",
+								"imports-by-current-year"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -4637,6 +4828,52 @@
 					],
 					"path": [
 						"reset-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "momoPayment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\" :100000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/momo/create-payment",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"momo",
+						"create-payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "captureMomo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/momo/status/6e63f946-9a5f-4bec-a309-38f7a78d281e",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"momo",
+						"status",
+						"6e63f946-9a5f-4bec-a309-38f7a78d281e"
 					]
 				}
 			},

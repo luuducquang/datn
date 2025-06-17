@@ -78,7 +78,7 @@
                 </el-col>
             </el-row>
             <el-row :gutter="20" class="chart-row">
-                <el-col :span="24">
+                <el-col :span="12">
                     <el-card>
                         <h2>
                             Biểu đồ doanh thu 7 ngày gần nhất:
@@ -92,9 +92,8 @@
                         </el-tooltip>
                     </el-card>
                 </el-col>
-            </el-row>
-            <el-row :gutter="20" class="chart-row">
-                <el-col :span="24">
+
+                <el-col :span="12">
                     <el-card>
                         <h2>
                             Biểu đồ doanh thu theo tháng:
@@ -106,8 +105,9 @@
                     </el-card>
                 </el-col>
             </el-row>
+
             <el-row :gutter="20" class="chart-row">
-                <el-col :span="24">
+                <el-col :span="12">
                     <el-card>
                         <h2>
                             Biểu đồ doanh thu năm {{ yearRevenue }}:
@@ -121,9 +121,8 @@
                         </el-tooltip>
                     </el-card>
                 </el-col>
-            </el-row>
-            <el-row :gutter="20" class="chart-row">
-                <el-col :span="24">
+
+                <el-col :span="12">
                     <el-card>
                         <h2>
                             Biểu đồ tiền nhập năm 2025:
